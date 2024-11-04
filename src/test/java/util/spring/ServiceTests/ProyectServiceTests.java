@@ -1,6 +1,5 @@
-package util.spring.ServiceTests; // Cambia esto según tu estructura de paquetes
+package util.spring.ServiceTests;
 
-import org.springframework.context.annotation.Import;
 import src.spring.Proyecto.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +26,11 @@ class ProyectoServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this); // Inicializa los mocks
+        try {
+            MockitoAnnotations.openMocks(this); // Inicializa los mocks
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test

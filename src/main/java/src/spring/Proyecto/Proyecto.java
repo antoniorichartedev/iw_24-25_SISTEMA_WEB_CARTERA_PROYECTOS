@@ -1,31 +1,44 @@
 package src.spring.Proyecto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
+
 import java.util.Date;
 
 @Entity
+@Table(name = "Proyecto")
 public class Proyecto {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "titulo",nullable = false)
     private String titulo;
+
+    @Column(name = "acronimo",nullable = false)
     private String acronimo;
+
+    @Column(name = "justificacion",nullable = false)
     private String justificacion;
+
+    @Column(name = "alcance",nullable = false)
     private String alcance;
 
 
-    @Column(columnDefinition = "BLOB") // Almacenar archivos o grandes datos binarios
+    @Column(name = "memorias") // Almacenar archivos o grandes datos binarios
     private byte[] memorias;
 
+    @Column(name = "importancia",nullable = false)
     private int importancia;
+
+    @Column(name = "financiacion",nullable = false)
     private int financiacion;
+
+    @Column(name = "puestaEnMarcha")
     private Date puestaMarcha;
 
+    public Proyecto() {
+    }
 
     public Proyecto(String titulo, String acronimo,String justificacion ,byte[] memorias, int importancia, int financiacion, String alcance, Date marcha) {
         this.titulo = titulo;
