@@ -3,6 +3,7 @@ package src.spring.Proyecto;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "Proyecto")
@@ -10,7 +11,7 @@ public class Proyecto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id = UUID.randomUUID();
 
     @Column(name = "titulo",nullable = false)
     private String titulo;
