@@ -1,19 +1,25 @@
-package src.spring;
+package src.spring.Proyecto;
 
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 import java.util.Date;
 
+@Entity
 public class Proyecto {
 
     @Id
     private Long id;
 
+    @Column(nullable = false)
     private String titulo;
     private String acronimo;
     private String justificacion;
     private String alcance;
 
-    // Array de bytes para los archivos
+
+    @Column(columnDefinition = "BLOB") // Almacenar archivos o grandes datos binarios
     private byte[] memorias;
 
     private int importancia;
