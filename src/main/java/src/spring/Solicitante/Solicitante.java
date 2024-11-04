@@ -8,7 +8,7 @@ public class Solicitante extends Persona{
     private String unidadSolicitante;
 
     public Solicitante(String nombre, String correo, String unidadSolicitante){
-        this.nombre = nombre;
+       super(nombre);
         this.correo = correo;
         this.unidadSolicitante = unidadSolicitante;
     }
