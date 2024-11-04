@@ -1,6 +1,6 @@
 package util.spring.ClassTests;
 
-import src.spring.Proyecto.Proyecto;
+import src.spring.Proyecto.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Date;
 
+//Tests de las funcionalidades de la clase proyecto.
 class ProyectoTests {
 
     private Proyecto proyecto;
