@@ -1,16 +1,21 @@
 package src.spring.Promotor;
-package src.spring.Persona;
+
 
 import jakarta.persistence.Entity;
+import src.spring.Persona.Persona;
 
 @Entity
-public class Promotor extends Persona{
+public class Promotor extends Persona {
     private int importancia;
 
-    public Promotor(String nombre, int importancia){
-        super(nombre);
+    public Promotor(String nombre, String correo, int importancia){
+
+        // Con super(), llamo al constructor de Persona, ya que es la clase base de Promotor.
+        super(nombre, correo);
         this.importancia = importancia;
     }
+
+    public Promotor(){}
 
     public int getImportancia() {
         return importancia;

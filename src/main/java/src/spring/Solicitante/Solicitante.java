@@ -1,16 +1,14 @@
 package src.spring.Solicitante;
-package src.spring.Persona;
-
 import jakarta.persistence.Entity;
+import src.spring.Persona.Persona;
 
 public class Solicitante extends Persona{
     private String correo;
     private String unidadSolicitante;
 
     public Solicitante(String nombre, String correo, String unidadSolicitante){
-       super(nombre);
-        this.correo = correo;
-        this.unidadSolicitante = unidadSolicitante;
+       super(nombre, correo);
+       this.unidadSolicitante = unidadSolicitante;
     }
 
     public String getCorreo() {
