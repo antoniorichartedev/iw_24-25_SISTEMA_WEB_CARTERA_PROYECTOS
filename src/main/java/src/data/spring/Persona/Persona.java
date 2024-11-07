@@ -1,4 +1,4 @@
-package src.spring.Persona;
+package src.data.spring.Persona;
 
 import jakarta.persistence.Entity;
 

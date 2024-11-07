@@ -1,4 +1,4 @@
-package src.spring.Proyecto;
+package src.data.spring.Proyecto;
 
 import org.springframework.data.repository.CrudRepository;
 

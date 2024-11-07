@@ -1,8 +1,8 @@
-package src.spring.CIO;
+package src.data.spring.CIO;
 
 
 import jakarta.persistence.Entity;
-import src.spring.Persona.Persona;
+import src.data.spring.Persona.Persona;
 
 
 @Entity

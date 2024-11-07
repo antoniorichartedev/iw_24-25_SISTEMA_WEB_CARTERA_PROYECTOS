@@ -1,7 +1,7 @@
-package src.spring.Interesado;
+package src.data.spring.Interesado;
 
 import jakarta.persistence.Entity;
-import src.spring.Persona.Persona;
+import src.data.spring.Persona.Persona;
 
 import java.math.BigDecimal;
 

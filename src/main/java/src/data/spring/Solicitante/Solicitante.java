@@ -1,7 +1,7 @@
-package src.spring.Solicitante;
+package src.data.spring.Solicitante;
 
 import jakarta.persistence.Entity;
-import src.spring.Persona.Persona;
+import src.data.spring.Persona.Persona;
 
 @Entity
 public class Solicitante extends Persona{

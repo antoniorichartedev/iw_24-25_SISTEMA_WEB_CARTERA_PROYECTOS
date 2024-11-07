@@ -1,6 +1,6 @@
 package util.spring.ClassTests;
 
-import src.spring.Persona.*;
+import src.data.spring.Persona.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

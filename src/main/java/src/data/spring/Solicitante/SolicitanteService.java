@@ -1,4 +1,4 @@
-package src.spring.Solicitante;
+package src.data.spring.Solicitante;
 
 import org.springframework.stereotype.Service;
 import java.util.List;
