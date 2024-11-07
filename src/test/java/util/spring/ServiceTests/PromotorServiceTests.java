@@ -1,5 +1,6 @@
-package src.spring.Promotor;
+package util.spring.ServiceTests;
 
+import src.spring.Promotor.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,7 +27,7 @@ public class PromotorServiceTests {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         promotorId = UUID.randomUUID();
-        promotor = new Promotor("Carlos", 3);
+        promotor = new Promotor("Carlos", "carlos@uca.es", 3);
     }
 
     @Test

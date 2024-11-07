@@ -1,5 +1,6 @@
-package src.spring.Promotor;
+package util.spring.ClassTests;
 
+import src.spring.Promotor.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import src.spring.Persona.Persona;
@@ -11,7 +12,7 @@ public class PromotorTest {
 
     @BeforeEach
     public void setUp() {
-        promotor = new Promotor("Juan", 5);
+        promotor = new Promotor("Juan", "juan.gomez@gmail.com", 5);
     }
 
     @Test
@@ -49,7 +50,7 @@ public class PromotorTest {
 
     @Test
     public void testEquals_DifferentId() {
-        Promotor otroPromotor = new Promotor("Juan", 5);
+        Promotor otroPromotor = new Promotor("Juan", "juan.gomez@gmail.com", 5);
         assertNotEquals(promotor.getId(), otroPromotor.getId(), "Los promotores deben tener IDs diferentes");
         assertNotEquals(promotor, otroPromotor, "Promotores con IDs diferentes no deberían ser iguales");
     }

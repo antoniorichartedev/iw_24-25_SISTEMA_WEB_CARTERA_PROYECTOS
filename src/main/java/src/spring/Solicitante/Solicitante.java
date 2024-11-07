@@ -1,7 +1,9 @@
 package src.spring.Solicitante;
+
 import jakarta.persistence.Entity;
 import src.spring.Persona.Persona;
 
+@Entity
 public class Solicitante extends Persona{
     private String correo;
     private String unidadSolicitante;

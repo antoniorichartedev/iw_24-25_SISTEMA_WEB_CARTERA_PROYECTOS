@@ -2,6 +2,12 @@ package src.spring.Solicitante;
 
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 //Repositorio CRUD para el manejo de datos en la base de datos.
-public interface ProyectoRepository extends CrudRepository<Proyecto, Long> {
+public interface SolicitanteRepository extends CrudRepository<Solicitante, Long> {
+    Optional<Solicitante> findById(UUID id);
+
+    void deleteById(UUID id);
 }

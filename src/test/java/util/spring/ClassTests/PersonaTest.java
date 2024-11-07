@@ -1,8 +1,10 @@
-package src.spring.Persona;
+package util.spring.ClassTests;
+
+import src.spring.Persona.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PersonaTest {
@@ -10,7 +12,7 @@ public class PersonaTest {
 
     @BeforeEach
     public void setUp() {
-        persona = new Persona("Carlos");
+        persona = new Persona("Carlos", "carlos@uca.es");
     }
 
     @Test
@@ -42,7 +44,7 @@ public class PersonaTest {
 
     @Test
     public void testEquals_DifferentId() {
-        Persona persona2 = new Persona("Carlos");
+        Persona persona2 = new Persona("Carlos", "carlos.ramirez@outlook.com");
         assertNotEquals(persona.getId(), persona2.getId(), "Las personas deben tener IDs diferentes");
         assertNotEquals(persona, persona2, "Personas con IDs diferentes no deberían ser iguales");
     }

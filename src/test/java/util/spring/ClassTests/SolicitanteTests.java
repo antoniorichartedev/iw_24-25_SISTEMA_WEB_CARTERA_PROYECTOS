@@ -1,5 +1,6 @@
-package src.spring.Solicitante;
+package util.spring.ClassTests;
 
+import src.spring.Solicitante.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import src.spring.Persona.Persona;

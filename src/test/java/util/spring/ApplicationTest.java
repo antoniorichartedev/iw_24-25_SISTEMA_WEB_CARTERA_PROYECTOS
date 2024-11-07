@@ -1,11 +1,11 @@
 package util.spring;
 
-import src.spring.Application;
+import src.Application;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = Application.class)
-class ApplicationTest {
+public class ApplicationTest {
 
 	@Test
 	void contextLoads() {

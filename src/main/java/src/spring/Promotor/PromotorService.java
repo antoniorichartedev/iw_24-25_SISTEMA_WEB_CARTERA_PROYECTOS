@@ -3,10 +3,11 @@ package src.spring.Promotor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PromotorService {
-    private final PromotorRepository promotoreRepository;
+    private final PromotorRepository promotorRepository;
 
     public PromotorService(PromotorRepository promotorRepository) {
         this.promotorRepository = promotorRepository;

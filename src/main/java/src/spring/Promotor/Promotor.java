@@ -1,6 +1,5 @@
 package src.spring.Promotor;
 
-
 import jakarta.persistence.Entity;
 import src.spring.Persona.Persona;
 
