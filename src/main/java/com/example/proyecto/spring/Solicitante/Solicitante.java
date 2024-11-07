@@ -7,6 +7,7 @@ import com.example.proyecto.spring.Persona.*;
 public class Solicitante extends Persona{
     private String unidadSolicitante;
 
+    public Solicitante(){}
     public Solicitante(String nombre, String correo, String unidadSolicitante){
        super(nombre, correo);
        this.unidadSolicitante = unidadSolicitante;
