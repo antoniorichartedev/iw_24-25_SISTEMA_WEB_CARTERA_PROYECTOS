@@ -3,6 +3,7 @@ package src.spring.Proyecto;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 //Servicios para el manejo de datos en la base de datos.
 @Service
@@ -18,7 +19,7 @@ public class ProyectoService {
         return (List<Proyecto>) proyectoRepository.findAll();
     }
 
-    public Optional<Proyecto> getProyectoById(Long id) {
+    public Optional<Proyecto> getProyectoById(UUID id) {
         return proyectoRepository.findById(id);
     }
 
@@ -26,7 +27,7 @@ public class ProyectoService {
         return proyectoRepository.save(proyecto);
     }
 
-    public void deleteProyecto(Long id) {
+    public void deleteProyecto(UUID id) {
         proyectoRepository.deleteById(id);
     }
 }
