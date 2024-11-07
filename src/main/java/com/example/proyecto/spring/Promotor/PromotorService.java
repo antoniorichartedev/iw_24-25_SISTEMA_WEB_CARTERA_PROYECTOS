@@ -1,4 +1,4 @@
-package src.data.spring.Promotor;
+package com.example.proyecto.spring.Promotor;
 
 import org.springframework.stereotype.Service;
 import java.util.List;

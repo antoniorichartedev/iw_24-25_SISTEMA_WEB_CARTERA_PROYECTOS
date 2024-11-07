@@ -1,6 +1,6 @@
 package util.spring.ServiceTests;
 
-import src.spring.Proyecto.*;
+import com.example.proyecto.spring.Proyecto.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -11,10 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Date;
+import java.util.*;
 
 class ProyectServiceTest {
 
@@ -23,6 +20,7 @@ class ProyectServiceTest {
 
     @InjectMocks
     private ProyectoService proyectoService; // La clase que vamos a probar
+    private UUID uuid;
 
     @BeforeEach
     void setUp() {
@@ -52,7 +50,7 @@ class ProyectServiceTest {
     @Test
     void testGetProyectoById() {
         // Arrange
-        Long id = 1L;
+        UUID id = uuid;
         Proyecto proyecto = new Proyecto("Proyecto 1", "P1", "Justificación 1", new byte[]{}, 3, 1000, "Alcance 1", new Date());
         when(proyectoRepository.findById(id)).thenReturn(Optional.of(proyecto));
 
@@ -83,7 +81,7 @@ class ProyectServiceTest {
     @Test
     void testDeleteProyecto() {
         // Arrange
-        Long id = 1L;
+        UUID id = uuid;
 
         // Act
         proyectoService.deleteProyecto(id);

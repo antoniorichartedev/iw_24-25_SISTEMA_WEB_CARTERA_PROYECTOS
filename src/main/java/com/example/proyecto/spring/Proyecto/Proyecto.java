@@ -1,4 +1,4 @@
-package src.data.spring.Proyecto;
+package com.example.proyecto.spring.Proyecto;
 
 import jakarta.persistence.*;
 

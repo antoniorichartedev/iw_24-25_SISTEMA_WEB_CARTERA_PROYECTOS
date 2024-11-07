@@ -1,7 +1,7 @@
-package src.data.spring.Promotor;
+package com.example.proyecto.spring.Promotor;
 
 import jakarta.persistence.Entity;
-import src.data.spring.Persona.Persona;
+import com.example.proyecto.spring.Persona.*;
 
 @Entity
 public class Promotor extends Persona {

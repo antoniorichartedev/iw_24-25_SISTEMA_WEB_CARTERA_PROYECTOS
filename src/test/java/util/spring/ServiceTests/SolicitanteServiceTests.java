@@ -1,7 +1,7 @@
 package util.spring.ServiceTests;
 
 
-import src.data.spring.Solicitante.*;
+import com.example.proyecto.spring.Solicitante.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
