@@ -36,11 +36,13 @@ public class Persona{
         return nombre;
     }
 
+    public String getCorreo() { return this.correo; }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public String getCorreo() { return this.correo; }
+    public void setCorreo(String correo){ this.correo = correo; }
 
     @Override
     public boolean equals(Object obj){
