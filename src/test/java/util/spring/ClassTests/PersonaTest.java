@@ -11,6 +11,7 @@ public class PersonaTest {
     private Persona persona;
 
     @BeforeEach
+
     public void setUp() {
         persona = new Persona("Carlos", "carlos@uca.es");
     }
