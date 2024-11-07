@@ -1,1 +1,7 @@
-# iw_24-25_SISTEMA_WEB_CARTERA_PROYECTOS
+# Proyecto de IW de una web de cartera de proyectos de la Universidad de Cádiz.
+
+## Integrantes
+
+- Pablo García Bravo
+- Laura Guerrero Ramos
+- Antonio Richarte González
