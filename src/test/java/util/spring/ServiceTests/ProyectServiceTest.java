@@ -5,6 +5,7 @@ import com.example.proyecto.spring.Proyecto.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.example.proyecto.spring.Solicitante.Solicitante;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -76,6 +77,21 @@ class ProyectServiceTest {
         assertNotNull(result);
         assertEquals("Proyecto 1", result.getTitulo());
         verify(proyectoRepository, times(1)).save(proyecto); // Verifica que se llamó al repositorio
+    }
+
+    @Test
+    void testAddSolicitante(){
+        // Arrange
+        Proyecto proyecto = new Proyecto("Proyecto 1", "P1", "Justificación 1", new byte[]{}, 3, 1000, "Alcance 1", new Date());
+        Solicitante solicitante = new Solicitante("María", "maria@example.com", "Recursos Humanos");
+
+        // Act
+        proyecto.setSolicitante(solicitante);
+
+        // Assert
+        assertNotNull(proyecto.getSolicitante());
+        assertEquals("María", proyecto.getSolicitante().getNombre());
+        assertEquals(solicitante, proyecto.getSolicitante());
     }
 
     @Test

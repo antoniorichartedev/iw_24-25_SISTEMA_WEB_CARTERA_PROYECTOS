@@ -1,6 +1,6 @@
 package util.spring;
 
-import src.Application;
+import com.example.proyecto.Application;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

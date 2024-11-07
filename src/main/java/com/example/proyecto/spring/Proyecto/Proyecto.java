@@ -1,5 +1,6 @@
 package com.example.proyecto.spring.Proyecto;
 
+import com.example.proyecto.spring.Solicitante.Solicitante;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -38,6 +39,9 @@ public class Proyecto {
     @Column(name = "puestaEnMarcha")
     private Date puestaMarcha;
 
+    @ManyToOne
+    private Solicitante solicitante;
+
     public Proyecto() {
     }
 
@@ -62,6 +66,9 @@ public class Proyecto {
     public String getAlcance() { return alcance; }
 
     public int getImportancia() { return importancia; }
+
+    public Solicitante getSolicitante() { return solicitante; }
+    public void setSolicitante(Solicitante soli) { this.solicitante = soli; }
 
     public int getFinanciacion() { return financiacion; }
     public void setFinanciacion(int financiacion) { this.financiacion = financiacion; }
