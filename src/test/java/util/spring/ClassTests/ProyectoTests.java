@@ -1,11 +1,16 @@
 package util.spring.ClassTests;
 
+import com.example.proyecto.spring.Solicitante.Solicitante;
+import com.example.proyecto.spring.Interesado.Interesado;
+import com.example.proyecto.spring.Promotor.Promotor;
+
 import com.example.proyecto.spring.Proyecto.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 //Tests de las funcionalidades de la clase proyecto.
@@ -57,6 +62,43 @@ class ProyectoTests {
         Date nuevaFecha = new Date();
         proyecto.setPuestaMarcha(nuevaFecha);
         assertEquals(nuevaFecha, proyecto.getPuestaMarcha());
+    }
+
+    @Test
+    public void testSolicitante(){
+        Solicitante solicitante = new Solicitante("María", "maria@example.com", "Recursos Humanos");
+        proyecto.setSolicitante(solicitante);
+        assertEquals(solicitante.getId(), proyecto.getSolicitante().getId());
+    }
+
+    @Test
+    public void testInteresado(){
+        Interesado inter = new Interesado("Raul", "Raul@example.com", new BigDecimal("100000"));
+        proyecto.setInteresado(inter);
+        assertEquals(inter.getId(), proyecto.getInteresado().getId());
+    }
+
+    @Test
+    public void testPromotor(){
+        Promotor prom = new Promotor("Pedro", "Pedro@example.com", 4);
+        proyecto.setPromotor(prom);
+        assertEquals(prom.getId(), proyecto.getPromotor().getId());
+    }
+
+    @Test
+    public void testID(){
+        Solicitante solicitante = new Solicitante("María", "maria@example.com", "Recursos Humanos");
+        proyecto.setSolicitante(solicitante);
+
+        Promotor prom = new Promotor("Pedro", "Pedro@example.com", 4);
+        proyecto.setPromotor(prom);
+
+        Interesado inter = new Interesado("Raul", "Raul@example.com", new BigDecimal("100000"));
+        proyecto.setInteresado(inter);
+
+        assertNotEquals(proyecto.getPromotor().getId(), proyecto.getInteresado().getId());
+        assertNotEquals(proyecto.getSolicitante().getId(), proyecto.getInteresado().getId());
+        assertNotEquals(proyecto.getSolicitante().getId(), proyecto.getPromotor().getId());
     }
 }
 
