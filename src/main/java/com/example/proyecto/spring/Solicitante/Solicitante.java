@@ -7,8 +7,9 @@ import com.example.proyecto.spring.Persona.*;
 import java.util.List;
 
 @Entity
+@Table(name = "Solicitante")
 public class Solicitante extends Persona{
-    @Column(name = "unidadSolicitante")
+    @Column(name = "unidadSolicitante",nullable = false)
     private String unidadSolicitante;
 
     @OneToMany

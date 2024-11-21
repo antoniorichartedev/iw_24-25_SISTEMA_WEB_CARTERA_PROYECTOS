@@ -5,12 +5,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import com.example.proyecto.spring.Persona.*;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 import java.util.List;
 
 @Entity
+@Table(name = "Promotor")
 public class Promotor extends Persona {
-    @Column(name = "importancia")
+    @Column(name = "importancia", nullable = false)
     private int importancia;
 
     @OneToMany
