@@ -1,11 +1,18 @@
 package com.example.proyecto.spring.Solicitante;
 
-import jakarta.persistence.Entity;
+import com.example.proyecto.spring.Proyecto.Proyecto;
+import jakarta.persistence.*;
 import com.example.proyecto.spring.Persona.*;
+
+import java.util.List;
 
 @Entity
 public class Solicitante extends Persona{
+    @Column(name = "unidadSolicitante")
     private String unidadSolicitante;
+
+    @OneToMany
+    private List<Proyecto> proyectos;
 
     public Solicitante(){}
     public Solicitante(String nombre, String correo, String unidadSolicitante){

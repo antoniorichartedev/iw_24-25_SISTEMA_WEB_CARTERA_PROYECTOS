@@ -1,5 +1,6 @@
 package com.example.proyecto.spring.Proyecto;
 
+import com.example.proyecto.spring.Promotor.Promotor;
 import com.example.proyecto.spring.Solicitante.Solicitante;
 import jakarta.persistence.*;
 
@@ -42,6 +43,8 @@ public class Proyecto {
     @ManyToOne
     private Solicitante solicitante;
 
+    @ManyToOne
+    private Promotor promotor;
     public Proyecto() {
     }
 
