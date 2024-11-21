@@ -45,6 +45,8 @@ public class Proyecto {
 
     @ManyToOne
     private Promotor promotor;
+
+
     public Proyecto() {
     }
 
