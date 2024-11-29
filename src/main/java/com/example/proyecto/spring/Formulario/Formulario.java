@@ -3,6 +3,7 @@ package com.example.proyecto.spring.Formulario;
 import jakarta.persistence.*;
 
 import java.util.UUID;
+import com.example.proyecto.spring.CIO.CIO;
 
 @Entity
 @Table(name = "Formulario")
@@ -16,6 +17,10 @@ public class Formulario {
 
     @Column(name = "oficinaTecnica", nullable = false)
     private String oficinaTecnica;
+
+    @ManyToOne
+    @JoinColumn(name = "cio_id") // Nombre de la columna de la clave foránea
+    private CIO cio;
 
     public Formulario(){}
 

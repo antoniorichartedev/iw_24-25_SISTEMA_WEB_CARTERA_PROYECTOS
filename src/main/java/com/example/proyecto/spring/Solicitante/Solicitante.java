@@ -5,10 +5,19 @@ import jakarta.persistence.*;
 import com.example.proyecto.spring.Persona.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "Solicitante")
 public class Solicitante extends Persona{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id = UUID.randomUUID();
+
+    public UUID getId() {
+        return id;
+    }
     @Column(name = "unidadSolicitante",nullable = false)
     private String unidadSolicitante;
 

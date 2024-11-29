@@ -1,17 +1,23 @@
 package com.example.proyecto.spring.Promotor;
 
 import com.example.proyecto.spring.Proyecto.Proyecto;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import com.example.proyecto.spring.Persona.*;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "Promotor")
 public class Promotor extends Persona {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id = UUID.randomUUID();
+
+    public UUID getId() {
+        return id;
+    }
     @Column(name = "importancia", nullable = false)
     private int importancia;
 

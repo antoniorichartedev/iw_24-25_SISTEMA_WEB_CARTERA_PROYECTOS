@@ -5,8 +5,9 @@ import jakarta.persistence.*;
 // Necesario importarlas explícitamente, ya que no están en el JPA.
 import java.util.UUID;
 
-@Entity
-public class Persona{
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Una tabla para toda la jerarquía
+@DiscriminatorColumn(name = "tipo_persona", discriminatorType = DiscriminatorType.STRING)
+public class Persona {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id = UUID.randomUUID();

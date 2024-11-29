@@ -1,4 +1,4 @@
-package com.example.proyecto.views.helloworld;
+package com.example.proyecto.vaadin.HomePage;
 
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
@@ -9,15 +9,15 @@ import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@PageTitle("Hello World")
+@PageTitle("Home")
 @Route("")
 @Menu(order = 0, icon = "line-awesome/svg/globe-solid.svg")
-public class HelloWorldView extends HorizontalLayout {
+public class HomePageView extends HorizontalLayout {
 
     private TextField name;
     private Button sayHello;
 
-    public HelloWorldView() {
+    public HomePageView() {
         name = new TextField("Your name");
         sayHello = new Button("Say hello");
         sayHello.addClickListener(e -> {
