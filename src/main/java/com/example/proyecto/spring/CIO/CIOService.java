@@ -1,12 +1,14 @@
 package com.example.proyecto.spring.CIO;
 
 import com.example.proyecto.spring.Interesado.Interesado;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class CIOService {
     private final CIORepository cioRepository;
 
