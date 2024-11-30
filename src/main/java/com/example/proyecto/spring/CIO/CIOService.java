@@ -22,12 +22,12 @@ public class CIOService {
         return (List<CIO>) cioRepository.findAll();
     }
 
-    public Optional<CIO> getInteresadoById(UUID id)
+    public Optional<CIO> getCIOById(UUID id)
     {
         return cioRepository.findById(id);
     }
 
-    public CIO saveInteresado(CIO cio)
+    public CIO saveCIO(CIO cio)
     {
         if(cio.getNombre() != null)
         {
@@ -37,7 +37,7 @@ public class CIOService {
         return cioRepository.save(cio);
     }
 
-    public void deleteInteresado(UUID id)
+    public void deleteCIO(UUID id)
     {
         cioRepository.deleteById(id);
     }
