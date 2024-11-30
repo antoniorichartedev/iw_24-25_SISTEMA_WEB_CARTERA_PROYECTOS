@@ -9,7 +9,6 @@ import java.util.UUID;
 
 
 @Entity
-@Table(name = "CIO")
 public class CIO extends Persona {
 
     @Id

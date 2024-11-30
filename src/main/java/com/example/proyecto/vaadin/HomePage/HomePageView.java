@@ -8,10 +8,12 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @PageTitle("Home")
 @Route("")
 @Menu(order = 0, icon = "line-awesome/svg/globe-solid.svg")
+@AnonymousAllowed
 public class HomePageView extends HorizontalLayout {
 
     private TextField name;

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Solicitante")
 public class Solicitante extends Persona{
 
     @Id

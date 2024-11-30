@@ -1,5 +1,6 @@
 package com.example.proyecto.spring.Persona;
 
+import com.example.proyecto.spring.Rol;
 import jakarta.persistence.*;
 
 // Necesario importarlas explícitamente, ya que no están en el JPA.
@@ -7,6 +8,7 @@ import java.util.UUID;
 
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Una tabla para toda la jerarquía
 @DiscriminatorColumn(name = "tipo_persona", discriminatorType = DiscriminatorType.STRING)
+@Entity
 public class Persona {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,6 +20,11 @@ public class Persona {
     // Correo que tendrá cada persona.
     @Column(name = "correo", nullable = false)
     private String correo;
+
+    Rol rol = Rol.USER ;
+
+    Rol getRol(){return rol;}
+    void setRol(Rol rol){this.rol = rol;}
 
     // Ctor.
     public Persona(String nombre, String correo){
