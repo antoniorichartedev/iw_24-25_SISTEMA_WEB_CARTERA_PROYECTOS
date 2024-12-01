@@ -22,16 +22,19 @@ public class Interesado extends Persona {
     public Interesado() {}
 
     @Column(name = "Financiación Aportada")
-    private BigDecimal FinanciacionAportada;
+    private BigDecimal financiacionAportada;
 
     // Ctor.
     public Interesado(String nombre, String correo, BigDecimal Financiacion)
     {
         super(nombre, correo);
-        this.FinanciacionAportada = Financiacion;
+        this.financiacionAportada = Financiacion;
     }
 
-    public BigDecimal getFinanciacionAportada() { return this.FinanciacionAportada; }
+    public BigDecimal getFinanciacionAportada() { return financiacionAportada; }
+    public void setFinanciacionAportada(BigDecimal financiacionAportada) {
+        this.financiacionAportada = financiacionAportada;
+    }
 
     /* Relación con Proyecto. Refleja los proyectos en los que está interesado esta persona (el interesado, claro) */
     @OneToMany

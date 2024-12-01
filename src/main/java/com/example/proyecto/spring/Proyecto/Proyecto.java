@@ -1,5 +1,6 @@
 package com.example.proyecto.spring.Proyecto;
 
+import com.example.proyecto.spring.Interesado.Interesado;
 import com.example.proyecto.spring.Promotor.Promotor;
 import com.example.proyecto.spring.Solicitante.Solicitante;
 import jakarta.persistence.*;
@@ -45,6 +46,9 @@ public class Proyecto {
 
     @ManyToOne
     private Promotor promotor;
+
+    @ManyToOne
+    private Interesado interesado;
 
     public Proyecto() {
     }
@@ -96,4 +100,10 @@ public class Proyecto {
 
     public Date getPuestaMarcha() { return puestaMarcha; }
     public void setPuestaMarcha(Date puestaMarcha) { this.puestaMarcha = puestaMarcha; }
+
+    public void setInteresado(Interesado interesado) { this.interesado = interesado; }
+    public Interesado getInteresado() { return interesado; }
+
+    public Promotor getPromotor() { return promotor; }
+    public void setPromotor(Promotor promotor) { this.promotor = promotor; }
 }
