@@ -6,6 +6,7 @@ import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -21,17 +22,17 @@ public class LogInView extends Composite<VerticalLayout> {
     private LoginForm loginForm = new LoginForm();
     public LogInView() {
 
+        // Establecer la acción del formulario de login para que apunte a Spring Security
+        loginForm.setAction("login");  // Importante: Esta acción debe coincidir con la configuración de Spring Security. Sino NO FUNCIONA.
 
-        loginForm.addLoginListener(e -> {});
-
-        // Contenedor envolvente para ajustar el tamaño
+        // Configurar el contenedor del login
         VerticalLayout wrapper = new VerticalLayout(loginForm);
-        wrapper.setWidthFull(); // Configura el ancho del contenedor
-        wrapper.setAlignItems(FlexComponent.Alignment.CENTER); // Centra el formulario horizontalmente
+        wrapper.setWidthFull();
+        wrapper.setAlignItems(FlexComponent.Alignment.CENTER);
 
-        // Configuración del contenido principal
+        // Configurar el layout principal
         VerticalLayout layout = getContent();
-        layout.setSizeFull(); // Asegura que ocupe toda la pantalla
+        layout.setSizeFull();
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
         layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         layout.add(wrapper);

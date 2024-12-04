@@ -25,9 +25,9 @@ public class Interesado extends Persona {
     private BigDecimal financiacionAportada;
 
     // Ctor.
-    public Interesado(String nombre, String correo, BigDecimal Financiacion)
+    public Interesado(String nombre, String correo, String passwd, BigDecimal Financiacion)
     {
-        super(nombre, correo);
+        super(nombre, correo, passwd);
         this.financiacionAportada = Financiacion;
     }
 

@@ -1,5 +1,6 @@
 package util.spring.ClassTests;
 
+import com.example.proyecto.spring.CIO.CIO;
 import com.example.proyecto.spring.Formulario.Formulario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,26 +12,20 @@ public class FormularioTest {
 
     @BeforeEach
     public void setUp() {
-        formulario = new Formulario(7.5, "Oficina Regional");
+        formulario = new Formulario(7.5, new CIO("Juanito", "juanito@gmail.com"));
     }
 
     @Test
     public void testConstructor() {
         assertNotNull(formulario.getId(), "El ID debería estar inicializado");
         assertEquals(7.5, formulario.getPuntuacion(), "La puntuación no fue inicializada correctamente");
-        assertEquals("Oficina Regional", formulario.getOficinaTecnica(), "La oficina técnica no fue inicializada correctamente");
+        assertEquals(new CIO("Juanito", "juanito@gmail.com"), formulario.getCio(), "La oficina técnica no fue inicializada correctamente");
     }
 
     @Test
     public void testSetPuntuacion() {
         formulario.setPuntuacion(9.2);
         assertEquals(9.2, formulario.getPuntuacion(), "La puntuación no fue cambiada correctamente");
-    }
-
-    @Test
-    public void testSetOficinaTecnica() {
-        formulario.setOficinaTecnica("Oficina Central");
-        assertEquals("Oficina Central", formulario.getOficinaTecnica(), "La oficina técnica no fue cambiada correctamente");
     }
 
     @Test
@@ -50,7 +45,7 @@ public class FormularioTest {
 
     @Test
     public void testEquals_DifferentId() {
-        Formulario otroFormulario = new Formulario(7.5, "Oficina Regional");
+        Formulario otroFormulario = new Formulario(7.5, new CIO("Manolito pies de plata", "manolito@gmail.com"));
         assertNotEquals(formulario.getId(), otroFormulario.getId(), "Los formularios deben tener IDs diferentes");
         assertNotEquals(formulario, otroFormulario, "Formularios con IDs diferentes no deberían ser iguales");
     }

@@ -56,16 +56,17 @@ public class SecurityConfiguration extends VaadinWebSecurity {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails admin = User.withUsername("admin")
-                .password("{noop}adminpass")
+        UserDetails user = User.withUsername("admin")
+                .password("{noop}admin")
                 .roles("ADMIN")
                 .build();
-        return new InMemoryUserDetailsManager(admin);
+        return new InMemoryUserDetailsManager(user);
     }
 
     /**
      * Allows access to static resources, bypassing Spring Security.
      */
+    @Override
     public void configure(WebSecurity web) {
         web.ignoring().requestMatchers(
                 // Client-side JS

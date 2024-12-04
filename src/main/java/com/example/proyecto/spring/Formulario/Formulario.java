@@ -15,37 +15,27 @@ public class Formulario {
     @Column(name = "puntuacion",nullable = false)
     private double puntuacion;
 
-    @Column(name = "oficinaTecnica", nullable = false)
-    private String oficinaTecnica;
-
     @ManyToOne
-    @JoinColumn(name = "cio_id") // Nombre de la columna de la clave foránea
+    @JoinColumn(name = "cio_evaluador") // Nombre de la columna de la clave foránea.
     private CIO cio;
 
     public Formulario(){}
 
-    public Formulario(double puntuacion, String oficinaTecnica){
+    public Formulario(double puntuacion, CIO cio1){
         this.puntuacion = puntuacion;
-        this.oficinaTecnica = oficinaTecnica;
     }
 
     public UUID getId() {
         return id;
     }
 
-    public String getOficinaTecnica() {
-        return oficinaTecnica;
-    }
-
     public double getPuntuacion() {
         return puntuacion;
-    }
-
-    public void setOficinaTecnica(String oficinaTecnica) {
-        this.oficinaTecnica = oficinaTecnica;
     }
 
     public void setPuntuacion(double puntuacion) {
         this.puntuacion = puntuacion;
     }
+
+    public CIO getCio() { return cio; }
 }

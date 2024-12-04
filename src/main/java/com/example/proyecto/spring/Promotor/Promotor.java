@@ -23,10 +23,10 @@ public class Promotor extends Persona {
     @OneToMany
     private List<Proyecto> proyectos;
 
-    public Promotor(String nombre, String correo, int importancia){
+    public Promotor(String nombre, String correo, String passwd, int importancia){
 
         // Con super(), llamo al constructor de Persona, ya que es la clase base de Promotor.
-        super(nombre, correo);
+        super(nombre, correo, passwd);
         this.importancia = importancia;
     }
 
