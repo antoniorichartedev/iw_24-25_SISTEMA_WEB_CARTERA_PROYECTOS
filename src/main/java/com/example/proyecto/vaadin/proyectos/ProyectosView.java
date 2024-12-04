@@ -25,7 +25,9 @@ import org.vaadin.lineawesome.LineAwesomeIconUrl;
 @Uses(Icon.class)
 public class ProyectosView extends Composite<VerticalLayout> {
 
-    public ProyectosView() {
+    public ProyectosView(ProyectoService proyectoService) {
+        this.proyectoService = proyectoService;
+
         HorizontalLayout layoutRow = new HorizontalLayout();
         H2 h2 = new H2();
         VerticalLayout layoutColumn2 = new VerticalLayout();
@@ -49,9 +51,8 @@ public class ProyectosView extends Composite<VerticalLayout> {
         layoutColumn2.add(stripedGrid);
     }
 
-    private void setGridSampleData(Grid grid) {
-        grid.setItems(query -> proyectoService.getAllProyectos()
-                .stream());
+    private void setGridSampleData(Grid<Proyecto> grid) {
+        grid.setItems(proyectoService.getAllProyectos());
     }
 
     @Autowired()
