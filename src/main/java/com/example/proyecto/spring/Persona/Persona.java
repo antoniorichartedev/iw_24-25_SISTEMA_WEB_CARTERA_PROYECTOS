@@ -21,6 +21,7 @@ public class Persona {
     @Column(name = "correo", nullable = false)
     private String correo;
 
+    @Column(name = "rol")
     Rol rol = Rol.USER ;
 
     Rol getRol(){return rol;}

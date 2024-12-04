@@ -1,7 +1,8 @@
 package com.example.proyecto.vaadin;
 
+import com.example.proyecto.security.login.SecurityService;
 import com.example.proyecto.spring.Persona.Persona;
-import com.example.proyecto.security.AuthenticatedUser;
+import com.example.proyecto.security.login.AuthenticatedUser;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -19,13 +20,12 @@ import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.Layout;
-import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.server.menu.MenuConfiguration;
 import com.vaadin.flow.server.menu.MenuEntry;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-import java.io.ByteArrayInputStream;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +38,7 @@ public class MainLayout extends AppLayout {
 
     private H1 viewTitle;
 
+    private SecurityService ss;
     private AuthenticatedUser authenticatedUser;
     private AccessAnnotationChecker accessChecker;
 
@@ -113,6 +114,8 @@ public class MainLayout extends AppLayout {
             });
 
             layout.add(userMenu);
+            Anchor logoutlink = new Anchor("logout", "Log out");
+            layout.add(logoutlink);
         } else {
             Anchor loginLink = new Anchor("login", "Sign in");
             layout.add(loginLink);

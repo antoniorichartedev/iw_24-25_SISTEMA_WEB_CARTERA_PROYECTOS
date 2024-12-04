@@ -18,8 +18,11 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @Route("login")
 public class LogInView extends Composite<VerticalLayout> {
 
+    private LoginForm loginForm = new LoginForm();
     public LogInView() {
-        LoginForm loginForm = new LoginForm();
+
+
+        loginForm.addLoginListener(e -> {});
 
         // Contenedor envolvente para ajustar el tamaño
         VerticalLayout wrapper = new VerticalLayout(loginForm);
@@ -32,5 +35,15 @@ public class LogInView extends Composite<VerticalLayout> {
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
         layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         layout.add(wrapper);
+    }
+
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        // inform the user about an authentication error
+        if(beforeEnterEvent.getLocation()
+                .getQueryParameters()
+                .getParameters()
+                .containsKey("error")) {
+            loginForm.setError(true);
+        }
     }
 }

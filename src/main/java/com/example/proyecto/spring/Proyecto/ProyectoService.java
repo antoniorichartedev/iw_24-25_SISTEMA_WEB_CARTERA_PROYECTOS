@@ -14,6 +14,10 @@ public class ProyectoService {
     public ProyectoService(ProyectoRepository proyectoRepository) {
         this.proyectoRepository = proyectoRepository;
     }
+    public void addProyecto(Proyecto proyecto) {
+        proyectoRepository.save(proyecto);
+    }
+
 
     public List<Proyecto> getAllProyectos() {
         return (List<Proyecto>) proyectoRepository.findAll();

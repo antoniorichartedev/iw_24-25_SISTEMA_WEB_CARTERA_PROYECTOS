@@ -13,7 +13,7 @@ import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
 @PageTitle("Sobre Nosotros")
 @Route("about-us")
-@Menu(order = 3, icon = LineAwesomeIconUrl.INFO_CIRCLE_SOLID)
+@Menu(order = 10, icon = LineAwesomeIconUrl.INFO_CIRCLE_SOLID)
 @AnonymousAllowed
 public class SobreNosotrosView extends Composite<VerticalLayout> {
 

@@ -1,4 +1,4 @@
-package com.example.proyecto.security;
+package com.example.proyecto.security.login;
 
 import com.example.proyecto.spring.Persona.Persona;
 
