@@ -11,7 +11,9 @@ public class CIOTest {
     private CIO cio;
 
     @BeforeEach
-    public void setUp() throws Exception { cio = new CIO("Juan Alberto", "juanalberto69@gmail.com"); }
+    public void setUp() throws Exception { cio =
+
+            new CIO("Juan Alberto", "juanalberto69@gmail.com"); }
 
     @Test
     public void testConstructor() {
