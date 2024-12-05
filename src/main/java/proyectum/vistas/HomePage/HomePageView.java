@@ -49,8 +49,8 @@ public class HomePageView extends VerticalLayout {
         });
 
         loginButton.getStyle()
-                .set("font-size", "20px")  // Tamaño de la fuente más grande
-                .set("padding", "15px 30px")  // Aumenta el relleno (espaciado dentro del botón)
+                .set("font-size", "20px")
+                .set("padding", "15px 30px")
                 .set("font-weight", "bold");
 
         //codigo para que se marque como seleccionado

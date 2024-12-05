@@ -27,9 +27,13 @@ public class SignInView extends VerticalLayout {
         subtitle.getStyle().set("color", "darkorange");
 
         TextField nameField = new TextField("Nombre");
+        nameField.setWidth("70%");
         EmailField emailField = new EmailField("Correo electrónico");
+        emailField.setWidth("70%");
         PasswordField passwordField = new PasswordField("Contraseña");
+        passwordField.setWidth("70%");
         PasswordField confirmPasswordField = new PasswordField("Confirmar contraseña");
+        confirmPasswordField.setWidth("70%");
 
         Button registerButton = new Button("Registrarse");
         registerButton.addClickListener(e -> {
@@ -48,20 +52,18 @@ public class SignInView extends VerticalLayout {
             }
         });
 
-        // Diseño y disposición del formulario
-        FormLayout formLayout = new FormLayout(nameField, emailField, passwordField, confirmPasswordField, registerButton);
-        formLayout.setMaxWidth("400px"); // Limitar el ancho del formulario
-        formLayout.setMaxWidth("400px"); // Limitar el ancho del formulario
+        registerButton.getStyle()
+                .set("font-size", "20px")
+                .set("padding", "15px 30px")
+                .set("font-weight", "bold");
 
         // Centramos el formulario y su contenido
         setAlignItems(Alignment.CENTER); // Centrar elementos verticalmente
         setJustifyContentMode(JustifyContentMode.CENTER); // Centrar contenido en el eje vertical
         setSizeFull(); // Asegura que el layout ocupe toda la pantalla
 
-        formLayout.setWidth("100%"); // Asegura que el formulario ocupe todo el ancho disponible, pero sin exceder el contenedor
-
         // Añadir los componentes a la vista
-        add(title, subtitle, formLayout);
+        add(title, subtitle, nameField, emailField, passwordField, confirmPasswordField, registerButton);
 
     }
 
