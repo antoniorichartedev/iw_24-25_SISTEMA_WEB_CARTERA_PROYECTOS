@@ -1,11 +1,15 @@
 package util.spring.ServiceTests;
 
-import com.example.proyecto.spring.Promotor.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import proyectum.data.entidades.Promotor;
+import proyectum.data.repositorios.PromotorRepository;
+import proyectum.data.servicios.PromotorService;
+import proyectum.data.servicios.ProyectoService;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

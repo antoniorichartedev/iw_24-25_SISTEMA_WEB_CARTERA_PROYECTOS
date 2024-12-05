@@ -1,9 +1,9 @@
 package util.spring.ClassTests;
 
-import com.example.proyecto.spring.Promotor.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.example.proyecto.spring.Usuario.Usuario;
+import proyectum.data.entidades.Promotor;
+import proyectum.data.entidades.Usuario;
 
 import static org.junit.jupiter.api.Assertions.*;
 

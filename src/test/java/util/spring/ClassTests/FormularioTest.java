@@ -1,7 +1,7 @@
 package util.spring.ClassTests;
 
-import com.example.proyecto.spring.CIO.CIO;
-import com.example.proyecto.spring.Formulario.Formulario;
+import proyectum.data.entidades.CIO;
+import proyectum.data.entidades.Formulario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

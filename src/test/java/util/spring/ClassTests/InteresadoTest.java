@@ -1,8 +1,8 @@
 package util.spring.ClassTests;
 
-import com.example.proyecto.spring.Interesado.Interesado;
-import com.example.proyecto.spring.Usuario.Usuario;
-import com.example.proyecto.spring.Proyecto.Proyecto;
+import proyectum.data.entidades.Interesado;
+import proyectum.data.entidades.Usuario;
+import proyectum.data.entidades.Proyecto;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import java.math.BigDecimal;

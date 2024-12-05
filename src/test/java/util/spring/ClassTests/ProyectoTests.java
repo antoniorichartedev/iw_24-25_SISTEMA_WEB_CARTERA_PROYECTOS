@@ -1,10 +1,9 @@
 package util.spring.ClassTests;
 
-import com.example.proyecto.spring.Solicitante.Solicitante;
-import com.example.proyecto.spring.Interesado.Interesado;
-import com.example.proyecto.spring.Promotor.Promotor;
-
-import com.example.proyecto.spring.Proyecto.*;
+import proyectum.data.entidades.Proyecto;
+import proyectum.data.entidades.Solicitante;
+import proyectum.data.entidades.Interesado;
+import proyectum.data.entidades.Promotor;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
