@@ -3,7 +3,7 @@ package util.spring.ClassTests;
 import com.example.proyecto.spring.Solicitante.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.example.proyecto.spring.Persona.Persona;
+import com.example.proyecto.spring.Usuario.Usuario;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,7 +37,7 @@ public class SolicitanteTests {
 
     @Test
     public void testHerenciaDePersona() {
-        assertTrue(solicitante instanceof Persona, "Solicitante debería ser una instancia de Persona");
+        assertTrue(solicitante instanceof Usuario, "Solicitante debería ser una instancia de Persona");
     }
 
     @Test

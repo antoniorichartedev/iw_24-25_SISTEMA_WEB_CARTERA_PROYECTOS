@@ -1,5 +1,9 @@
 package com.example.proyecto.vaadin.formOT;
 
+import com.example.proyecto.security.RolRestrictions.RoleRestrictedView;
+import com.example.proyecto.spring.Rol;
+import com.example.proyecto.spring.Usuario.Usuario;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
@@ -9,14 +13,20 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
 @PageTitle("Oficina Técnica Formulario")
 @Route("formOT")
 @Menu(order = 5, icon = LineAwesomeIconUrl.INFO_CIRCLE_SOLID)
-@AnonymousAllowed
-public class formOTView extends VerticalLayout {
+public class formOTView extends VerticalLayout implements RoleRestrictedView {
+
+    @Override
+    public Rol getRequiredRole() {
+        return Rol.CIO;
+    }
+
     public formOTView(){
         Label label = new Label("10 PREGUNTAS A 10 PUNTOS CADA UNA PARA UN TOTAL DE 100");
         label.getStyle().set("font-size", "18px").set("font-weight", "bold");

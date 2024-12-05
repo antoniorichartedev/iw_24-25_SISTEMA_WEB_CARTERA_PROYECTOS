@@ -2,13 +2,13 @@ package com.example.proyecto.spring.Interesado;
 
 import com.example.proyecto.spring.Proyecto.Proyecto;
 import jakarta.persistence.*;
-import com.example.proyecto.spring.Persona.*;
+import com.example.proyecto.spring.Usuario.*;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-public class Interesado extends Persona {
+public class Interesado extends Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

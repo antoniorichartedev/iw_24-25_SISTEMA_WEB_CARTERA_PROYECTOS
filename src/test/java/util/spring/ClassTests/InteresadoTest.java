@@ -1,7 +1,7 @@
 package util.spring.ClassTests;
 
 import com.example.proyecto.spring.Interesado.Interesado;
-import com.example.proyecto.spring.Persona.Persona;
+import com.example.proyecto.spring.Usuario.Usuario;
 import com.example.proyecto.spring.Proyecto.Proyecto;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,7 +58,7 @@ public class InteresadoTest {
 
     @Test
     public void testHerenciaDePersona() {
-        assertTrue(interesado instanceof Persona, "Interesado debería ser una instancia de Persona");
+        assertTrue(interesado instanceof Usuario, "Interesado debería ser una instancia de Persona");
     }
 
     @Test

@@ -2,13 +2,13 @@ package com.example.proyecto.spring.Solicitante;
 
 import com.example.proyecto.spring.Proyecto.Proyecto;
 import jakarta.persistence.*;
-import com.example.proyecto.spring.Persona.*;
+import com.example.proyecto.spring.Usuario.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-public class Solicitante extends Persona{
+public class Solicitante extends Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,8 +24,8 @@ public class Solicitante extends Persona{
     private List<Proyecto> proyectos;
 
     public Solicitante(){}
-    public Solicitante(String nombre, String correo, String unidadSolicitante){
-       super(nombre, correo);
+    public Solicitante(String nombre, String correo, String password, String unidadSolicitante){
+       super(nombre, correo, password);
        this.unidadSolicitante = unidadSolicitante;
     }
 

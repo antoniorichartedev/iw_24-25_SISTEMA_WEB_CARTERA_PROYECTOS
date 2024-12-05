@@ -1,8 +1,8 @@
 package com.example.proyecto.security.login;
 
-import com.example.proyecto.spring.Persona.Persona;
+import com.example.proyecto.spring.Usuario.Usuario;
 
-import com.example.proyecto.spring.Persona.*;
+import com.example.proyecto.spring.Usuario.*;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,16 +12,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class AuthenticatedUser {
 
-    private final PersonaRepository userRepository;
+    private final UsuarioRepository userRepository;
     private final AuthenticationContext authenticationContext;
 
-    public AuthenticatedUser(AuthenticationContext authenticationContext, PersonaRepository userRepository) {
+    public AuthenticatedUser(AuthenticationContext authenticationContext, UsuarioRepository userRepository) {
         this.userRepository = userRepository;
         this.authenticationContext = authenticationContext;
     }
 
     @Transactional
-    public Optional<Persona> get() {
+    public Optional<Usuario> get() {
         return authenticationContext.getAuthenticatedUser(UserDetails.class)
                 .map(userDetails -> userRepository.findByNombre(userDetails.getUsername()));
     }

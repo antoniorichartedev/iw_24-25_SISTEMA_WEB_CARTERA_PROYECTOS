@@ -2,14 +2,14 @@ package com.example.proyecto.spring.CIO;
 
 import com.example.proyecto.spring.Formulario.Formulario;
 import jakarta.persistence.*;
-import com.example.proyecto.spring.Persona.*;
+import com.example.proyecto.spring.Usuario.*;
 
 import java.util.List;
 import java.util.UUID;
 
 
 @Entity
-public class CIO extends Persona {
+public class CIO extends Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

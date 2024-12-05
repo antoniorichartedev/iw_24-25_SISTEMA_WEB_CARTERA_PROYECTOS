@@ -13,10 +13,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
 @PageTitle("Proyectos")
@@ -31,7 +29,12 @@ public class ProyectosView extends Composite<VerticalLayout> {
         HorizontalLayout layoutRow = new HorizontalLayout();
         H2 h2 = new H2();
         VerticalLayout layoutColumn2 = new VerticalLayout();
-        Grid stripedGrid = new Grid(Proyecto.class);
+        Grid<Proyecto> stripedGrid = new Grid(Proyecto.class);
+        stripedGrid.removeAllColumns();
+
+        stripedGrid.addColumn(Proyecto::getTitulo).setHeader("Nombre").setSortable(true);
+        stripedGrid.addColumn(Proyecto::getAcronimo).setHeader("Acrónimo");
+
         getContent().setWidth("100%");
         getContent().getStyle().set("flex-grow", "1");
         layoutRow.addClassName(Gap.MEDIUM);

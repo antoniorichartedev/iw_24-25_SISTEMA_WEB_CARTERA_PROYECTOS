@@ -1,7 +1,7 @@
 package util.spring.ClassTests;
 
 import com.example.proyecto.spring.CIO.*;
-import com.example.proyecto.spring.Persona.Persona;
+import com.example.proyecto.spring.Usuario.Usuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +27,7 @@ public class CIOTest {
 
     @Test
     public void testHerenciaDePersona() {
-        assertTrue(cio instanceof Persona, "CIO debería ser una instancia de Persona");
+        assertTrue(cio instanceof Usuario, "CIO debería ser una instancia de Persona");
     }
 
     @Test

@@ -3,7 +3,7 @@ package util.spring.ClassTests;
 import com.example.proyecto.spring.Promotor.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.example.proyecto.spring.Persona.Persona;
+import com.example.proyecto.spring.Usuario.Usuario;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,7 +30,7 @@ public class PromotorTest {
 
     @Test
     public void testHerenciaDePersona() {
-        assertTrue(promotor instanceof Persona, "Promotor debería ser una instancia de Persona");
+        assertTrue(promotor instanceof Usuario, "Promotor debería ser una instancia de Persona");
     }
 
     @Test

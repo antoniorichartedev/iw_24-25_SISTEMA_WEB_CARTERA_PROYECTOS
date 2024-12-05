@@ -1,7 +1,7 @@
 package com.example.proyecto.vaadin;
 
 import com.example.proyecto.security.login.SecurityService;
-import com.example.proyecto.spring.Persona.Persona;
+import com.example.proyecto.spring.Usuario.Usuario;
 import com.example.proyecto.security.login.AuthenticatedUser;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -89,9 +89,9 @@ public class MainLayout extends AppLayout {
     private Footer createFooter() {
         Footer layout = new Footer();
 
-        Optional<Persona> maybeUser = authenticatedUser.get();
+        Optional<Usuario> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
-            Persona user = maybeUser.get();
+            Usuario user = maybeUser.get();
 
             Avatar avatar = new Avatar(user.getNombre());
             avatar.setThemeName("xsmall");
@@ -117,8 +117,10 @@ public class MainLayout extends AppLayout {
             Anchor logoutlink = new Anchor("logout", "Log out");
             layout.add(logoutlink);
         } else {
-            Anchor loginLink = new Anchor("login", "Sign in");
+            Anchor loginLink = new Anchor("login", "Iniciar Sesión");
             layout.add(loginLink);
+            Anchor signIn = new Anchor("sign-in", "Registrarte");
+            layout.add(signIn);
         }
 
         return layout;

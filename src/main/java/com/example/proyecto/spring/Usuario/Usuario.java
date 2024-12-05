@@ -1,4 +1,4 @@
-package com.example.proyecto.spring.Persona;
+package com.example.proyecto.spring.Usuario;
 
 import com.example.proyecto.spring.Rol;
 import jakarta.persistence.*;
@@ -9,7 +9,7 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Una tabla para toda la jerarquía
 @DiscriminatorColumn(name = "tipo_persona", discriminatorType = DiscriminatorType.STRING)
 @Entity
-public class Persona {
+public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id = UUID.randomUUID();
@@ -21,20 +21,24 @@ public class Persona {
     @Column(name = "correo", nullable = false)
     private String correo;
 
+    @Column(name = "contraseña", nullable = false)
+    private String contrasena;
+
     @Column(name = "rol")
     Rol rol = Rol.USER ;
 
-    Rol getRol(){return rol;}
-    void setRol(Rol rol){this.rol = rol;}
+    public Rol getRol() { return rol; }
+    public void setRol(Rol rol) { this.rol = rol; }
 
     // Ctor.
-    public Persona(String nombre, String correo){
+    public Usuario(String nombre, String correo, String password){
         this.nombre = nombre;
         this.correo = correo;
+        this.contrasena = password;
     }
 
     // Ctor. predeterminado necesario, requerido por JPA.
-    public Persona() {}
+    public Usuario() {}
 
     public UUID getId() {
         return id;
@@ -70,7 +74,7 @@ public class Persona {
                 * obj no es null.
                 * this y obj son del mismo tipo de clase, es decir, de la clase Persona.
          */
-        Persona other = (Persona) obj;
+        Usuario other = (Usuario) obj;
         return id != null && id.equals(other.id);
     }
 }
