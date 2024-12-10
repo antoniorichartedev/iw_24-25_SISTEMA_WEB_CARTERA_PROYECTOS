@@ -1,7 +1,5 @@
 package projectum.vistas.loginview;
 
-import projectum.security.RolRestrictions.RoleRestrictedView;
-import projectum.data.Rol;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -12,12 +10,7 @@ import com.vaadin.flow.router.Route;
 
 @PageTitle("Log In")
 @Route("login")
-public class LogInView extends Composite<VerticalLayout> implements RoleRestrictedView {
-
-    @Override
-    public Rol getRequiredRole() {
-        return null;
-    }
+public class LogInView extends Composite<VerticalLayout>{
 
     private LoginForm loginForm = new LoginForm();
     public LogInView() {

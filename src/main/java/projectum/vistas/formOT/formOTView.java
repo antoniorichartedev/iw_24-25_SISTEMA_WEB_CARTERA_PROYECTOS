@@ -1,5 +1,6 @@
 package projectum.vistas.formOT;
 
+import jakarta.annotation.security.RolesAllowed;
 import projectum.security.RolRestrictions.RoleRestrictedView;
 import projectum.data.Rol;
 import com.vaadin.flow.component.button.Button;
@@ -16,6 +17,7 @@ import org.vaadin.lineawesome.LineAwesomeIconUrl;
 @PageTitle("Oficina Técnica Formulario")
 @Route("formOT")
 @Menu(order = 5, icon = LineAwesomeIconUrl.INFO_CIRCLE_SOLID)
+@RolesAllowed("OT")
 public class formOTView extends VerticalLayout implements RoleRestrictedView {
 
     @Override

@@ -1,4 +1,5 @@
 package projectum.vistas.formularioProyecto;
+import jakarta.annotation.security.RolesAllowed;
 import projectum.security.RolRestrictions.RoleRestrictedView;
 import projectum.data.Rol;
 import com.vaadin.flow.component.button.Button;
@@ -20,7 +21,7 @@ import com.vaadin.flow.component.checkbox.CheckboxGroup;
 @PageTitle("FormularioProyecto")
 @Route("formularioProyecto")
 @Menu(order = 4, icon = LineAwesomeIconUrl.INFO_CIRCLE_SOLID)
-@AnonymousAllowed
+@RolesAllowed("SOLICITANTE")
 public class formProyectoView extends VerticalLayout implements RoleRestrictedView {
 
     @Override

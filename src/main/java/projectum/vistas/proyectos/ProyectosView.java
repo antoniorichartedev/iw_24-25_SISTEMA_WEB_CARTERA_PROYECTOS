@@ -1,5 +1,6 @@
 package projectum.vistas.proyectos;
 
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import projectum.security.RolRestrictions.RoleRestrictedView;
 
 import projectum.data.entidades.Proyecto;
@@ -24,6 +25,7 @@ import org.vaadin.lineawesome.LineAwesomeIconUrl;
 @Route("proyectos")
 @Menu(order = 1, icon = LineAwesomeIconUrl.PENCIL_RULER_SOLID)
 @Uses(Icon.class)
+@AnonymousAllowed
 public class ProyectosView extends Composite<VerticalLayout> implements RoleRestrictedView {
 
     @Override
