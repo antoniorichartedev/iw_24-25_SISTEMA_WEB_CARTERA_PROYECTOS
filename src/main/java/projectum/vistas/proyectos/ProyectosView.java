@@ -19,6 +19,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
+import com.vaadin.flow.component.html.Span;
 
 import java.text.SimpleDateFormat;
 import java.util.Base64;
@@ -45,29 +46,67 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
         stripedGrid.removeAllColumns();
 
         // Agregar columnas para todos los campos de la clase Proyecto
-        stripedGrid.addColumn(Proyecto::getTitulo).setHeader("Título").setSortable(true);
-        stripedGrid.addColumn(Proyecto::getAcronimo).setHeader("Acrónimo");
-        stripedGrid.addColumn(Proyecto::getJustificacion).setHeader("Justificación");
-        stripedGrid.addColumn(Proyecto::getAlcance).setHeader("Alcance");
+        // Mostrar string completo al poner el raton encima
+        stripedGrid.addComponentColumn(proyecto -> {
+            Span span = new Span(proyecto.getTitulo());
+            span.getElement().setAttribute("title", proyecto.getTitulo());
+            return span;
+        }).setHeader("Título").setSortable(true);
+
+        stripedGrid.addComponentColumn(proyecto -> {
+            Span span = new Span(proyecto.getAcronimo());
+            span.getElement().setAttribute("title", proyecto.getAcronimo());
+            return span;
+        }).setHeader("Acrónimo");
+
+        stripedGrid.addComponentColumn(proyecto -> {
+            Span span = new Span(proyecto.getJustificacion());
+            span.getElement().setAttribute("title", proyecto.getJustificacion());
+            return span;
+        }).setHeader("Justificación");
+
+        stripedGrid.addComponentColumn(proyecto -> {
+            Span span = new Span(proyecto.getAlcance());
+            span.getElement().setAttribute("title", proyecto.getAlcance());
+            return span;
+        }).setHeader("Alcance");
+
         stripedGrid.addColumn(proyecto -> {
             // Convertir bytes a base64 si están presentes
             byte[] memorias = proyecto.getMemorias();
             return memorias != null ? Base64.getEncoder().encodeToString(memorias) : "Sin datos";
         }).setHeader("Memorias");
+
         stripedGrid.addColumn(Proyecto::getImportancia).setHeader("Importancia");
+
         stripedGrid.addColumn(Proyecto::getFinanciacion).setHeader("Financiación");
+
         stripedGrid.addColumn(proyecto -> {
             // Formatear la fecha si está presente
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             return proyecto.getPuestaMarcha() != null ? formatter.format(proyecto.getPuestaMarcha()) : "Sin fecha";
         }).setHeader("Puesta en marcha");
-        stripedGrid.addColumn(Proyecto::getInteresado).setHeader("Interesado");
-        stripedGrid.addColumn(proyecto ->
-                proyecto.getSolicitante() != null ? proyecto.getSolicitante().toString() : "Sin solicitante"
-        ).setHeader("Solicitante");
-        stripedGrid.addColumn(proyecto ->
-                proyecto.getPromotor() != null ? proyecto.getPromotor().toString() : "Sin promotor"
-        ).setHeader("Promotor");
+
+        stripedGrid.addComponentColumn(proyecto -> {
+            String interesado = proyecto.getInteresado()!= null ? proyecto.getInteresado().toString() : "Sin interesado";
+            Span span = new Span(interesado);
+            span.getElement().setAttribute("title", interesado);
+            return span;
+        }).setHeader("Interesado");
+
+        stripedGrid.addComponentColumn(proyecto -> {
+            String solicitante = proyecto.getSolicitante() != null ? proyecto.getSolicitante().toString() : "Sin solicitante";
+            Span span = new Span(solicitante);
+            span.getElement().setAttribute("title", solicitante);
+            return span;
+        }).setHeader("Solicitante");
+
+        stripedGrid.addComponentColumn(proyecto -> {
+            String promotor = proyecto.getPromotor() != null ? proyecto.getPromotor().toString() : "Sin promotor";
+            Span span = new Span(promotor);
+            span.getElement().setAttribute("title", promotor);
+            return span;
+        }).setHeader("Promotor");
 
         // Configuración del diseño
         getContent().setWidth("100%");
