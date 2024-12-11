@@ -1,43 +1,71 @@
 package projectum.vistas.loginview;
 
-import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.login.LoginForm;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 
-@PageTitle("Log In")
 @Route("login")
-public class LogInView extends Composite<VerticalLayout>{
+@PageTitle("Iniciar Sesión")
+@AnonymousAllowed
 
-    private LoginForm loginForm = new LoginForm();
-    public LogInView() {
+public class LogInView extends VerticalLayout implements BeforeEnterObserver {
 
-        // Establecer la acción del formulario de login para que apunte a Spring Security
-        loginForm.setAction("login");  // Importante: Esta acción debe coincidir con la configuración de Spring Security. Sino NO FUNCIONA.
+    private final LoginForm login = new LoginForm();
+    TextField casillaCorreo = new TextField();
+    PasswordField casillaContrasenna = new PasswordField();
+    Button loginButton = new Button("continuar");
+    Button BacktoRegisterButton = new Button("Registrarse");
 
-        // Configurar el contenedor del login
-        VerticalLayout wrapper = new VerticalLayout(loginForm);
-        wrapper.setWidthFull();
-        wrapper.setAlignItems(FlexComponent.Alignment.CENTER);
+    public LogInView(){
 
-        // Configurar el layout principal
-        VerticalLayout layout = getContent();
-        layout.setSizeFull();
-        layout.setAlignItems(FlexComponent.Alignment.CENTER);
-        layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
-        layout.add(wrapper);
+        // Correo.
+        casillaCorreo.setRequiredIndicatorVisible(true);
+        casillaCorreo.setMinWidth("525px");
+        casillaCorreo.setMinLength(20);
+        casillaCorreo.setMaxLength(70);
+        casillaCorreo.setLabel("Correo");
+
+        // Contraseña.
+        casillaContrasenna.setRequiredIndicatorVisible(true);
+        casillaContrasenna.setMinWidth("525px");
+        casillaContrasenna.setMinLength(8);
+        casillaContrasenna.setMaxLength(50);
+        casillaContrasenna.setLabel("Contraseña");
+
+        addClassName("login-view");
+        setSizeFull();
+        setAlignItems(Alignment.CENTER);
+        setJustifyContentMode(JustifyContentMode.CENTER);
+
+        login.setAction("login");
+        login.addForgotPasswordListener(event -> {
+            UI.getCurrent().navigate("reset-password");
+        });
+
+        Button registerButton = new Button("Registrarse", event -> {
+            UI.getCurrent().navigate("sign-in");
+        });
+
+        add(login, registerButton);
     }
 
+    @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         // inform the user about an authentication error
         if(beforeEnterEvent.getLocation()
                 .getQueryParameters()
                 .getParameters()
                 .containsKey("error")) {
-            loginForm.setError(true);
+            login.setError(true);
+
         }
     }
 }
