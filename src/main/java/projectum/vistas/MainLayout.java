@@ -131,10 +131,7 @@ public class MainLayout extends AppLayout {
             userName.getSubMenu().addItem("Sign out", e -> {
                 authenticatedUser.logout();
             });
-
             layout.add(userMenu);
-            Anchor logoutlink = new Anchor("logout", "Log out");
-            layout.add(logoutlink);
         } else {
             Anchor loginLink = new Anchor("login", "Iniciar Sesión");
             layout.add(loginLink);

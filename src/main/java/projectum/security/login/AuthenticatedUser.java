@@ -24,12 +24,12 @@ public class AuthenticatedUser {
     public Optional<Usuario> get() {
         return authenticationContext.getAuthenticatedUser(UserDetails.class)
                 .map(userDetails -> userRepository.findByNombre(userDetails.getUsername()));
+
     }
 
     public void logout() {
         authenticationContext.logout();
     }
-
 }
 
 

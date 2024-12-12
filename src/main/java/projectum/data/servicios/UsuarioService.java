@@ -27,6 +27,8 @@ public class UsuarioService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public long count(){ return usuarioRepository.count(); }
+
     public List<Usuario> getAllUsuarios() {
         return (List<Usuario>) usuarioRepository.findAll();
     }
