@@ -32,6 +32,7 @@ import projectum.vistas.formCIO.formCIOView;
 import projectum.vistas.formOT.formOTView;
 import projectum.vistas.formularioProyecto.formProyectoView;
 import projectum.vistas.proyectos.ProyectosView;
+import projectum.vistas.proyectos.proyectosByIDView;
 import projectum.vistas.sobrenosotros.SobreNosotrosView;
 
 import java.util.List;
@@ -101,6 +102,9 @@ public class MainLayout extends AppLayout {
         }
         if (accessChecker.hasAccess(formCIOView.class)) {
             nav.addItem(new SideNavItem("CIO Formulario", formCIOView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
+        }
+        if (accessChecker.hasAccess(proyectosByIDView.class)) {
+            nav.addItem(new SideNavItem("Proyectos de tu usuario", proyectosByIDView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
         }
         return nav;
     }

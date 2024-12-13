@@ -37,5 +37,9 @@ public class ProyectoService {
     public void deleteProyecto(UUID id) {
         proyectoRepository.deleteById(id);
     }
+
+    public List<Proyecto> getProyectosBySolicitante(UUID solicitanteId) {
+        return proyectoRepository.findBySolicitanteId(solicitanteId);
+    }
 }
 

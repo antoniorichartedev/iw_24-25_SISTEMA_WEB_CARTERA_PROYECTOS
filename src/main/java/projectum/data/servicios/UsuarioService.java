@@ -92,7 +92,7 @@ public class UsuarioService {
     public Usuario loadUserByNombre(String nombre) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByNombre(nombre);
         if (usuario == null) {
-            throw new UsernameNotFoundException("No user present with username: " + nombre);
+            throw new UsernameNotFoundException("No userProfile present with username: " + nombre);
         } else {
             return usuario;
         }
