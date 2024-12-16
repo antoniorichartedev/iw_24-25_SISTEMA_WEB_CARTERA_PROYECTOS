@@ -1,71 +1,83 @@
 package projectum.vistas.loginview;
 
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.login.LoginForm;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.component.textfield.PasswordField;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.component.login.LoginOverlay;
+import com.vaadin.flow.router.*;
+import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import com.vaadin.hilla.route.RouteUtil;
+import org.springframework.context.annotation.Role;
+import projectum.data.Rol;
+import projectum.data.entidades.Usuario;
+import projectum.security.login.AuthenticatedUser;
+import com.vaadin.flow.component.login.LoginI18n;
+
+import java.util.Optional;
+import java.util.Set;
 
 @Route("login")
 @PageTitle("Iniciar Sesión")
 @AnonymousAllowed
 
-public class LogInView extends VerticalLayout implements BeforeEnterObserver {
+public class LogInView extends LoginOverlay implements BeforeEnterObserver {
 
-    private final LoginForm login = new LoginForm();
-    TextField casillaCorreo = new TextField();
-    PasswordField casillaContrasenna = new PasswordField();
-    Button loginButton = new Button("continuar");
-    Button BacktoRegisterButton = new Button("Registrarse");
+    private final AuthenticatedUser authenticatedUser;
 
-    public LogInView(){
+    public LogInView(AuthenticatedUser authenticatedUser) {
+        this.authenticatedUser = authenticatedUser;
 
-        // Correo.
-        casillaCorreo.setRequiredIndicatorVisible(true);
-        casillaCorreo.setMinWidth("525px");
-        casillaCorreo.setMinLength(20);
-        casillaCorreo.setMaxLength(70);
-        casillaCorreo.setLabel("Correo");
+        // Ahora, vamos a personalizar los textos que queremos que salga en el login, para que quede más bonito.
+        LoginI18n loginCustom = LoginI18n.createDefault();
 
-        // Contraseña.
-        casillaContrasenna.setRequiredIndicatorVisible(true);
-        casillaContrasenna.setMinWidth("525px");
-        casillaContrasenna.setMinLength(8);
-        casillaContrasenna.setMaxLength(50);
-        casillaContrasenna.setLabel("Contraseña");
+        // Cabecera.
+        loginCustom.setHeader(new LoginI18n.Header());
+        loginCustom.getHeader().setTitle("Projectum");
+        loginCustom.setAdditionalInformation(null);
 
-        addClassName("login-view");
-        setSizeFull();
-        setAlignItems(Alignment.CENTER);
-        setJustifyContentMode(JustifyContentMode.CENTER);
+        // Cuerpo del login.
+        loginCustom.setForm(new LoginI18n.Form());
+        loginCustom.getForm().setTitle("Inicia sesión en Projectum");
+        loginCustom.getForm().setUsername("Usuario");
+        loginCustom.getForm().setPassword("Contraseña");
+        loginCustom.getForm().setSubmit("Iniciar sesión");
+        setI18n(loginCustom);
 
-        login.setAction("login");
-        login.addForgotPasswordListener(event -> {
-            UI.getCurrent().navigate("reset-password");
-        });
+        // Hacemos visible el botón de "¿olvidaste la contraseña?"
+        setForgotPasswordButtonVisible(true);
+        setOpened(true);
 
-        Button registerButton = new Button("Registrarse", event -> {
-            UI.getCurrent().navigate("sign-in");
-        });
-
-        add(login, registerButton);
+        // Acción que hará la aplicación una vez que el usuario envie el formulario de iniciar sesión.
+        setAction(RouteConfiguration.forApplicationScope().getUrl(getClass()));
     }
 
     @Override
-    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        // inform the userProfile about an authentication error
-        if(beforeEnterEvent.getLocation()
-                .getQueryParameters()
-                .getParameters()
-                .containsKey("error")) {
-            login.setError(true);
+    public void beforeEnter(BeforeEnterEvent event) {
 
+        // Obtenemos el usuario autenticado, si es que lo hay.
+        Optional<Usuario> OpUsuario = authenticatedUser.get();
+
+        // Si hay un usuario autenticado, pues lo mandamos a según qué página dependiendo del rol que tenga.
+        if(OpUsuario.isPresent()) {
+            Usuario usuario = OpUsuario.get();
+
+            if(usuario.getRol() == Rol.CIO) {
+                event.forwardTo("/");
+            }
+            else if (usuario.getRol() == Rol.ADMIN) {
+                event.forwardTo("/");
+            }
+            else if (usuario.getRol() == Rol.USER) {
+                event.forwardTo("/");
+            }
+            else if (usuario.getRol() == Rol.SOLICITANTE) {
+                event.forwardTo("/");
+            }
+            else if (usuario.getRol() == Rol.OT) {
+                event.forwardTo("/");
+            }
+        }
+        else {
+            event.forwardTo("/login?error=true");
         }
     }
+
 }

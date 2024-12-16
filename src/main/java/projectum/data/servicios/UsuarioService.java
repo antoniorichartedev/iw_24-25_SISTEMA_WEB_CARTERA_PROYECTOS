@@ -33,13 +33,13 @@ public class UsuarioService {
         return (List<Usuario>) usuarioRepository.findAll();
     }
 
-    public Optional<Usuario> loadUsuarioById(UUID id) {
-        return usuarioRepository.findById(id);
-    }
+    public Optional<Usuario> loadUserById(UUID id) { return usuarioRepository.findById(id); }
 
-    public Optional<Usuario> loadUsuarioByCorreo(String correo){ return usuarioRepository.findByCorreo(correo);}
+    public Optional<Usuario> loadUserByCorreo(String correo){ return usuarioRepository.findByCorreo(correo);}
 
-    public List<Usuario> loadUsuariosActivados() { return usuarioRepository.findByEstadoTrue(); }
+    public Usuario loadUserByUsername(String username) { return usuarioRepository.findByUsername(username); }
+
+    public List<Usuario> loadUsersActivados() { return usuarioRepository.findByEstadoTrue(); }
 
     public void delete(UUID id) {
         usuarioRepository.deleteById(id);

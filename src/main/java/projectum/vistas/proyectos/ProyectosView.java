@@ -95,14 +95,14 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
         }).setHeader("Interesado");
 
         stripedGrid.addComponentColumn(proyecto -> {
-            String solicitante = proyecto.getSolicitante() != null ? proyecto.getSolicitante().toString() : "Sin solicitante";
+            String solicitante = proyecto.getSolicitante() != null ? proyecto.getSolicitante().getNombre() : "Sin solicitante";
             Span span = new Span(solicitante);
             span.getElement().setAttribute("title", solicitante);
             return span;
         }).setHeader("Solicitante");
 
         stripedGrid.addComponentColumn(proyecto -> {
-            String promotor = proyecto.getPromotor() != null ? proyecto.getPromotor().toString() : "Sin promotor";
+            String promotor = proyecto.getPromotor() != null ? proyecto.getPromotor().getNombre() : "Sin promotor";
             Span span = new Span(promotor);
             span.getElement().setAttribute("title", promotor);
             return span;

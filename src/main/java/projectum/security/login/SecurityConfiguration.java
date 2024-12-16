@@ -24,22 +24,11 @@ public class SecurityConfiguration extends VaadinWebSecurity {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // Páginas estáticas a las que puede acceder todo el mundo.
-        http
-                .authorizeHttpRequests(
-                authorize -> authorize.requestMatchers(new AntPathRequestMatcher("/login")).permitAll());
+        http.authorizeHttpRequests(
+                authorize -> authorize.requestMatchers(new AntPathRequestMatcher("/images/*.*")).permitAll());
 
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(new AntPathRequestMatcher("/")).permitAll());
-
-        http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(new AntPathRequestMatcher("/sign-in")).permitAll());
-
-        http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(new AntPathRequestMatcher("/about-us")).permitAll());
-
-        http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(new AntPathRequestMatcher("/proyectos")).permitAll());
+                .requestMatchers(new AntPathRequestMatcher("/line-awesome/**/*.svg")).permitAll());
 
 
         super.configure(http);
@@ -51,7 +40,7 @@ public class SecurityConfiguration extends VaadinWebSecurity {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
     }
-
+/*
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().requestMatchers(
@@ -67,11 +56,6 @@ public class SecurityConfiguration extends VaadinWebSecurity {
                 // web application manifest
                 "/manifest.webmanifest",
                 "/sw.js",
-                "/offline.html",
-
-                // (development mode) H2 debugging console
-                // IMPORTANTE, CUANDO EL PROYECTO PASE A PRODUCCIÓN, DEBEMOS QUITAR ESTO, DE MANERA
-                // QUE NO PUEDAN ACCEDER A LA BASE DE DATOS SIN AUTORIZACIÓN.
-                "/h2-console/**");
-    }
+                "/offline.html");
+    }*/
 }

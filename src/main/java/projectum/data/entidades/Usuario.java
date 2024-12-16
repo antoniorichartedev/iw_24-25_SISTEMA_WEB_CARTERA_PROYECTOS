@@ -25,6 +25,9 @@ public class Usuario implements UserDetails {
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
+
     // Correo que tendrá cada persona.
     @Email
     @Column(nullable = false)
@@ -42,8 +45,9 @@ public class Usuario implements UserDetails {
     private String codigoRegistro = "";
 
     // Ctor.
-    public Usuario(String nombre, String correo, String password){
+    public Usuario(String nombre, String username, String correo, String password){
         this.nombre = nombre;
+        this.username = username;
         this.correo = correo;
         this.contrasena = password;
     }
@@ -57,14 +61,16 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getUsername() {
-        return nombre;
+        return username;
     }
+    public String getNombre() { return nombre; }
     public String getPassword() { return contrasena; }
     public String getCorreo() { return this.correo; }
     public Rol getRol() { return rol; }
     public boolean getEstado() { return estado; }
     public String getCodigoRegistro() { return this.codigoRegistro; }
 
+    public void setUsername(String username) { this.username = username; }
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }

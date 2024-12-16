@@ -2,6 +2,7 @@ package projectum.data.entidades;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
@@ -33,7 +34,7 @@ public class Proyecto {
     private int importancia;
 
     @Column(name = "financiacion",nullable = false)
-    private int financiacion;
+    private BigDecimal financiacion;
 
     @Column(name = "puestaEnMarcha")
     private Date puestaMarcha;
@@ -41,16 +42,18 @@ public class Proyecto {
     @Column(name = "interesado")
     private String interesado;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "solicitante_id", nullable = false)
     private Solicitante solicitante;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "promotor_id", nullable = false)
     private Promotor promotor;
 
     public Proyecto() {
     }
 
-    public Proyecto(String titulo, String acronimo,String justificacion ,byte[] memorias, int importancia, int financiacion, String alcance, Date marcha, String interesado) {
+    public Proyecto(String titulo, String acronimo,String justificacion ,byte[] memorias, int importancia, BigDecimal financiacion, String alcance, Date marcha, String interesado) {
         this.titulo = titulo;
         this.acronimo = acronimo;
         this.justificacion = justificacion;
@@ -81,8 +84,8 @@ public class Proyecto {
     public Solicitante getSolicitante() { return solicitante; }
     public void setSolicitante(Solicitante soli) { this.solicitante = soli; }
 
-    public int getFinanciacion() { return financiacion; }
-    public void setFinanciacion(int financiacion) { this.financiacion = financiacion; }
+    public BigDecimal getFinanciacion() { return financiacion; }
+    public void setFinanciacion(BigDecimal financiacion) { this.financiacion = financiacion; }
 
     public byte[] getMemorias() { return memorias; }
     public void setMemorias(byte[] memorias) { this.memorias = memorias; }

@@ -2,6 +2,7 @@ package projectum.data.entidades;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,13 +19,13 @@ public class Promotor extends Usuario {
     @Column(name = "importancia", nullable = true)
     private int importancia;
 
-    @OneToMany
-    private List<Proyecto> proyectos;
+    @OneToMany(mappedBy = "promotor", cascade = CascadeType.ALL)
+    private List<Proyecto> proyectos = new ArrayList<Proyecto>();
 
-    public Promotor(String nombre, String correo, String passwd, int importancia){
+    public Promotor(String nombre, String username, String correo, String passwd, int importancia){
 
         // Con super(), llamo al constructor de Persona, ya que es la clase base de Promotor.
-        super(nombre, correo, passwd);
+        super(nombre, username, correo, passwd);
         this.importancia = importancia;
     }
 
@@ -36,5 +37,13 @@ public class Promotor extends Usuario {
 
     public void setImportancia(int importancia) {
         this.importancia = importancia;
+    }
+
+    public List<Proyecto> getProyectos() { return proyectos; }
+    public void setProyecto(Proyecto proyecto) {
+        if(!this.proyectos.contains(proyecto)) {
+            this.proyectos.add(proyecto);
+            proyecto.setPromotor(this);
+        }
     }
 }

@@ -27,9 +27,9 @@ public class CIO extends Usuario {
     public void setFormulario(Formulario formulario) { this.formularios.add(formulario); }
 
     // Ctor.
-    public CIO(String nombre, String correo, String passwd)
+    public CIO(String nombre, String username, String correo, String passwd)
     {
-        super(nombre, correo, passwd);
+        super(nombre, username, correo, passwd);
     }
 
 }

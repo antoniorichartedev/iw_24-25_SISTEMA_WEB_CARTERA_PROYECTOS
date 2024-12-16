@@ -1,13 +1,15 @@
 package projectum;
 
 import com.github.javafaker.Faker;
-import projectum.data.entidades.Usuario;
+import projectum.data.entidades.*;
 import projectum.data.servicios.UsuarioService;
 import projectum.data.Rol;
-import projectum.data.entidades.Proyecto;
 import projectum.data.servicios.ProyectoService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Component
 public class DatabasePopulator implements CommandLineRunner {
@@ -27,9 +29,10 @@ public class DatabasePopulator implements CommandLineRunner {
         Faker faker = new Faker();
 
         // Creamos admin
-        if (userService.count() < 3) {
+        if (userService.count() < 5) {
             Usuario user = new Usuario();
             user.setNombre("admin");
+            user.setUsername("adminXulo");
             user.setPassword("admin");
             user.setCorreo("admin@uca.es");
             user.setRol(Rol.ADMIN);
@@ -37,8 +40,9 @@ public class DatabasePopulator implements CommandLineRunner {
             userService.activarUsuario(user.getCorreo(), user.getCodigoRegistro());
             System.out.println("Admin created");
 
-            Usuario cio = new Usuario();
+            CIO cio = new CIO();
             cio.setNombre("CIO");
+            cio.setUsername("cioXulo");
             cio.setPassword("cio");
             cio.setCorreo("cio@uca.es");
             cio.setRol(Rol.CIO);
@@ -49,11 +53,57 @@ public class DatabasePopulator implements CommandLineRunner {
             Usuario ot = new Usuario();
             ot.setNombre("oficina tecnica");
             ot.setPassword("oficinatecnica");
+            ot.setUsername("oficinatecnicaXula");
             ot.setCorreo("oficinatecnica@uca.es");
             ot.setRol(Rol.OT);
             userService.RegistrarUsuario(ot);
             userService.activarUsuario(ot.getCorreo(), ot.getCodigoRegistro());
-            System.out.println("Oficina Tencinca created");
+            System.out.println("Oficina Técnica created");
+
+            Solicitante sol = new Solicitante();
+            sol.setNombre("Solicitante");
+            sol.setUsername("solicitanteXulo");
+            sol.setPassword("solicitante");
+            sol.setUnidadSolicitante("Mi unidad");
+            sol.setCorreo("solicitante@uca.es");
+            sol.setRol(Rol.SOLICITANTE);
+            userService.RegistrarUsuario(sol);
+            userService.activarUsuario(sol.getCorreo(), sol.getCodigoRegistro());
+            System.out.println("Solicitante created");
+
+            Promotor promo = new Promotor();
+            promo.setNombre("Promotor");
+            promo.setUsername("promotorXulo");
+            promo.setPassword("promotor");
+            promo.setCorreo("promotor@uca.es");
+            promo.setRol(Rol.USER);
+            userService.RegistrarUsuario(promo);
+            userService.activarUsuario(promo.getCorreo(), promo.getCodigoRegistro());
+            System.out.println("Promotor created");
+
+            Proyecto pr = new Proyecto();
+            pr.setTitulo("Proyecto de ejemplo");
+            pr.setAcronimo("PEJ");
+            pr.setJustificacion("No hay");
+            pr.setAlcance("Trebujena");
+            pr.setMemorias(null);
+            pr.setImporancia(2);
+            pr.setFinanciacion(BigDecimal.valueOf(33.33));
+            pr.setPuestaMarcha(new Date());
+            pr.setInteresado("admin");
+
+            // Rescatamos de nuevo el promotor y el solicitante del proyecto de ejemplo.
+            promo = (Promotor) userService.loadUserByUsername(promo.getUsername());
+            sol = (Solicitante) userService.loadUserByUsername(sol.getUsername());
+
+            if(promo != null && sol != null) {
+                pr.setPromotor(promo);
+                pr.setSolicitante(sol);
+
+                proyectService.saveProyecto(pr);
+                System.out.println("Proyecto created y guardado.");
+                System.out.println("Relaciones con el proyecto realizadas.");
+            }
         }
     }
 }

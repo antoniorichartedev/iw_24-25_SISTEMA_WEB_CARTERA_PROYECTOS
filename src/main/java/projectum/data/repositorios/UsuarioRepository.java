@@ -9,6 +9,8 @@ import java.util.UUID;
 
 public interface UsuarioRepository extends CrudRepository<Usuario, UUID> {
     Usuario findByNombre(String nombre);
+    Usuario findByUsername(String username);
     Optional<Usuario> findByCorreo(String correo);
     List<Usuario> findByEstadoTrue();
+
 }

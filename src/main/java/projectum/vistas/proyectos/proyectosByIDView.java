@@ -1,5 +1,4 @@
 package projectum.vistas.proyectos;
-import jakarta.annotation.security.RolesAllowed;
 import projectum.data.servicios.UsuarioService;
 
 import com.vaadin.flow.server.auth.AnonymousAllowed;
@@ -144,7 +143,7 @@ public class proyectosByIDView extends Composite<VerticalLayout> implements Role
                     if (principal instanceof UserDetails) {
                         String username = ((UserDetails) principal).getUsername();
                         // Obtener el usuario como un Optional
-                        Optional<projectum.data.entidades.Usuario> usuarioOpt = usuarioService.loadUsuarioByCorreo(username);
+                        Optional<projectum.data.entidades.Usuario> usuarioOpt = usuarioService.loadUserByCorreo(username);
 
                         // Si el usuario existe, extraemos el ID
                         return usuarioOpt.map(projectum.data.entidades.Usuario::getId)
