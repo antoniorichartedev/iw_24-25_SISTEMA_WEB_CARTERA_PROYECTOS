@@ -35,6 +35,8 @@ public class SignInView extends VerticalLayout {
 
         TextField nameField = new TextField("Nombre");
         nameField.setWidth("70%");
+        TextField usernameField = new TextField("Nombre de usuario");
+        usernameField.setWidth("70%");
         EmailField emailField = new EmailField("Correo electrónico");
         emailField.setWidth("70%");
         PasswordField passwordField = new PasswordField("Contraseña");
@@ -47,11 +49,12 @@ public class SignInView extends VerticalLayout {
             // Aquí iría la lógica para manejar el registro
             // Ejemplo: Validar campos y enviar los datos
             String name = nameField.getValue();
+            String username = usernameField.getValue();
             String email = emailField.getValue();
             String password = passwordField.getValue();
             String confirmPassword = confirmPasswordField.getValue();
 
-            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            if (name.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Notification.show("Por favor, completa todos los campos", 3000, Notification.Position.MIDDLE);
             } else if (!password.equals(confirmPassword)) {
                 Notification.show("Las contraseñas no coinciden", 3000, Notification.Position.MIDDLE);
@@ -61,6 +64,7 @@ public class SignInView extends VerticalLayout {
 
                 // Le asignanos los parámetros correspondientes.
                 newUsuario.setNombre(name);
+                newUsuario.setUsername(username);
                 newUsuario.setCorreo(email);
                 newUsuario.setPassword(password);
 
@@ -101,7 +105,7 @@ public class SignInView extends VerticalLayout {
         setSizeFull(); // Asegura que el layout ocupe toda la pantalla
 
         // Añadir los componentes a la vista
-        add(title, subtitle, nameField, emailField, passwordField, confirmPasswordField, registerButton);
+        add(title, subtitle, nameField, usernameField, emailField, passwordField, confirmPasswordField, registerButton);
 
     }
 
