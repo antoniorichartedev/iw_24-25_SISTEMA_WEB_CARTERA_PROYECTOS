@@ -37,12 +37,15 @@ public class Usuario implements UserDetails {
     private String contrasena;
 
     @Column(name = "rol")
+    @Enumerated(EnumType.STRING)
     Rol rol = Rol.USER ;
 
     @Column(name = "activo")
     private boolean estado;
 
     private String codigoRegistro = "";
+
+    private String hashedPassword;
 
     // Ctor.
     public Usuario(String nombre, String username, String correo, String password){
@@ -103,6 +106,14 @@ public class Usuario implements UserDetails {
     }
 
     @Override
+    public int hashCode() {
+        if (id != null) {
+            return id.hashCode();
+        }
+        return super.hashCode();
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> "ROLE_" + getRol());
     }
@@ -125,5 +136,14 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.estado;
+    }
+
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
     }
 }
