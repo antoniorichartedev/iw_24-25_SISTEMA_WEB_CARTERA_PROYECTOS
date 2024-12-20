@@ -5,18 +5,18 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.Menu;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
+import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+
 @PageTitle("Home")
 @Route("")
 @Menu(order = 0, icon = "line-awesome/svg/globe-solid.svg")
 @AnonymousAllowed
 
-public class HomePageView extends VerticalLayout {
+public class HomePageView extends VerticalLayout implements BeforeEnterObserver {
 
     private Button loginButton;
     private Button registerButton;
@@ -102,5 +102,12 @@ public class HomePageView extends VerticalLayout {
                 .set("max-height", "100vh");
 
         add(welcomeMessage, subtitleMessage, logo, buttonLayout);
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        if (VaadinService.getCurrentRequest().getUserPrincipal() != null) {
+            event.forwardTo("proyectos");
+        }
     }
 }

@@ -3,7 +3,6 @@ package projectum.vistas;
 import com.vaadin.flow.component.UI;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 import projectum.security.login.SecurityService;
-import projectum.data.Rol;
 import projectum.data.entidades.Usuario;
 import projectum.security.login.AuthenticatedUser;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -17,7 +16,6 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.SvgIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
@@ -26,7 +24,6 @@ import com.vaadin.flow.router.Layout;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.server.menu.MenuConfiguration;
-import com.vaadin.flow.server.menu.MenuEntry;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import projectum.vistas.HomePage.HomePageView;
 import projectum.vistas.formCIO.formCIOView;
@@ -36,7 +33,6 @@ import projectum.vistas.proyectos.ProyectosView;
 import projectum.vistas.proyectos.proyectosByIDView;
 import projectum.vistas.sobrenosotros.SobreNosotrosView;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -84,7 +80,9 @@ public class MainLayout extends AppLayout {
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
 
-        if (accessChecker.hasAccess(HomePageView.class)) {
+        Optional<Usuario> maybeUser = authenticatedUser.get();
+
+        if (accessChecker.hasAccess(HomePageView.class) && maybeUser.isEmpty()) {
             nav.addItem(new SideNavItem("Home", HomePageView.class, LineAwesomeIcon.HOME_SOLID.create()));
         }
 
@@ -148,15 +146,6 @@ public class MainLayout extends AppLayout {
         }
 
         return layout;
-    }
-
-    private boolean isAuthorized(Usuario user, MenuEntry entry) {
-        // Validar si el usuario tiene acceso según su rol
-        if ("Oficina Técnica Formulario".equals(entry.title()) && user.getRol() != Rol.CIO) {
-            return false;
-        }
-        // Agregar más condiciones para otras vistas restringidas
-        return true;
     }
 
     @Override
