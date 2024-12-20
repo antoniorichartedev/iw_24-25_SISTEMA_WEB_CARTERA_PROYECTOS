@@ -9,13 +9,6 @@ import java.util.UUID;
 @Entity
 public class Solicitante extends Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id = UUID.randomUUID();
-
-    public UUID getId() {
-        return id;
-    }
     @Column(name = "unidadSolicitante",nullable = true)
     private String unidadSolicitante;
 

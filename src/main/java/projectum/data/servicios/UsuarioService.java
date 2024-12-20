@@ -88,13 +88,19 @@ public class UsuarioService {
         return false;
     }
 
-    @Transactional
-    public Usuario loadUserByNombre(String nombre) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByNombre(nombre);
-        if (usuario == null) {
-            throw new UsernameNotFoundException("No userProfile present with username: " + nombre);
-        } else {
-            return usuario;
+    public boolean updateUsuario(Usuario usuario) {
+        // Comprobamos que el usuario existe para poder modificar sus parámetros.
+        Optional<Usuario> usuarioExistente = usuarioRepository.findByCorreo(usuario.getCorreo());
+        if(usuarioExistente.isPresent()) {
+            usuarioExistente.get().setNombre(usuario.getNombre());
+            usuarioExistente.get().setUsername(usuario.getUsername());
+            usuarioExistente.get().setPassword(passwordEncoder.encode(usuario.getPassword()));
+            usuarioRepository.save(usuarioExistente.get());
+            return true;
         }
+
+        // Si resulta ser que no existe, pues devolvemos false porque no podemos modificar un usuario que no existe.
+        return false;
     }
+
 }

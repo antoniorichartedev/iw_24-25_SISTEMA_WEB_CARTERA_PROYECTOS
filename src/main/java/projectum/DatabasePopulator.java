@@ -1,7 +1,10 @@
 package projectum;
 
 import com.github.javafaker.Faker;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import projectum.data.entidades.*;
+import projectum.data.servicios.PromotorService;
 import projectum.data.servicios.UsuarioService;
 import projectum.data.Rol;
 import projectum.data.servicios.ProyectoService;
@@ -18,9 +21,12 @@ public class DatabasePopulator implements CommandLineRunner {
 
     ProyectoService proyectService;
 
-    public DatabasePopulator(UsuarioService userService, ProyectoService proyectService) {
+    private final PromotorService promotorService;
+
+    public DatabasePopulator(UsuarioService userService, ProyectoService proyectService, PromotorService promotorService) {
         this.proyectService = proyectService;
         this.userService = userService;
+        this.promotorService = promotorService;
     }
 
     @Override
@@ -76,6 +82,7 @@ public class DatabasePopulator implements CommandLineRunner {
             promo.setUsername("promotorXulo");
             promo.setPassword("promotor");
             promo.setCorreo("promotor@uca.es");
+            promo.setCargo("Ninguno");
             promo.setRol(Rol.USER);
             userService.RegistrarUsuario(promo);
             userService.activarUsuario(promo.getCorreo(), promo.getCodigoRegistro());
@@ -106,4 +113,11 @@ public class DatabasePopulator implements CommandLineRunner {
             }
         }
     }
+/*
+    @EventListener(ApplicationReadyEvent.class)
+    public void populateDatabase() {
+        promotorService.guardarPromotoresWeb();
+        System.out.println("Promotores sincronizados con éxito.");
+    }
+    */
 }

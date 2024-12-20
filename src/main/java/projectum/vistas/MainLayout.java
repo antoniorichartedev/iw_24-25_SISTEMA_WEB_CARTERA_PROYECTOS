@@ -1,5 +1,6 @@
 package projectum.vistas;
 
+import com.vaadin.flow.component.UI;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 import projectum.security.login.SecurityService;
 import projectum.data.Rol;
@@ -71,7 +72,7 @@ public class MainLayout extends AppLayout {
     }
 
     private void addDrawerContent() {
-        Span appName = new Span("My App");
+        Span appName = new Span("Projectum App");
         appName.addClassNames(LumoUtility.FontWeight.SEMIBOLD, LumoUtility.FontSize.LARGE);
         Header header = new Header(appName);
 
@@ -104,7 +105,7 @@ public class MainLayout extends AppLayout {
             nav.addItem(new SideNavItem("CIO Formulario", formCIOView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
         }
         if (accessChecker.hasAccess(proyectosByIDView.class)) {
-            nav.addItem(new SideNavItem("Proyectos de tu usuario", proyectosByIDView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
+            nav.addItem(new SideNavItem("Tus proyectos", proyectosByIDView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
         }
         return nav;
     }
@@ -132,8 +133,11 @@ public class MainLayout extends AppLayout {
             div.getElement().getStyle().set("align-items", "center");
             div.getElement().getStyle().set("gap", "var(--lumo-space-s)");
             userName.add(div);
-            userName.getSubMenu().addItem("Sign out", e -> {
+            userName.getSubMenu().addItem("Cerrar sesión", e -> {
                 authenticatedUser.logout();
+            });
+            userName.getSubMenu().addItem("Editar usuario", e -> {
+                UI.getCurrent().navigate("perfil");
             });
             layout.add(userMenu);
         } else {

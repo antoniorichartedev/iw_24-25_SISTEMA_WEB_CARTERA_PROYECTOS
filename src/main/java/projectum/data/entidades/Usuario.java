@@ -1,6 +1,8 @@
 package projectum.data.entidades;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.validation.constraints.Email;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import projectum.data.Rol;
@@ -73,6 +75,7 @@ public class Usuario implements UserDetails {
     public boolean getEstado() { return estado; }
     public String getCodigoRegistro() { return this.codigoRegistro; }
 
+    public void setId(UUID id) { this.id = id; }
     public void setUsername(String username) { this.username = username; }
     public void setNombre(String nombre) {
         this.nombre = nombre;
