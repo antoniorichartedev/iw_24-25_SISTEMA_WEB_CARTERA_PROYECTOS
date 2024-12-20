@@ -25,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario user = userService.loadUserByNombre(username);
+        Usuario user = userService.loadUserByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("No user present with username: " + username);
         } else {
