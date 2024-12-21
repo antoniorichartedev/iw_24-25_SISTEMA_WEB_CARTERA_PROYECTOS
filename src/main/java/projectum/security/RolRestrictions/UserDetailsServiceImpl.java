@@ -13,7 +13,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+// Le ponemos el nombre porque sino en el AuthenticatioManager no lo detecta.
+@Service("UserDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UsuarioService userService;

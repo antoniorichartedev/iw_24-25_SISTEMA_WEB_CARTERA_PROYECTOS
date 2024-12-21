@@ -41,6 +41,8 @@ public class UsuarioService {
 
     public List<Usuario> loadUsersActivados() { return usuarioRepository.findByEstadoTrue(); }
 
+    public void save(Usuario usuario) { usuarioRepository.save(usuario); }
+
     public void delete(UUID id) {
         usuarioRepository.deleteById(id);
     }
@@ -48,7 +50,7 @@ public class UsuarioService {
     public boolean RegistrarUsuario(Usuario usuario)
     {
         // Introducimos la contraseña cifrada...
-        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        usuario.setHashedPassword(passwordEncoder.encode(usuario.getPassword()));
 
         // el código de registro...
         usuario.setCodigoRegistro(UUID.randomUUID().toString().substring(0, 5));
@@ -94,7 +96,7 @@ public class UsuarioService {
         if(usuarioExistente.isPresent()) {
             usuarioExistente.get().setNombre(usuario.getNombre());
             usuarioExistente.get().setUsername(usuario.getUsername());
-            usuarioExistente.get().setPassword(passwordEncoder.encode(usuario.getPassword()));
+            usuarioExistente.get().setHashedPassword(passwordEncoder.encode(usuario.getPassword()));
             usuarioRepository.save(usuarioExistente.get());
             return true;
         }

@@ -2,11 +2,17 @@ package projectum.security.login;
 
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -15,10 +21,19 @@ import projectum.vistas.loginview.LogInView;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration extends VaadinWebSecurity {
-    private final CustomUserDetailsService userDetailsService;
 
-    public SecurityConfiguration(CustomUserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(@Qualifier("UserDetailsServiceImpl") UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+
+        return new ProviderManager(authenticationProvider);
     }
 
     @Override
@@ -33,28 +48,4 @@ public class SecurityConfiguration extends VaadinWebSecurity {
         super.configure(http);
         setLoginView(http, LogInView.class);
     }
-
-    // Con él, cargamos los detalles del usuario desde la base de datos.
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
-    }
-/*
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring().requestMatchers(
-                // Client-side JS
-                "/VAADIN/**",
-
-                // the standard favicon URI
-                "/favicon.ico",
-
-                // the robots exclusion standard
-                "/robots.txt",
-
-                // web application manifest
-                "/manifest.webmanifest",
-                "/sw.js",
-                "/offline.html");
-    }*/
 }

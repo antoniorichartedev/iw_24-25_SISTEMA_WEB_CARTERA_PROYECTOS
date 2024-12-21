@@ -2,7 +2,6 @@ package projectum.vistas;
 
 import com.vaadin.flow.component.UI;
 import org.vaadin.lineawesome.LineAwesomeIcon;
-import projectum.security.login.SecurityService;
 import projectum.data.entidades.Usuario;
 import projectum.security.login.AuthenticatedUser;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -44,7 +43,6 @@ public class MainLayout extends AppLayout {
 
     private H1 viewTitle;
 
-    private SecurityService ss;
     private AuthenticatedUser authenticatedUser;
     private AccessAnnotationChecker accessChecker;
 
