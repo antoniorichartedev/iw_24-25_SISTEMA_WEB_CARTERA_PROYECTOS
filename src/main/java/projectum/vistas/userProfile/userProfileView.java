@@ -123,7 +123,16 @@ public class userProfileView extends VerticalLayout {
         passwordlLayout.setSpacing(true); // Espaciado entre elementos
         passwordlLayout.getStyle().set("margin-bottom", "20px");
 
+        // Botón que nos servirá para borrar la contraseña.
+        Button borrarUsuario = new Button("Borrar usuario");
+        borrarUsuario.addClickListener(e -> {
+            usuarioService.delete(usuario.getId());
+            authenticatedUser.logout();
+            Notification.show("Tu cuenta ha sido eliminada con éxito");
+        });
+        borrarUsuario.getStyle().set("color", "red");
+
         // Añadir los elementos al diseño principal
-        add(labelProyecto, usernameLayout, nombreLayout, passwordlLayout);
+        add(labelProyecto, usernameLayout, nombreLayout, passwordlLayout, borrarUsuario);
     }
 }
