@@ -8,6 +8,5 @@ import java.util.List;
 
 //Repositorio CRUD para el manejo de datos en la base de datos.
 public interface ProyectoRepository extends CrudRepository<Proyecto, UUID> {
-    List<Proyecto> findBySolicitanteId(UUID solicitanteId);
+    List<Proyecto> findBySolicitanteId(UUID solicitante_id);
 }
-

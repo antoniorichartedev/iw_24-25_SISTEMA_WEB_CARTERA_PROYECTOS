@@ -42,4 +42,3 @@ public class ProyectoService {
         return proyectoRepository.findBySolicitanteId(solicitanteId);
     }
 }
-

@@ -75,9 +75,9 @@ public class proyectosByIDView extends Composite<VerticalLayout> {
         }).setHeader("Puesta en marcha");
         grid.addColumn(proyecto -> Optional.ofNullable(proyecto.getInteresado())
                 .map(Object::toString).orElse("Sin interesado")).setHeader("Interesado");
-        grid.addColumn(proyecto -> Optional.ofNullable(proyecto.getSolicitante().getNombre())
+        grid.addColumn(proyecto -> Optional.ofNullable(proyecto.getSolicitante())
                 .map(Object::toString).orElse("Sin solicitante")).setHeader("Solicitante");
-        grid.addColumn(proyecto -> Optional.ofNullable(proyecto.getPromotor().getNombre())
+        grid.addColumn(proyecto -> Optional.ofNullable(proyecto.getPromotor())
                 .map(Object::toString).orElse("Sin promotor")).setHeader("Promotor");
 
         grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);

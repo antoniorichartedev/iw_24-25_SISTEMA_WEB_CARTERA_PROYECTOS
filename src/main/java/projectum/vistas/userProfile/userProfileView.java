@@ -1,10 +1,10 @@
 package projectum.vistas.userProfile;
 
-
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -13,117 +13,117 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import projectum.data.entidades.Usuario;
 import projectum.security.login.AuthenticatedUser;
 import projectum.data.servicios.UsuarioService;
 import projectum.vistas.MainLayout;
 
-
 @PageTitle("Perfil")
 @Route(value = "perfil", layout = MainLayout.class)
-@PermitAll
+@PermitAll // Solo para usuarios autenticados.
 public class userProfileView extends VerticalLayout {
     private final UsuarioService usuarioService;
     private final AuthenticatedUser authenticatedUser;
-    private final PasswordEncoder passwordEncoder;
     private Usuario usuario;
 
-    public userProfileView(UsuarioService usuarioService, AuthenticatedUser authenticatedUser, PasswordEncoder passwordEncoder) {
+    public userProfileView(UsuarioService usuarioService, AuthenticatedUser authenticatedUser) {
         this.usuarioService = usuarioService;
         this.authenticatedUser = authenticatedUser;
-        this.passwordEncoder = passwordEncoder;
 
-        // Estilo principal de la vista
-        setWidth("50%");
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        // Cargamos al usuario que está autenticado ahora mismo.
+        authenticatedUser.get().ifPresent(user ->
+                this.usuario = usuarioService.loadUserById(user.getId()).orElse(null)
+        );
 
-        // Obtener usuario autenticado
-        authenticatedUser.get().ifPresent(user -> this.usuario = user);
-
+        // Si el usuario no está autenticado, lo redirigimos al login.
         if (usuario == null) {
             UI.getCurrent().navigate("login");
             return;
         }
 
-        // Título de la vista
-        H1 titulo = new H1("Perfil de Usuario");
-        titulo.getStyle().set("color", "#1E88E5");
+        H1 labelProyecto = new H1("Bienvenido/a " + usuario.getUsername());
+        labelProyecto.getStyle().set("font-size", "30px").set("font-weight", "bold");
+        labelProyecto.getStyle().set("color", "blue");
 
-        // Formulario
-        FormLayout formLayout = new FormLayout();
-        formLayout.setResponsiveSteps(
-                new FormLayout.ResponsiveStep("0", 1), // Móvil
-                new FormLayout.ResponsiveStep("500px", 2) // Escritorio
-        );
+        //nombre usuario
+        H2 username = new H2("Nombre de usuario: " + usuario.getUsername());
+        username.getStyle().set("font-size", "20px").set("font-weight", "bold");
 
-        TextField nombreUsuario = new TextField("Nombre de usuario");
-        nombreUsuario.setValue(usuario.getUsername());
-        nombreUsuario.setRequired(true);
+        TextField usernameField = new TextField();
+        usernameField.setPlaceholder("Cambiar nombre de usuario");
+        usernameField.setWidth("300px");
 
-        TextField nombre = new TextField("Nombre completo");
-        nombre.setValue(usuario.getNombre());
-        nombre.setRequired(true);
-
-        PasswordField contrasennaVieja = new PasswordField("Contraseña antigua");
-        PasswordField contrasenna = new PasswordField("Nueva contraseña");
-        PasswordField confirmarContrasenna = new PasswordField("Confirmar contraseña");
-
-        formLayout.add(
-                nombreUsuario, nombre,
-                contrasennaVieja, contrasenna,
-                confirmarContrasenna
-        );
-
-        // Botones
-        Button guardarCambios = new Button("Guardar cambios", event -> {
-            if (!nombreUsuario.getValue().isEmpty() && !nombre.getValue().isEmpty()) {
-                if (!contrasennaVieja.getValue().isEmpty()) {
-                    if (passwordEncoder.matches(contrasennaVieja.getValue(), usuario.getHashedPassword())) {
-                        usuario.setHashedPassword(passwordEncoder.encode(contrasenna.getValue()));
-                    } else {
-                        showErrorNotification("Contraseña antigua incorrecta.");
-                        return;
-                    }
-                }
-                usuario.setUsername(nombreUsuario.getValue());
-                usuario.setNombre(nombre.getValue());
-                usuarioService.save(usuario);
-                showSuccessNotification("Cambios guardados satisfactoriamente.");
+        Button usernameButton = new Button("Guardar");
+        usernameButton.addClickListener(e -> {
+            String nuevousername = usernameField.getValue();
+            if (nuevousername.isEmpty()) {
+                Notification.show("Por favor, introduce un nombre de usuario", 3000, Notification.Position.MIDDLE);
             } else {
-                showErrorNotification("El nombre de usuario y el nombre completo son obligatorios.");
+                usuario.setUsername(nuevousername);
+                usuarioService.updateUsuario(usuario);
+                Notification.show("Nombre de usuario actualizado, para ver los cambios vuelva a iniciar sesión", 3000, Notification.Position.MIDDLE);
             }
         });
 
-        Button borrarUsuario = new Button("Eliminar cuenta", event -> {
-            usuarioService.delete(usuario.getId());
-            authenticatedUser.logout();
-            UI.getCurrent().navigate("login");
-            showSuccessNotification("Cuenta eliminada con éxito.");
+        // una fila
+        HorizontalLayout usernameLayout = new HorizontalLayout(username, usernameField, usernameButton);
+        usernameLayout.setAlignItems(Alignment.CENTER); // Alinear al centro
+        usernameLayout.setSpacing(true); // Espaciado entre elementos
+        usernameLayout.getStyle().set("margin-bottom", "20px");
+
+        // nombre
+        H2 nombre = new H2("Nombre: " + usuario.getNombre());
+        nombre.getStyle().set("font-size", "20px").set("font-weight", "bold");
+
+        TextField nameField = new TextField();
+        nameField.setPlaceholder("Cambiar nombre");
+        nameField.setWidth("300px");
+
+        Button nombreButton = new Button("Guardar");
+        nombreButton.addClickListener(e -> {
+            String nuevoNombre = nameField.getValue();
+            if (nuevoNombre.isEmpty()) {
+                Notification.show("Por favor, introduce un nombre", 3000, Notification.Position.MIDDLE);
+            } else {
+                usuario.setNombre(nuevoNombre);
+                usuarioService.updateUsuario(usuario);
+                Notification.show("Nombre actualizado, para ver los cambios vuelva a iniciar sesión", 3000, Notification.Position.MIDDLE);
+            }
         });
-        borrarUsuario.getStyle().set("color", "red");
 
-        // Estilo de los botones
-        HorizontalLayout buttonLayout = new HorizontalLayout(guardarCambios, borrarUsuario);
-        buttonLayout.setJustifyContentMode(JustifyContentMode.END);
-        buttonLayout.setWidthFull();
+        // una fila
+        HorizontalLayout nombreLayout = new HorizontalLayout(nombre, nameField, nombreButton);
+        nombreLayout.setAlignItems(Alignment.CENTER); // Alinear al centro
+        nombreLayout.setSpacing(true); // Espaciado entre elementos
+        nombreLayout.getStyle().set("margin-bottom", "20px");
 
-        add(titulo, formLayout, buttonLayout);
-    }
+        //contraseña
+        PasswordField passwordField = new PasswordField("Cambiar contraseña");
+        passwordField.setWidth("300px");
 
-    // Métodos de notificación
-    private void showSuccessNotification(String message) {
-        Notification notification = new Notification(message, 3000, Notification.Position.TOP_END);
-        notification.getElement().getThemeList().add("success");
-        notification.open();
-    }
+        PasswordField password2Field = new PasswordField("Confirmar contraseña");
+        password2Field.setWidth("300px");
 
-    private void showErrorNotification(String message) {
-        Notification notification = new Notification(message, 3000, Notification.Position.TOP_END);
-        notification.getElement().getThemeList().add("error");
-        notification.open();
+        Button passwordButton = new Button("Guardar");
+        passwordButton.getStyle().set("margin-top", "30px");
+        passwordButton.addClickListener(e -> {
+            String nuevaPassword = passwordField.getValue();
+            String confirmacionPassword = password2Field.getValue();
+            if (nuevaPassword.isEmpty() || confirmacionPassword.isEmpty()) {
+                Notification.show("Por favor, introduce la nueva contraseña", 3000, Notification.Position.MIDDLE);
+            } else {
+                usuario.setPassword(nuevaPassword);
+                usuarioService.updateUsuario(usuario);
+                Notification.show("Contraseña actualizada", 3000, Notification.Position.MIDDLE);
+            }
+        });
+
+        HorizontalLayout passwordlLayout = new HorizontalLayout(passwordField, password2Field, passwordButton);
+        passwordlLayout.setAlignItems(Alignment.CENTER); // Alinear al centro
+        passwordlLayout.setSpacing(true); // Espaciado entre elementos
+        passwordlLayout.getStyle().set("margin-bottom", "20px");
+
+        // Añadir los elementos al diseño principal
+        add(labelProyecto, usernameLayout, nombreLayout, passwordlLayout);
     }
 }
-

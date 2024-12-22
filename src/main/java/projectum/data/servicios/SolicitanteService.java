@@ -30,4 +30,7 @@ public class SolicitanteService {
     public void deleteSolicitante(UUID id) {
         solicitanteRepository.deleteById(id);
     }
+    public Optional<Solicitante> findSolicitanteByUsername(String username) {
+        return solicitanteRepository.findByUsername(username);
+    }
 }

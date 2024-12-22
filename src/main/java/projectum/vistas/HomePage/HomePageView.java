@@ -4,6 +4,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.VaadinService;
@@ -25,7 +26,7 @@ public class HomePageView extends VerticalLayout implements BeforeEnterObserver 
         H1 welcomeMessage = new H1("¡Bienvenido a la cartera de proyectos!");
         welcomeMessage.getStyle().set("color", "blue");
 
-        Label subtitleMessage = new Label("Inicia sesión para solicitar un nuevo proyecto, ver tus proyectos solicitados y su estado");
+        Span subtitleMessage = new Span("Inicia sesión para solicitar un nuevo proyecto, ver tus proyectos solicitados y su estado");
         subtitleMessage.getStyle()
                 .set("color", "darkorange")
                 .set("font-size", "20px");
