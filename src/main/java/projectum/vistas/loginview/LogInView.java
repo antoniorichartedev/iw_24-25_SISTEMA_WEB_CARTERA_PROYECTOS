@@ -60,15 +60,12 @@ public class LogInView extends LoginOverlay implements BeforeEnterObserver {
             Usuario usuario = OpUsuario.get();
 
             if(usuario.getRol() == Rol.CIO) {
-                event.forwardTo("proyectos");
+                event.forwardTo("homeCio");
             }
             else if (usuario.getRol() == Rol.ADMIN) {
                 event.forwardTo("proyectos");
             }
             else if (usuario.getRol() == Rol.USER) {
-                event.forwardTo("proyectos");
-            }
-            else if (usuario.getRol() == Rol.SOLICITANTE) {
                 event.forwardTo("proyectos");
             }
             else if (usuario.getRol() == Rol.OT) {

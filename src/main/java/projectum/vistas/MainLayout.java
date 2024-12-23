@@ -1,5 +1,6 @@
 package projectum.vistas;
 
+import com.vaadin.flow.component.UI;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 import projectum.data.entidades.Usuario;
 import projectum.security.login.AuthenticatedUser;
@@ -23,6 +24,7 @@ import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.server.menu.MenuConfiguration;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import projectum.vistas.HomePage.CioHomePageView;
 import projectum.vistas.HomePage.HomePageView;
 import projectum.vistas.adminUsers.adminUsersView;
 import projectum.vistas.formCIO.formCIOView;
@@ -85,6 +87,10 @@ public class MainLayout extends AppLayout {
             nav.addItem(new SideNavItem("Home", HomePageView.class, LineAwesomeIcon.HOME_SOLID.create()));
         }
 
+        if (accessChecker.hasAccess(CioHomePageView.class)) {
+            nav.addItem(new SideNavItem("Home", CioHomePageView.class, LineAwesomeIcon.HOME_SOLID.create()));
+        }
+
         if (accessChecker.hasAccess(ProyectosView.class)) {
             nav.addItem(new SideNavItem("Proyectos", ProyectosView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
         }
@@ -98,9 +104,7 @@ public class MainLayout extends AppLayout {
         if (accessChecker.hasAccess(formOTView.class)) {
             nav.addItem(new SideNavItem("Oficina Técnica Formulario", formOTView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
         }
-        if (accessChecker.hasAccess(formCIOView.class)) {
-            nav.addItem(new SideNavItem("CIO Formulario", formCIOView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
-        }
+
         if (accessChecker.hasAccess(proyectosByIDView.class)) {
             nav.addItem(new SideNavItem("Proyectos de tu usuario", proyectosByIDView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
         }
@@ -138,6 +142,9 @@ public class MainLayout extends AppLayout {
             userName.add(div);
             userName.getSubMenu().addItem("Sign out", e -> {
                 authenticatedUser.logout();
+            });
+            userName.getSubMenu().addItem("Editar usuario", e -> {
+                UI.getCurrent().navigate("userProfile");
             });
             layout.add(userMenu);
         } else {
