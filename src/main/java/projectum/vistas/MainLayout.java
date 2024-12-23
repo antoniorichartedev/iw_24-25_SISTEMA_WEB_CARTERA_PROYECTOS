@@ -24,6 +24,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.server.menu.MenuConfiguration;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import projectum.vistas.HomePage.HomePageView;
+import projectum.vistas.adminUsers.adminUsersView;
 import projectum.vistas.formCIO.formCIOView;
 import projectum.vistas.formOT.formOTView;
 import projectum.vistas.formularioProyecto.formProyectoView;
@@ -105,6 +106,9 @@ public class MainLayout extends AppLayout {
         }
         if (accessChecker.hasAccess(userProfileView.class)) {
             nav.addItem(new SideNavItem("Perfil", userProfileView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
+        }
+        if (accessChecker.hasAccess(adminUsersView.class)) {
+            nav.addItem(new SideNavItem("Administrar Usuarios", adminUsersView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
         }
         return nav;
     }
