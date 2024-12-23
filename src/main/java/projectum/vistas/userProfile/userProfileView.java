@@ -1,8 +1,8 @@
 package projectum.vistas.userProfile;
 
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
@@ -17,6 +17,9 @@ import projectum.data.entidades.Usuario;
 import projectum.security.login.AuthenticatedUser;
 import projectum.data.servicios.UsuarioService;
 import projectum.vistas.MainLayout;
+import com.vaadin.flow.component.dialog.Dialog;
+
+import java.awt.*;
 
 @PageTitle("Perfil")
 @Route(value = "perfil", layout = MainLayout.class)
@@ -123,14 +126,32 @@ public class userProfileView extends VerticalLayout {
         passwordlLayout.setSpacing(true); // Espaciado entre elementos
         passwordlLayout.getStyle().set("margin-bottom", "20px");
 
-        // Botón que nos servirá para borrar la contraseña.
+        // Botón que nos servirá para borrar el usuario.
         Button borrarUsuario = new Button("Borrar usuario");
-        borrarUsuario.addClickListener(e -> {
+        borrarUsuario.getStyle().set("color", "red");
+
+        // Crear el diálogo de confirmación
+        Dialog confirmDialog = new Dialog();
+        confirmDialog.setHeaderTitle("Confirmación");
+        confirmDialog.add(new Text("¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer."));
+
+        // Botón para confirmar la eliminación
+        Button confirmButton = new Button("Confirmar", event -> {
             usuarioService.delete(usuario.getId());
             authenticatedUser.logout();
             Notification.show("Tu cuenta ha sido eliminada con éxito");
+            confirmDialog.close();
+            UI.getCurrent().navigate("login");
         });
-        borrarUsuario.getStyle().set("color", "red");
+
+        // Botón para cancelar la acción
+        Button cancelButton = new Button("Cancelar", event -> confirmDialog.close());
+
+        HorizontalLayout dialogButtons = new HorizontalLayout(confirmButton, cancelButton);
+        dialogButtons.setSpacing(true);
+        confirmDialog.add(dialogButtons);
+
+        borrarUsuario.addClickListener(event -> confirmDialog.open());
 
         // Añadir los elementos al diseño principal
         add(labelProyecto, usernameLayout, nombreLayout, passwordlLayout, borrarUsuario);
