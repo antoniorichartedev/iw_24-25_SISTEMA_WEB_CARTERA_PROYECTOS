@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import projectum.vistas.MainLayout;
 
 @PageTitle("Administrar Usuarios")
-@Route(value = "users", layout = MainLayout.class)
+@Route(value = "adminUsers", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class adminUsersView extends Composite<VerticalLayout> implements RoleRestrictedView {
     @Override

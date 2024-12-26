@@ -2,17 +2,13 @@ package projectum.vistas.loginview;
 
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.router.*;
-import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.vaadin.hilla.route.RouteUtil;
-import org.springframework.context.annotation.Role;
-import projectum.data.Rol;
 import projectum.data.entidades.Usuario;
 import projectum.security.login.AuthenticatedUser;
 import com.vaadin.flow.component.login.LoginI18n;
 
 import java.util.Optional;
-import java.util.Set;
+import java.util.logging.Logger;
 
 @Route("login")
 @PageTitle("Iniciar Sesión")
@@ -51,30 +47,39 @@ public class LogInView extends LoginOverlay implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-
         // Obtenemos el usuario autenticado, si es que lo hay.
-        Optional<Usuario> OpUsuario = authenticatedUser.get();
+        Optional<Usuario> opUsuario = authenticatedUser.get();
 
-        // Si hay un usuario autenticado, pues lo mandamos a según qué página dependiendo del rol que tenga.
-        if(OpUsuario.isPresent()) {
-            Usuario usuario = OpUsuario.get();
-
-            if(usuario.getRol() == Rol.CIO) {
-                event.forwardTo("homeCio");
-            }
-            else if (usuario.getRol() == Rol.ADMIN) {
-                event.forwardTo("proyectos");
-            }
-            else if (usuario.getRol() == Rol.USER) {
-                event.forwardTo("proyectos");
-            }
-            else if (usuario.getRol() == Rol.OT) {
-                event.forwardTo("proyectos");
-            }
-        }
-        else {
-            event.forwardTo("/login?error=true");
+        if (opUsuario.isPresent()) {
+            Usuario usuario = opUsuario.get();
+            String targetPage = determinarPaginaRedireccion(usuario);
+            event.forwardTo(targetPage);
+        } else {
+            // Manejar el caso en el que no hay un usuario autenticado.
+            event.forwardTo("login");
         }
     }
+
+    /**
+     * Determina la página de redirección en función del rol del usuario.
+     *
+     * @param usuario El usuario autenticado.
+     * @return La página a la que debe redirigirse el usuario.
+     */
+    private String determinarPaginaRedireccion(Usuario usuario) {
+        return switch (usuario.getRol()) {
+            case ADMIN -> "adminUsers";
+            case OT -> "homeOT";
+            case CIO -> "homeCio";
+            case USER -> "proyectos";
+            default -> {
+                // Loggear roles inesperados para diagnóstico
+                Logger.getLogger(getClass().getName())
+                        .warning("Rol inesperado: " + usuario.getRol());
+                yield "proyectos";
+            }
+        };
+    }
+
 
 }

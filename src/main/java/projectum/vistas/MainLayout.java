@@ -26,9 +26,8 @@ import com.vaadin.flow.server.menu.MenuConfiguration;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import projectum.vistas.HomePage.CioHomePageView;
 import projectum.vistas.HomePage.HomePageView;
+import projectum.vistas.HomePage.OTHomePageView;
 import projectum.vistas.adminUsers.adminUsersView;
-import projectum.vistas.formCIO.formCIOView;
-import projectum.vistas.formOT.formOTView;
 import projectum.vistas.formularioProyecto.formProyectoView;
 import projectum.vistas.proyectos.ProyectosView;
 import projectum.vistas.proyectos.proyectosByIDView;
@@ -90,6 +89,9 @@ public class MainLayout extends AppLayout {
         if (accessChecker.hasAccess(CioHomePageView.class)) {
             nav.addItem(new SideNavItem("Home", CioHomePageView.class, LineAwesomeIcon.HOME_SOLID.create()));
         }
+        if (accessChecker.hasAccess(OTHomePageView.class)) {
+            nav.addItem(new SideNavItem("Home", OTHomePageView.class, LineAwesomeIcon.HOME_SOLID.create()));
+        }
 
         if (accessChecker.hasAccess(ProyectosView.class)) {
             nav.addItem(new SideNavItem("Proyectos", ProyectosView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
@@ -100,9 +102,6 @@ public class MainLayout extends AppLayout {
         }
         if (accessChecker.hasAccess(formProyectoView.class)) {
             nav.addItem(new SideNavItem("Crear proyecto", formProyectoView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
-        }
-        if (accessChecker.hasAccess(formOTView.class)) {
-            nav.addItem(new SideNavItem("Oficina Técnica Formulario", formOTView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
         }
 
         if (accessChecker.hasAccess(proyectosByIDView.class)) {
@@ -144,7 +143,7 @@ public class MainLayout extends AppLayout {
                 authenticatedUser.logout();
             });
             userName.getSubMenu().addItem("Editar usuario", e -> {
-                UI.getCurrent().navigate("userProfile");
+                UI.getCurrent().navigate("perfil");
             });
             layout.add(userMenu);
         } else {
