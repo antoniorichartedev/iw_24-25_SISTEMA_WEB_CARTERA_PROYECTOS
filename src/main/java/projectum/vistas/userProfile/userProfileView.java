@@ -19,7 +19,6 @@ import projectum.data.servicios.UsuarioService;
 import projectum.vistas.MainLayout;
 import com.vaadin.flow.component.dialog.Dialog;
 
-
 @PageTitle("Perfil")
 @Route(value = "perfil", layout = MainLayout.class)
 @PermitAll // Solo para usuarios autenticados.

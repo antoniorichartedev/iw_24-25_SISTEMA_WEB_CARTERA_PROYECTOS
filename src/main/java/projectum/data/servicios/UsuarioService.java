@@ -55,9 +55,6 @@ public class UsuarioService {
         // el código de registro...
         usuario.setCodigoRegistro(UUID.randomUUID().toString().substring(0, 5));
 
-        // y el rol.
-        usuario.setRol(Rol.ADMIN);
-
         // Si el usuario ya existe, evidentemente no lo registramos.
         if(usuarioRepository.findByCorreo(usuario.getCorreo()).isPresent()) {
             return false;

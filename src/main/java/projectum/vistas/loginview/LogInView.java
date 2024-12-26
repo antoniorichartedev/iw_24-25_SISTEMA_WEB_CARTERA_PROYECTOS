@@ -1,13 +1,19 @@
 package projectum.vistas.loginview;
 
 import com.vaadin.flow.component.login.LoginOverlay;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.router.*;
+import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import com.vaadin.hilla.route.RouteUtil;
+import org.springframework.context.annotation.Role;
+import projectum.data.Rol;
 import projectum.data.entidades.Usuario;
 import projectum.security.login.AuthenticatedUser;
 import com.vaadin.flow.component.login.LoginI18n;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @Route("login")
@@ -57,6 +63,7 @@ public class LogInView extends LoginOverlay implements BeforeEnterObserver {
         } else {
             // Manejar el caso en el que no hay un usuario autenticado.
             event.forwardTo("login");
+            setError(event.getLocation().getQueryParameters().getParameters().containsKey("error"));
         }
     }
 
@@ -80,6 +87,4 @@ public class LogInView extends LoginOverlay implements BeforeEnterObserver {
             }
         };
     }
-
-
 }

@@ -73,7 +73,7 @@ public class SignInView extends VerticalLayout {
 
                 // Si es true, quiere decir que hemos registrado al usuario correctamente.
                 if(registrado) {
-                    Notification.show("Registro exitoso", 3000, Notification.Position.MIDDLE);
+                    Notification.show("Registro exitoso. Por favor, ve a tu correo y verifica la cuenta", 3000, Notification.Position.MIDDLE);
                     UI.getCurrent().navigate("login");
                 }else {
                     Notification.show("El usuario ya se encuentra registrado", 3000, Notification.Position.MIDDLE);

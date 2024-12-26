@@ -9,14 +9,6 @@ import java.util.UUID;
 @Entity
 public class CIO extends Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id = UUID.randomUUID();
-
-    public UUID getId() {
-        return id;
-    }
-
     // Ctor. predeterminado.
     public CIO() {}
 

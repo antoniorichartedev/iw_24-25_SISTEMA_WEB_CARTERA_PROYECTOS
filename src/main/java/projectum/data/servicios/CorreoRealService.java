@@ -30,7 +30,7 @@ public class CorreoRealService implements CorreoService {
 
     // Generador de la URL del servidor.
     private String getServerUrl() {
-        String url = "http://" + InetAddress.getLoopbackAddress().getHostAddress() + ":" + serverPort + "/";
+        String url = "http://" + InetAddress.getLoopbackAddress().getHostAddress() + ":" + serverPort + "/confirmar-correo";
         return url;
     }
 

@@ -13,25 +13,25 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
-
-@PageTitle("FormularioProyecto")
+@PageTitle("Formulario para un nuevo proyecto")
 @Route("formularioProyecto")
 @Menu(order = 4, icon = LineAwesomeIconUrl.INFO_CIRCLE_SOLID)
-@RolesAllowed("SOLICITANTE")
+@RolesAllowed({"USER", "SOLICITANTE"})
 public class formProyectoView extends VerticalLayout implements RoleRestrictedView {
 
     @Override
     public Rol getRequiredRole() {
-        return Rol.SOLICITANTE;
+        return Rol.USER;
     }
 
     public formProyectoView() {
         //Informacion del proyecto
-        Label labelProyecto = new Label("Información del Proyecto");
+        Span labelProyecto = new Span("Información del Proyecto");
         labelProyecto.getStyle().set("font-size", "24px").set("font-weight", "bold");
 
         // Crear campos
@@ -43,7 +43,7 @@ public class formProyectoView extends VerticalLayout implements RoleRestrictedVi
 
         //añadir archivo
         Div uploadContainer = new Div();
-        Label labelMemoria = new Label("Memoria del Proyecto");
+        Span labelMemoria = new Span("Memoria del Proyecto");
         labelMemoria.getStyle()
                 .set("font-size", "15px")
                 .set("font-weight", "normal")
@@ -53,11 +53,11 @@ public class formProyectoView extends VerticalLayout implements RoleRestrictedVi
         upload.setAcceptedFileTypes("image/jpeg", "image/png", "application/pdf"); // Tipos permitidos
         upload.setMaxFiles(1); // Solo permite un archivo
         upload.setMaxFileSize(5 * 1024 * 1024); // Tamaño máximo (5 MB)
-        upload.setDropLabel(new com.vaadin.flow.component.html.Label("Arrastra un archivo aquí o haz clic para cargar"));
+        upload.setDropLabel(new Span("Arrastra un archivo aquí o haz clic para cargar"));
         uploadContainer.add(labelMemoria, upload);
 
         //Informacion del solicitante
-        Label labelSolicitante = new Label("Información del Solicitante");
+        Span labelSolicitante = new Span("Información del Solicitante");
         labelSolicitante.getStyle().set("font-size", "24px").set("font-weight", "bold");
 
         TextField solicitante = new TextField("Nombre del Solicitante");
@@ -70,7 +70,7 @@ public class formProyectoView extends VerticalLayout implements RoleRestrictedVi
         unidad.setWidth("70%");
 
         //Informacion del promotor
-        Label labelPromotor = new Label("Información del Promotor");
+        Span labelPromotor = new Span("Información del Promotor");
         labelPromotor.getStyle().set("font-size", "24px").set("font-weight", "bold");
 
         TextField promotor = new TextField("Promotor");
@@ -82,7 +82,7 @@ public class formProyectoView extends VerticalLayout implements RoleRestrictedVi
         importancia.setMin(1);
 
         //Informacion de los interesados
-        Label labelInteresados = new Label("Información de los interesados");
+        Span labelInteresados = new Span("Información de los interesados");
         labelInteresados.getStyle().set("font-size", "24px").set("font-weight", "bold");
 
         TextField interesados = new TextField("Nombre de los interesados");
@@ -92,7 +92,7 @@ public class formProyectoView extends VerticalLayout implements RoleRestrictedVi
         financiacion.setWidth("70%");
 
         //Justificacion del proyecto
-        Label labelJustificacion = new Label("Justificación del Proyecto");
+        Span labelJustificacion = new Span("Justificación del Proyecto");
         labelJustificacion.getStyle().set("font-size", "24px").set("font-weight", "bold");
 
         CheckboxGroup<String> checkboxGroup = new CheckboxGroup<>();
@@ -123,12 +123,12 @@ public class formProyectoView extends VerticalLayout implements RoleRestrictedVi
         normativa.setWidth("70%");
 
         //Documentacion adicional
-        Label labelDocumentacion = new Label("Documentación Adicional");
+        Span labelDocumentacion = new Span("Documentación Adicional");
         labelDocumentacion.getStyle().set("font-size", "24px").set("font-weight", "bold");
 
         //añadir archivo
         Div uploadContainer2 = new Div();
-        Label labelEspecificaciones = new Label("Especificaciones técnicas");
+        Span labelEspecificaciones = new Span("Especificaciones técnicas");
         labelMemoria.getStyle()
                 .set("font-size", "15px")
                 .set("font-weight", "normal")
@@ -138,12 +138,12 @@ public class formProyectoView extends VerticalLayout implements RoleRestrictedVi
         upload2.setAcceptedFileTypes("image/jpeg", "image/png", "application/pdf"); // Tipos permitidos
         upload2.setMaxFiles(1); // Solo permite un archivo
         upload2.setMaxFileSize(5 * 1024 * 1024); // Tamaño máximo (5 MB)
-        upload2.setDropLabel(new com.vaadin.flow.component.html.Label("Arrastra un archivo aquí o haz clic para cargar"));
+        upload2.setDropLabel(new Span("Arrastra un archivo aquí o haz clic para cargar"));
         uploadContainer2.add(labelEspecificaciones, upload2);
 
         //añadir archivo
         Div uploadContainer3 = new Div();
-        Label labelPresupuesto = new Label("Presupuesto(s)");
+        Span labelPresupuesto = new Span("Presupuesto(s)");
         labelMemoria.getStyle()
                 .set("font-size", "15px")
                 .set("font-weight", "normal")
@@ -153,7 +153,7 @@ public class formProyectoView extends VerticalLayout implements RoleRestrictedVi
         upload3.setAcceptedFileTypes("image/jpeg", "image/png", "application/pdf"); // Tipos permitidos
         upload3.setMaxFiles(1); // Solo permite un archivo
         upload3.setMaxFileSize(5 * 1024 * 1024); // Tamaño máximo (5 MB)
-        upload3.setDropLabel(new com.vaadin.flow.component.html.Label("Arrastra un archivo aquí o haz clic para cargar"));
+        upload3.setDropLabel(new Span("Arrastra un archivo aquí o haz clic para cargar"));
         uploadContainer3.add(labelPresupuesto, upload3);
 
         // Notificacion carga exitosa de carga de archivo

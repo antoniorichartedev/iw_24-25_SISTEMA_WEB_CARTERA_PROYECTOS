@@ -23,7 +23,7 @@ import projectum.vistas.formOT.formOTView;
 public class OTHomePageView extends VerticalLayout implements RoleRestrictedView {
 
     @Override
-    public Rol getRequiredRole() {return Rol.CIO;}
+    public Rol getRequiredRole() {return Rol.OT;}
 
     public OTHomePageView() {
         H1 h1 = new H1();

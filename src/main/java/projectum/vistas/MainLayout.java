@@ -26,8 +26,9 @@ import com.vaadin.flow.server.menu.MenuConfiguration;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import projectum.vistas.HomePage.CioHomePageView;
 import projectum.vistas.HomePage.HomePageView;
-import projectum.vistas.HomePage.OTHomePageView;
 import projectum.vistas.adminUsers.adminUsersView;
+import projectum.vistas.formCIO.formCIOView;
+import projectum.vistas.formOT.formOTView;
 import projectum.vistas.formularioProyecto.formProyectoView;
 import projectum.vistas.proyectos.ProyectosView;
 import projectum.vistas.proyectos.proyectosByIDView;
@@ -68,7 +69,7 @@ public class MainLayout extends AppLayout {
     }
 
     private void addDrawerContent() {
-        Span appName = new Span("My App");
+        Span appName = new Span("Projectum");
         appName.addClassNames(LumoUtility.FontWeight.SEMIBOLD, LumoUtility.FontSize.LARGE);
         Header header = new Header(appName);
 
@@ -89,29 +90,29 @@ public class MainLayout extends AppLayout {
         if (accessChecker.hasAccess(CioHomePageView.class)) {
             nav.addItem(new SideNavItem("Home", CioHomePageView.class, LineAwesomeIcon.HOME_SOLID.create()));
         }
-        if (accessChecker.hasAccess(OTHomePageView.class)) {
-            nav.addItem(new SideNavItem("Home", OTHomePageView.class, LineAwesomeIcon.HOME_SOLID.create()));
-        }
 
         if (accessChecker.hasAccess(ProyectosView.class)) {
-            nav.addItem(new SideNavItem("Proyectos", ProyectosView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
+            nav.addItem(new SideNavItem("Proyectos", ProyectosView.class, LineAwesomeIcon.BOOK_SOLID.create()));
         }
 
         if (accessChecker.hasAccess(SobreNosotrosView.class)) {
-            nav.addItem(new SideNavItem("Sobre Nosotros", SobreNosotrosView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
+            nav.addItem(new SideNavItem("Sobre Nosotros", SobreNosotrosView.class, LineAwesomeIcon.INFO_CIRCLE_SOLID.create()));
         }
         if (accessChecker.hasAccess(formProyectoView.class)) {
-            nav.addItem(new SideNavItem("Crear proyecto", formProyectoView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
+            nav.addItem(new SideNavItem("Crear proyecto", formProyectoView.class, LineAwesomeIcon.PLUS_SOLID.create()));
+        }
+        if (accessChecker.hasAccess(formOTView.class)) {
+            nav.addItem(new SideNavItem("Oficina Técnica Formulario", formOTView.class, LineAwesomeIcon.LIST_SOLID.create()));
         }
 
         if (accessChecker.hasAccess(proyectosByIDView.class)) {
-            nav.addItem(new SideNavItem("Proyectos de tu usuario", proyectosByIDView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
+            nav.addItem(new SideNavItem("Proyectos de tu usuario", proyectosByIDView.class, LineAwesomeIcon.BOOK_SOLID.create()));
         }
         if (accessChecker.hasAccess(userProfileView.class)) {
-            nav.addItem(new SideNavItem("Perfil", userProfileView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
+            nav.addItem(new SideNavItem("Perfil", userProfileView.class, LineAwesomeIcon.USER_ALT_SOLID.create()));
         }
         if (accessChecker.hasAccess(adminUsersView.class)) {
-            nav.addItem(new SideNavItem("Administrar Usuarios", adminUsersView.class, LineAwesomeIcon.BOOK_DEAD_SOLID.create()));
+            nav.addItem(new SideNavItem("Administrar Usuarios", adminUsersView.class, LineAwesomeIcon.USERS_SOLID.create()));
         }
         return nav;
     }
@@ -141,9 +142,6 @@ public class MainLayout extends AppLayout {
             userName.add(div);
             userName.getSubMenu().addItem("Sign out", e -> {
                 authenticatedUser.logout();
-            });
-            userName.getSubMenu().addItem("Editar usuario", e -> {
-                UI.getCurrent().navigate("perfil");
             });
             layout.add(userMenu);
         } else {
