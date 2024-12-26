@@ -5,7 +5,7 @@ import projectum.security.RolRestrictions.RoleRestrictedView;
 import projectum.data.Rol;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -26,7 +26,7 @@ public class formOTView extends VerticalLayout implements RoleRestrictedView {
     }
 
     public formOTView(){
-        Label label = new Label("10 PREGUNTAS A 10 PUNTOS CADA UNA PARA UN TOTAL DE 100");
+        Span label = new Span("10 PREGUNTAS A 10 PUNTOS CADA UNA PARA UN TOTAL DE 100");
         label.getStyle().set("font-size", "18px").set("font-weight", "bold");
         // Crear campos
         TextField pregunta1 = new TextField("¿En qué medida la solución propuesta cumple con los requisitos funcionales establecidos?");
