@@ -28,6 +28,7 @@ import projectum.vistas.HomePage.CioHomePageView;
 import projectum.vistas.HomePage.HomePageView;
 import projectum.vistas.HomePage.OTHomePageView;
 import projectum.vistas.adminUsers.adminUsersView;
+import projectum.vistas.formCIO.formCIOView;
 import projectum.vistas.formOT.formOTView;
 import projectum.vistas.formularioProyecto.formProyectoView;
 import projectum.vistas.proyectos.ProyectosView;
@@ -102,6 +103,11 @@ public class MainLayout extends AppLayout {
         if (accessChecker.hasAccess(formOTView.class)) {
             nav.addItem(new SideNavItem("Formulario OT", formOTView.class, LineAwesomeIcon.LIST_SOLID.create()));
         }
+
+        if (accessChecker.hasAccess(formCIOView.class)) {
+            nav.addItem(new SideNavItem("Formulario CIO", formCIOView.class, LineAwesomeIcon.LIST_SOLID.create()));
+        }
+
         if (accessChecker.hasAccess(SobreNosotrosView.class)) {
             nav.addItem(new SideNavItem("Sobre Nosotros", SobreNosotrosView.class, LineAwesomeIcon.INFO_CIRCLE_SOLID.create()));
         }

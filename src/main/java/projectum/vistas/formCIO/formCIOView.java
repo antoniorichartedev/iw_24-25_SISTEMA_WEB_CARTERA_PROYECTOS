@@ -4,7 +4,7 @@ import projectum.security.RolRestrictions.RoleRestrictedView;
 import projectum.data.Rol;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -25,10 +25,10 @@ public class formCIOView extends VerticalLayout implements RoleRestrictedView {
         return Rol.CIO;
     }
     public formCIOView(){
-        Label label = new Label("20 PREGUNTAS QUE VALEN 5 PUNTOS CADA UNA, SE VALORA EN 100 PUNTOS");
+        Span label = new Span("20 PREGUNTAS QUE VALEN 5 PUNTOS CADA UNA, SE VALORA EN 100 PUNTOS");
         label.getStyle().set("font-size", "18px").set("font-weight", "bold");
 
-        Label label1 = new Label("Necesidad y urgencia");
+        Span label1 = new Span("Necesidad y urgencia");
         label1.getStyle().set("font-size", "15px").set("font-weight", "bold");
 
         // Crear campos
@@ -38,7 +38,7 @@ public class formCIOView extends VerticalLayout implements RoleRestrictedView {
         TextField pregunta2 = new TextField("¿Cómo de importante es para la universidad cubrir esta necesidad?");
         pregunta2.setWidth("100%");
 
-        Label label2 = new Label("Requisitos PUCA");
+        Span label2 = new Span("Requisitos PUCA");
         label2.getStyle().set("font-size", "15px").set("font-weight", "bold");
 
         TextField pregunta3 = new TextField("¿Qué tan alineado está este proyecto con la necesidad de innovar, rediseñar o actualizar la oferta formativa?");
@@ -56,7 +56,7 @@ public class formCIOView extends VerticalLayout implements RoleRestrictedView {
         TextField pregunta7 = new TextField("¿Qué tan bien promueve el proyecto la transparencia en la universidad?");
         pregunta7.setWidth("100%");
 
-        Label label3 = new Label("Impacto y beneficios");
+        Span label3 = new Span("Impacto y beneficios");
         label3.getStyle().set("font-size", "15px").set("font-weight", "bold");
 
         TextField pregunta8 = new TextField("¿Cómo de positivo será el impacto del proyecto sobre las unidades afectadas?");
@@ -71,7 +71,7 @@ public class formCIOView extends VerticalLayout implements RoleRestrictedView {
         TextField pregunta11 = new TextField("¿Qué tanto mejorará la experiencia de los integrantes de la universidad?");
         pregunta11.setWidth("100%");
 
-        Label label4 = new Label("Riesgos y complejidad");
+        Span label4 = new Span("Riesgos y complejidad");
         label4.getStyle().set("font-size", "15px").set("font-weight", "bold");
 
         TextField pregunta12 = new TextField("¿Cómo de complejos son los elementos técnicos del proyecto?");
@@ -89,7 +89,7 @@ public class formCIOView extends VerticalLayout implements RoleRestrictedView {
         TextField pregunta16 = new TextField("¿Qué tan sostenible es el mantenimiento a largo plazo del proyecto?");
         pregunta16.setWidth("100%");
 
-        Label label5 = new Label("Memorias e hitos");
+        Span label5 = new Span("Memorias e hitos");
         label5.getStyle().set("font-size", "15px").set("font-weight", "bold");
 
         TextField pregunta17 = new TextField("¿Cómo de claros y medibles son los indicadores de éxito?");
