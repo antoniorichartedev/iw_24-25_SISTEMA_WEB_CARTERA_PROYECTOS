@@ -38,6 +38,10 @@ public class PromotorService {
     public void deletePromotor(UUID id) {
         promotorRepository.deleteById(id);
     }
+
+    public Optional<Promotor> findPromotorByNombre(String nombre) { return promotorRepository.findByNombre(nombre); }
+
+    public Optional<Promotor> findPromotorByCorreo(String correo) { return promotorRepository.findByCorreo(correo); }
 /*
     public List<Usuario> recogerPromotoresWeb() {
         String url = "https://e608f590-1a0b-43c5-b363-e5a883961765.mock.pstmn.io/sponsors";

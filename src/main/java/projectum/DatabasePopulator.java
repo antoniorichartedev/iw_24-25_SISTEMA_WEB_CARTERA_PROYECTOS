@@ -94,7 +94,7 @@ public class DatabasePopulator implements CommandLineRunner {
             pr.setJustificacion("No hay");
             pr.setAlcance("Trebujena");
             pr.setMemorias(null);
-            pr.setImporancia(2);
+            pr.setImportancia(2);
             pr.setFinanciacion(BigDecimal.valueOf(33.33));
             pr.setPuestaMarcha(new Date());
             pr.setInteresado("admin");

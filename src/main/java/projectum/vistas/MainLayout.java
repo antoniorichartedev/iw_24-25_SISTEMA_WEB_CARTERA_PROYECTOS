@@ -1,6 +1,7 @@
 package projectum.vistas;
 
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 import projectum.data.entidades.Usuario;
 import projectum.security.login.AuthenticatedUser;
@@ -154,7 +155,7 @@ public class MainLayout extends AppLayout {
             div.getElement().getStyle().set("align-items", "center");
             div.getElement().getStyle().set("gap", "var(--lumo-space-s)");
             userName.add(div);
-            userName.getSubMenu().addItem("Sign out", e -> {
+            userName.getSubMenu().addItem("Cerrar sesión", e -> {
                 authenticatedUser.logout();
             });
             layout.add(userMenu);
@@ -177,4 +178,5 @@ public class MainLayout extends AppLayout {
     private String getCurrentPageTitle() {
         return MenuConfiguration.getPageHeader(getContent()).orElse("");
     }
+
 }

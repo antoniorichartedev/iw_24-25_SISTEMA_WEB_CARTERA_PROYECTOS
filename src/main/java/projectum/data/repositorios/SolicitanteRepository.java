@@ -9,4 +9,5 @@ import java.util.UUID;
 //Repositorio CRUD para el manejo de datos en la base de datos.
 public interface SolicitanteRepository extends CrudRepository<Solicitante, UUID> {
     Optional<Solicitante> findByUsername(String username);
+    Optional<Solicitante> findByCorreo(String correo);
 }

@@ -20,15 +20,23 @@ public class Proyecto {
     @Column(name = "acronimo",nullable = false)
     private String acronimo;
 
-    @Column(name = "justificacion",nullable = false)
+    @Column(name = "justificacion", nullable = false, columnDefinition = "VARCHAR(1000)")
     private String justificacion;
 
     @Column(name = "alcance",nullable = false)
     private String alcance;
 
-
-    @Column(name = "memorias") // Almacenar archivos o grandes datos binarios
+    @Lob // Para grandes archivos.
+    @Column(name = "memorias", columnDefinition = "LONGBLOB") // Almacenar archivos o grandes datos binarios
     private byte[] memorias;
+
+    @Lob
+    @Column(name = "presupuestos", columnDefinition = "LONGBLOB") // Almacenar archivos o grandes datos binarios
+    private byte[] presupuestos;
+
+    @Lob
+    @Column(name = "especificaciones_tecnicas", columnDefinition = "LONGBLOB") // Almacenar archivos o grandes datos binarios
+    private byte[] especificaciones;
 
     @Column(name = "importancia",nullable = false)
     private int importancia;
@@ -79,7 +87,7 @@ public class Proyecto {
     public void setAlcance(String alcance) { this.alcance = alcance; }
 
     public int getImportancia() { return importancia; }
-    public void setImporancia(int importancia) { this.importancia = importancia; }
+    public void setImportancia(int importancia) { this.importancia = importancia; }
 
     public Solicitante getSolicitante() { return solicitante; }
     public void setSolicitante(Solicitante soli) { this.solicitante = soli; }
@@ -89,6 +97,12 @@ public class Proyecto {
 
     public byte[] getMemorias() { return memorias; }
     public void setMemorias(byte[] memorias) { this.memorias = memorias; }
+
+    public byte[] getPresupuestos() { return presupuestos; }
+    public void setPresupuestos(byte[] presupuestos) { this.presupuestos = presupuestos; }
+
+    public byte[] getEspecificaciones() { return especificaciones; }
+    public void setEspecificaciones(byte[] especificaciones) { this.especificaciones = especificaciones; }
 
     public Date getPuestaMarcha() { return puestaMarcha; }
     public void setPuestaMarcha(Date puestaMarcha) { this.puestaMarcha = puestaMarcha; }
