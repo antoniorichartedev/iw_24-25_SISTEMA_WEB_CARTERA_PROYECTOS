@@ -1,11 +1,9 @@
 package projectum.vistas.formularioProyecto;
 import jakarta.annotation.security.RolesAllowed;
-import projectum.data.entidades.Promotor;
 import projectum.data.entidades.Proyecto;
-import projectum.data.entidades.Solicitante;
-import projectum.data.servicios.PromotorService;
+import projectum.data.entidades.Usuario;
 import projectum.data.servicios.ProyectoService;
-import projectum.data.servicios.SolicitanteService;
+import projectum.data.servicios.UsuarioService;
 import projectum.security.RolRestrictions.RoleRestrictedView;
 import projectum.data.Rol;
 import com.vaadin.flow.component.button.Button;
@@ -41,14 +39,13 @@ public class formProyectoView extends VerticalLayout implements RoleRestrictedVi
         return Rol.USER;
     }
 
-    private SolicitanteService solicitanteService;
-    private PromotorService promotorService;
-    private ProyectoService proyectoService;
+    private final UsuarioService usuarioService;
+    private final ProyectoService proyectoService;
 
-    public formProyectoView(SolicitanteService solicitanteService, PromotorService promotorService, ProyectoService proyectoService) {
-        this.solicitanteService = solicitanteService;
-        this.promotorService = promotorService;
+    public formProyectoView(UsuarioService usuarioService, ProyectoService proyectoService) {
+
         this.proyectoService = proyectoService;
+        this.usuarioService = usuarioService;
 
         //Informacion del proyecto
         Span labelProyecto = new Span("Información del Proyecto");
@@ -238,10 +235,10 @@ public class formProyectoView extends VerticalLayout implements RoleRestrictedVi
             }
 
             // Información del solicitante.
-            Optional<Solicitante> sol = solicitanteService.findSolicitanteByCorreo(correoSolicitante.getValue());
+            Optional<Usuario> sol = usuarioService.loadUserByCorreo(correoSolicitante.getValue());
 
             // Información del Promotor.
-            Optional<Promotor> prom = promotorService.findPromotorByCorreo(correopromotor.getValue());
+            Optional<Usuario> prom = usuarioService.loadUserByCorreo(correopromotor.getValue());
 
             // Si tanto como el solicitante como el promotor existen en la base de datos, entonces los asociamos al proyecto.
             if (sol.isPresent() && prom.isPresent()) {

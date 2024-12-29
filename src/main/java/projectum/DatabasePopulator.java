@@ -4,7 +4,6 @@ import com.github.javafaker.Faker;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import projectum.data.entidades.*;
-import projectum.data.servicios.PromotorService;
 import projectum.data.servicios.UsuarioService;
 import projectum.data.Rol;
 import projectum.data.servicios.ProyectoService;
@@ -17,16 +16,13 @@ import java.util.Date;
 @Component
 public class DatabasePopulator implements CommandLineRunner {
 
-    UsuarioService userService;
+    private final UsuarioService userService;
+    private final ProyectoService proyectService;
 
-    ProyectoService proyectService;
 
-    private final PromotorService promotorService;
-
-    public DatabasePopulator(UsuarioService userService, ProyectoService proyectService, PromotorService promotorService) {
+    public DatabasePopulator(UsuarioService userService, ProyectoService proyectService) {
         this.proyectService = proyectService;
         this.userService = userService;
-        this.promotorService = promotorService;
     }
 
     @Override
@@ -46,7 +42,7 @@ public class DatabasePopulator implements CommandLineRunner {
             userService.activarUsuario(user.getCorreo(), user.getCodigoRegistro());
             System.out.println("Admin created");
 
-            CIO cio = new CIO();
+            Usuario cio = new Usuario();
             cio.setNombre("CIO");
             cio.setUsername("cioXulo");
             cio.setPassword("cio");
@@ -66,18 +62,18 @@ public class DatabasePopulator implements CommandLineRunner {
             userService.activarUsuario(ot.getCorreo(), ot.getCodigoRegistro());
             System.out.println("Oficina Técnica created");
 
-            Solicitante sol = new Solicitante();
+            Usuario sol = new Usuario();
             sol.setNombre("Solicitante");
             sol.setUsername("solicitanteXulo");
             sol.setPassword("solicitante");
             sol.setUnidadSolicitante("Mi unidad");
             sol.setCorreo("solicitante@uca.es");
-            sol.setRol(Rol.SOLICITANTE);
+            sol.setRol(Rol.USER);
             userService.RegistrarUsuario(sol);
             userService.activarUsuario(sol.getCorreo(), sol.getCodigoRegistro());
             System.out.println("Solicitante created");
 
-            Promotor promo = new Promotor();
+            Usuario promo = new Usuario();
             promo.setNombre("Promotor");
             promo.setUsername("promotorXulo");
             promo.setPassword("promotor");
@@ -100,8 +96,8 @@ public class DatabasePopulator implements CommandLineRunner {
             pr.setInteresado("admin");
 
             // Rescatamos de nuevo el promotor y el solicitante del proyecto de ejemplo.
-            promo = (Promotor) userService.loadUserByUsername(promo.getUsername());
-            sol = (Solicitante) userService.loadUserByUsername(sol.getUsername());
+            promo = userService.loadUserByUsername(promo.getUsername());
+            sol = userService.loadUserByUsername(sol.getUsername());
 
             if(promo != null && sol != null) {
                 pr.setPromotor(promo);

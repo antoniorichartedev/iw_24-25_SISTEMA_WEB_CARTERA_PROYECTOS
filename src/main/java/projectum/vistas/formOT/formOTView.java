@@ -13,6 +13,15 @@ import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
+import projectum.data.servicios.FormularioService;
+import projectum.data.servicios.ProyectoService;
+import projectum.data.servicios.UsuarioService;
+import projectum.security.login.AuthenticatedUser;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
+import projectum.data.entidades.Formulario;
+import projectum.data.entidades.Proyecto;
+import projectum.data.entidades.Usuario;
 
 @PageTitle("Oficina Técnica Formulario")
 @Route("formOT")
@@ -20,60 +29,106 @@ import org.vaadin.lineawesome.LineAwesomeIconUrl;
 @RolesAllowed("OT")
 public class formOTView extends VerticalLayout implements RoleRestrictedView {
 
+    private final UsuarioService usuarioService;
+
     @Override
     public Rol getRequiredRole() {
         return Rol.OT;
     }
 
-    public formOTView(){
+    private AuthenticatedUser authenticatedUser;
+    private FormularioService formularioService;
+    private ProyectoService proyectoService;
+
+    // Puntuación que vamos a ir acumulando por cada pregunta respondida.
+    AtomicInteger finalPuntuacionMax = new AtomicInteger(0);
+
+    // Método auxiliar para configurar preguntas y actualizar la puntuación
+    private TextField crearPregunta(String textoPregunta, AtomicInteger puntuacionMax) {
+        TextField pregunta = new TextField(textoPregunta);
+        pregunta.setWidth("100%");
+        pregunta.addValueChangeListener(event -> {
+            try {
+                // Convertimos el valor ingresado a un entero.
+                int valor = Integer.parseInt(event.getValue());
+
+                // Actualizamos la puntuación acumulada.
+                puntuacionMax.set(puntuacionMax.get() + valor);
+
+                // Opcional: Mostrar en consola para depuración.
+                System.out.println("Puntuación acumulada: " + puntuacionMax.get());
+            } catch (NumberFormatException e) {
+                Notification.show("Por favor, introduce un número válido en: " + textoPregunta);
+            }
+        });
+        return pregunta;
+    }
+
+    public formOTView(AuthenticatedUser authenticatedUser, FormularioService formularioService, UsuarioService usuarioService, ProyectoService proyectoService) {
+        this.authenticatedUser = authenticatedUser;
+        this.formularioService = formularioService;
+        this.proyectoService = proyectoService;
+        this.usuarioService = usuarioService;
+
         Span label = new Span("10 PREGUNTAS A 10 PUNTOS CADA UNA PARA UN TOTAL DE 100");
         label.getStyle().set("font-size", "18px").set("font-weight", "bold");
-        // Crear campos
-        TextField pregunta1 = new TextField("¿En qué medida la solución propuesta cumple con los requisitos funcionales establecidos?");
-        pregunta1.setWidth("100%");
 
-        TextField pregunta2 = new TextField("¿Qué tan fácil será mantener y actualizar la solución en el futuro?");
-        pregunta2.setWidth("100%");
+        TextField txtproy = new TextField("Título del proyecto");
 
-        TextField pregunta3 = new TextField("¿Qué tan bien se adapta la solución para ser utilizada en diferentes entornos tecnológicos o plataformas? ");
-        pregunta3.setWidth("100%");
+        // Creamos las preguntas
+        TextField pregunta1 = crearPregunta("¿En qué medida la solución propuesta cumple con los requisitos funcionales establecidos?", finalPuntuacionMax);
+        TextField pregunta2 = crearPregunta("¿Qué tan fácil será mantener y actualizar la solución en el futuro?", finalPuntuacionMax);
+        TextField pregunta3 = crearPregunta("¿Qué tan bien se adapta la solución para ser utilizada en diferentes entornos tecnológicos o plataformas?", finalPuntuacionMax);
+        TextField pregunta4 = crearPregunta("¿Qué tan eficiente es la solución en términos de uso de recursos (memoria, tiempo de respuesta, carga del sistema)?", finalPuntuacionMax);
+        TextField pregunta5 = crearPregunta("¿Qué tan compatible es la solución con otros sistemas o aplicaciones existentes en la universidad?", finalPuntuacionMax);
+        TextField pregunta6 = crearPregunta("¿Qué tan segura es la solución frente a amenazas externas o internas, como ciberataques o fugas de datos?", finalPuntuacionMax);
+        TextField pregunta7 = crearPregunta("¿Qué tan adecuada y efectiva es la garantía ofrecida por el fabricante o proveedor en cuanto a la duración y cobertura?", finalPuntuacionMax);
+        TextField pregunta8 = crearPregunta("¿Qué tan satisfactorio es el soporte técnico ofrecido por el proveedor en términos de resolución de problemas?", finalPuntuacionMax);
+        TextField pregunta9 = crearPregunta("¿Qué tan completa y útil es la documentación proporcionada por el fabricante o proveedor?", finalPuntuacionMax);
+        TextField pregunta10 = crearPregunta("¿Qué tan fácil es para los usuarios finales entender y usar la solución?", finalPuntuacionMax);
 
-        TextField pregunta4 = new TextField("¿Qué tan eficiente es la solución en términos de uso de recursos (memoria, tiempo de respuesta, carga del sistema)?");
-        pregunta4.setWidth("100%");
-
-        TextField pregunta5 = new TextField("¿Qué tan compatible es la solución con otros sistemas o aplicaciones existentes en la universidad?");
-        pregunta5.setWidth("100%");
-
-        TextField pregunta6 = new TextField("¿Qué tan segura es la solución frente a amenazas externas o internas, como ciberataques o fugas de datos?");
-        pregunta6.setWidth("100%");
-
-        TextField pregunta7 = new TextField("¿Qué tan adecuada y efectiva es la garantía ofrecida por el fabricante o proveedor en cuanto a la duración y cobertura? ");
-        pregunta7.setWidth("100%");
-
-        TextField pregunta8 = new TextField("¿Qué tan satisfactorio es el soporte técnico ofrecido por el proveedor en términos de resolución de problemas?");
-        pregunta8.setWidth("100%");
-
-        TextField pregunta9 = new TextField("¿Qué tan completa y útil es la documentación proporcionada por el fabricante o proveedor?");
-        pregunta9.setWidth("100%");
-
-        TextField pregunta10 = new TextField("¿Qué tan fácil es para los usuarios finales entender y usar la solución? ");
-        pregunta10.setWidth("100%");
-
-        // Botón para enviar
+        // Botón para guardar los datos
         Button guardar = new Button("Enviar", event -> {
-            Notification.show("Datos guardados");
+            try {
+                // Obtener el usuario autenticado
+                Optional<Usuario> opUsuario = authenticatedUser.get();
+
+                // Obtener el proyecto
+                Optional<Proyecto> proy = proyectoService.getProyectoByTitulo(txtproy.getValue());
+                if (opUsuario.isPresent() && opUsuario.get().getRol() == Rol.OT && proy.isPresent()) {
+                    Formulario form = new Formulario();
+
+                    // Guardar puntuación total
+                    form.setPuntuacion(finalPuntuacionMax.get());
+                    form.setOt(opUsuario.get());
+                    form.setProyecto(proy.get());
+
+                    // Guardar el formulario en la base de datos
+                    formularioService.saveFormulario(form);
+
+                    // Notificar al usuario
+                    Notification.show("Formulario guardado correctamente", 3500, Notification.Position.TOP_CENTER);
+                } else {
+                    Notification.show("No tienes permiso para realizar esta acción.", 3500, Notification.Position.TOP_CENTER);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Notification.show("Error al guardar el formulario.", 3500, Notification.Position.TOP_CENTER);
+            }
         });
 
-        //Scroll
-        Div formularioContainer = new Div(label, pregunta1, pregunta2, pregunta3, pregunta4, pregunta5, pregunta6, pregunta7, pregunta8, pregunta9, pregunta10, guardar);
-        formularioContainer.setWidth("100%");  // Aseguramos que el contenedor ocupe todo el ancho disponible
-        formularioContainer.getStyle().set("margin", "auto").set("padding", "20px");
-
-        //centrar formulario
-        formularioContainer.getStyle().set("display", "flex").set("flex-direction", "column")
+        // Crear contenedor para el formulario
+        Div formularioContainer = new Div(label, txtproy, pregunta1, pregunta2, pregunta3, pregunta4, pregunta5, pregunta6, pregunta7, pregunta8, pregunta9, pregunta10, guardar);
+        formularioContainer.setWidth("100%");
+        formularioContainer.getStyle()
+                .set("display", "flex")
+                .set("flex-direction", "column")
                 .set("align-items", "center")
                 .set("max-width", "800px")
-                .set("margin", "0 auto");
+                .set("margin", "0 auto")
+                .set("padding", "20px");
+
         add(formularioContainer);
     }
 }
+

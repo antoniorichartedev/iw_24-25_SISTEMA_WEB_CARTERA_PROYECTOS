@@ -21,7 +21,6 @@ public class ProyectoService {
         proyectoRepository.save(proyecto);
     }
 
-
     public List<Proyecto> getAllProyectos() {
         return (List<Proyecto>) proyectoRepository.findAll();
     }
@@ -29,6 +28,8 @@ public class ProyectoService {
     public Optional<Proyecto> getProyectoById(UUID id) {
         return proyectoRepository.findById(id);
     }
+
+    public Optional<Proyecto> getProyectoByTitulo(String nombre) { return proyectoRepository.findByTitulo(nombre); }
 
     public Proyecto saveProyecto(Proyecto proyecto) {
         return proyectoRepository.save(proyecto);
@@ -41,4 +42,5 @@ public class ProyectoService {
     public List<Proyecto> getProyectosBySolicitante(UUID solicitanteId) {
         return proyectoRepository.findBySolicitanteId(solicitanteId);
     }
+
 }

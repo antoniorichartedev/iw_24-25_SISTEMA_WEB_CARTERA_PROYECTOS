@@ -1,12 +1,16 @@
 package projectum.data.servicios;
 
+import jakarta.persistence.Transient;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectum.data.Rol;
+import projectum.data.entidades.Formulario;
 import projectum.data.entidades.Usuario;
+import projectum.data.repositorios.FormularioRepository;
 import projectum.data.repositorios.UsuarioRepository;
 
 import java.util.List;
@@ -19,12 +23,14 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final CorreoService correoService;
     private final PasswordEncoder passwordEncoder;
+    private final FormularioRepository formularioRepository;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository, CorreoService correoService, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository, CorreoService correoService, PasswordEncoder passwordEncoder, FormularioRepository formularioRepository) {
         this.usuarioRepository = usuarioRepository;
         this.correoService = correoService;
         this.passwordEncoder = passwordEncoder;
+        this.formularioRepository = formularioRepository;
     }
 
     public long count(){ return usuarioRepository.count(); }
@@ -94,6 +100,7 @@ public class UsuarioService {
             usuarioExistente.get().setNombre(usuario.getNombre());
             usuarioExistente.get().setUsername(usuario.getUsername());
             usuarioExistente.get().setHashedPassword(passwordEncoder.encode(usuario.getPassword()));
+
             usuarioRepository.save(usuarioExistente.get());
             return true;
         }
@@ -101,5 +108,6 @@ public class UsuarioService {
         // Si resulta ser que no existe, pues devolvemos false porque no podemos modificar un usuario que no existe.
         return false;
     }
+
 
 }

@@ -76,7 +76,7 @@ public class LogInView extends LoginOverlay implements BeforeEnterObserver {
             case CIO -> jumpPage = HOME_CIO;
             case ADMIN -> jumpPage = HOME_ADMIN;
             case OT -> jumpPage = HOME_OT;
-            case USER,SOLICITANTE -> jumpPage = PROYECTOS;
+            case USER -> jumpPage = PROYECTOS;
             default -> {
                 // Loggear roles inesperados para diagnóstico
                 Logger.getLogger(getClass().getName())

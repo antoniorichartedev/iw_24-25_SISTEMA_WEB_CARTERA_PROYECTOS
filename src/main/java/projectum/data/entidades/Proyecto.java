@@ -1,6 +1,8 @@
 package projectum.data.entidades;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,6 +14,7 @@ public class Proyecto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JdbcTypeCode(SqlTypes.CHAR)
     private UUID id = UUID.randomUUID();
 
     @Column(name = "titulo",nullable = false)
@@ -52,11 +55,11 @@ public class Proyecto {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "solicitante_id", nullable = false)
-    private Solicitante solicitante;
+    private Usuario solicitante;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "promotor_id", nullable = false)
-    private Promotor promotor;
+    private Usuario promotor;
 
     public Proyecto() {
     }
@@ -89,8 +92,8 @@ public class Proyecto {
     public int getImportancia() { return importancia; }
     public void setImportancia(int importancia) { this.importancia = importancia; }
 
-    public Solicitante getSolicitante() { return solicitante; }
-    public void setSolicitante(Solicitante soli) { this.solicitante = soli; }
+    public Usuario getSolicitante() { return solicitante; }
+    public void setSolicitante(Usuario soli) { this.solicitante = soli; }
 
     public BigDecimal getFinanciacion() { return financiacion; }
     public void setFinanciacion(BigDecimal financiacion) { this.financiacion = financiacion; }
@@ -110,6 +113,6 @@ public class Proyecto {
     public void setInteresado(String interesado) { this.interesado = interesado; }
     public String getInteresado() { return interesado; }
 
-    public Promotor getPromotor() { return promotor; }
-    public void setPromotor(Promotor promotor) { this.promotor = promotor; }
+    public Usuario getPromotor() { return promotor; }
+    public void setPromotor(Usuario promotor) { this.promotor = promotor; }
 }

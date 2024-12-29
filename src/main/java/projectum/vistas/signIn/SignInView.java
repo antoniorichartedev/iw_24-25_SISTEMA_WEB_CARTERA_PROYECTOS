@@ -12,6 +12,7 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.UI;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import projectum.data.entidades.Usuario;
 import projectum.data.servicios.UsuarioService;
 
@@ -22,10 +23,12 @@ public class SignInView extends VerticalLayout {
 
     // Necesario para poder registrar al usuario.
     private final UsuarioService usuarioService;
+    private final PasswordEncoder passwordEncoder;
 
-    public SignInView(UsuarioService usuarioService) {
+    public SignInView(UsuarioService usuarioService, PasswordEncoder passwordEncoder) {
 
         this.usuarioService = usuarioService;
+        this.passwordEncoder = passwordEncoder;
 
         H1 title = new H1("Registrarse");
         title.getStyle().set("color", "blue");

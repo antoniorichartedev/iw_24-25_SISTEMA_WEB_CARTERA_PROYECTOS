@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 // Necesario importarlas explícitamente, ya que no están en el JPA.
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -35,7 +36,7 @@ public class Usuario implements UserDetails {
     @Column(nullable = false)
     private String correo;
 
-    @Column(name = "contraseña", nullable = false)
+    @Transient
     private String contrasena;
 
     @Column(name = "rol")
@@ -49,12 +50,45 @@ public class Usuario implements UserDetails {
 
     private String hashedPassword;
 
+    // Relación que tiene con Formulario pero de la OT.
+    @OneToMany(mappedBy = "ot", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<Formulario> formulariosOT = new ArrayList<Formulario>();
+
+    public List<Formulario> getFormulariosOT() { return formulariosOT; }
+    public void setFormularioOT(Formulario formulario) {
+        this.formulariosOT.add(formulario);
+    }
+
+    // Relación que tiene con Formulario pero del CIO.
+    @OneToMany(mappedBy = "cio", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<Formulario> formulariosCIO = new ArrayList<Formulario>();
+
+    public List<Formulario> getFormulariosCIO() { return formulariosCIO; }
+    public void setFormularioCIO(Formulario formulario) {
+        this.formulariosCIO.add(formulario);
+    }
+
+    /* RELACIONES COMO SOLICITANTE */
+    @Column(name = "unidadSolicitante",nullable = true)
+    private String unidadSolicitante;
+
+    @OneToMany(mappedBy = "solicitante", cascade = CascadeType.ALL)
+    private List<Proyecto> proyectosSol = new ArrayList<Proyecto>();
+
+    /* RELACIONES COMO PROMOTOR */
+    @Column(name = "cargo", nullable = true)
+    private String cargo;
+
+    @OneToMany(mappedBy = "promotor", cascade = CascadeType.ALL)
+    private List<Proyecto> proyectosProm = new ArrayList<Proyecto>();
+
     // Ctor.
     public Usuario(String nombre, String username, String correo, String password){
         this.nombre = nombre;
         this.username = username;
         this.correo = correo;
         this.contrasena = password;
+
     }
 
     // Ctor. predeterminado necesario, requerido por JPA.
@@ -74,7 +108,26 @@ public class Usuario implements UserDetails {
     public Rol getRol() { return rol; }
     public boolean getEstado() { return estado; }
     public String getCodigoRegistro() { return this.codigoRegistro; }
+    public String getUnidadSolicitante() { return unidadSolicitante; }
+    public List<Proyecto> getProyectosSolicitante() { return proyectosSol; }
+    public String getCargo() { return cargo; }
+    public List<Proyecto> getProyectosPromotor() { return proyectosProm; }
 
+    public void setCargo(String cargo) { this.cargo = cargo; }
+    public void setUnidadSolicitante(String unidadSolicitante) { this.unidadSolicitante = unidadSolicitante; }
+
+    public void setProyectoSol(Proyecto proyecto) {
+        if(!this.proyectosSol.contains(proyecto)) {
+            this.proyectosSol.add(proyecto);
+            proyecto.setSolicitante(this);
+        }
+    }
+    public void setProyectoProm(Proyecto proyecto) {
+        if(!this.proyectosProm.contains(proyecto)) {
+            this.proyectosProm.add(proyecto);
+            proyecto.setPromotor(this);
+        }
+    }
     public void setId(UUID id) { this.id = id; }
     public void setUsername(String username) { this.username = username; }
     public void setNombre(String nombre) {
