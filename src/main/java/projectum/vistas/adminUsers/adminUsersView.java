@@ -1,5 +1,8 @@
 package projectum.vistas.adminUsers;
 
+import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.dialog.Dialog;
 import jakarta.annotation.security.RolesAllowed;
 import projectum.security.RolRestrictions.RoleRestrictedView;
 import projectum.data.entidades.Usuario;
@@ -16,6 +19,8 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 import org.springframework.beans.factory.annotation.Autowired;
 import projectum.vistas.MainLayout;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.notification.Notification;
 
 @PageTitle("Administrar Usuarios")
 @Route(value = "adminUsers", layout = MainLayout.class)
@@ -26,7 +31,7 @@ public class adminUsersView extends Composite<VerticalLayout> implements RoleRes
         return Rol.ADMIN;
     }
 
-    public adminUsersView (UsuarioService usuarioService){
+    public adminUsersView(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
 
         HorizontalLayout layoutRow = new HorizontalLayout();
@@ -41,6 +46,36 @@ public class adminUsersView extends Composite<VerticalLayout> implements RoleRes
         stripedGrid.addColumn(Usuario::getCorreo).setHeader("Correo").setSortable(true);
         stripedGrid.addColumn(usuario -> usuario.getRol().toString()).setHeader("Rol");
         stripedGrid.addColumn(usuario -> usuario.getEstado() ? "Activo" : "Inactivo").setHeader("Estado");
+
+        // Agregar columna para el botón de eliminar
+        stripedGrid.addComponentColumn(usuario -> {
+            Button borrarUsuario = new Button("Eliminar");
+            borrarUsuario.getStyle().set("color", "red");
+
+            // Crear el diálogo de confirmación
+            Dialog confirmDialog = new Dialog();
+            confirmDialog.setHeaderTitle("Confirmación");
+            confirmDialog.add(new Text("¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer."));
+
+            // Botón para confirmar la eliminación
+            Button confirmButton = new Button("Confirmar", event -> {
+                usuarioService.delete(usuario.getId());
+                stripedGrid.setItems(usuarioService.getAllUsuarios());
+                Notification.show("El usuario ha sido eliminado con éxito");
+                confirmDialog.close();
+            });
+
+            // Botón para cancelar la acción
+            Button cancelButton = new Button("Cancelar", event -> confirmDialog.close());
+
+            HorizontalLayout dialogButtons = new HorizontalLayout(confirmButton, cancelButton);
+            dialogButtons.setSpacing(true);
+            confirmDialog.add(dialogButtons);
+
+            borrarUsuario.addClickListener(event -> confirmDialog.open());
+
+            return borrarUsuario;
+        }).setHeader("Acciones");
 
         // Configuración del diseño
         getContent().setWidth("100%");
@@ -65,10 +100,11 @@ public class adminUsersView extends Composite<VerticalLayout> implements RoleRes
         getContent().add(layoutColumn2);
         layoutColumn2.add(stripedGrid);
     }
+
     private void setGridSampleData(Grid<Usuario> grid) {
         grid.setItems(usuarioService.getAllUsuarios());
     }
 
-    @Autowired()
+    @Autowired
     private UsuarioService usuarioService;
 }

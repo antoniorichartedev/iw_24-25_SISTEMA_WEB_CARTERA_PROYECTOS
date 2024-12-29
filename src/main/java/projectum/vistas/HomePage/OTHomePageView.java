@@ -1,6 +1,8 @@
 package projectum.vistas.HomePage;
 
 
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -28,21 +30,31 @@ public class OTHomePageView extends VerticalLayout implements RoleRestrictedView
     public OTHomePageView() {
         H1 h1 = new H1();
         Paragraph textLarge = new Paragraph();
-        RouterLink routerLink = new RouterLink();
-
 
         h1.setText("Bienvenido de vuelta Oficina Tecnica");
         h1.setWidth("max-content");
         textLarge.setText("Aqui tiene todos los proyectos que no se han valorado todavia");
-        textLarge.setWidth("100%");
         textLarge.getStyle().set("font-size", "var(--lumo-font-size-xl)");
 
 
-        routerLink.setText("Avalar proyectos");
-        routerLink.setRoute(formOTView.class);
-        add(h1);
-        add(textLarge);
+        Button button = new Button("Avalar proyectos");
+        button.addClickListener(e -> {
+            UI.getCurrent().navigate("formOT");
+        });
 
-        add(routerLink);
+        button.getElement().addEventListener("mouseover", e -> {
+            button.getElement().getStyle()
+                    .set("background-color", "#FF8000")
+                    .set("color", "white");
+        });
+        button.getElement().addEventListener("mouseout", e -> {
+            button.getElement().getStyle()
+                    .remove("background-color")
+                    .remove("color");
+        });
+
+        add(h1, textLarge, button);
+
+        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
     }
 }

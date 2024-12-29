@@ -1,5 +1,7 @@
 package projectum.vistas.HomePage;
 
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -31,20 +33,29 @@ public class AdminHomePageView extends VerticalLayout implements RoleRestrictedV
 
         h1.setText("Bienvenido Administrador");
         h1.setWidth("max-content");
-        textLarge.setText("Selecciomne que desea gestionar.");
-        textLarge.setWidth("100%");
+        textLarge.setText("Seleccione que desea gestionar.");
         textLarge.getStyle().set("font-size", "var(--lumo-font-size-xl)");
 
-        HorizontalLayout hl1 = new HorizontalLayout();
-        RouterLink rl1 = new RouterLink("Gestionar Usuarios", adminUsersView.class);
-        //RouterLink rl2 = new RouterLink("Gestionar Proyectos", adminProjectView.class);
+        Button button = new Button("Gestionar Usuarios");
+        button.addClickListener(e -> {
+            UI.getCurrent().navigate("adminUsers");
+        });
 
-        hl1.add(rl1);
-        //hl1.add(rl2);
+        button.getElement().addEventListener("mouseover", e -> {
+            button.getElement().getStyle()
+                    .set("background-color", "#FF8000")
+                    .set("color", "white");
+        });
+        button.getElement().addEventListener("mouseout", e -> {
+            button.getElement().getStyle()
+                    .remove("background-color")
+                    .remove("color");
+        });
 
-        add(h1);
-        add(textLarge);
+        //pendiente añadir boton gestionar proyectos
 
-        add(hl1);
+        add(h1, textLarge, button);
+
+        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
     }
 }
