@@ -8,7 +8,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import projectum.data.entidades.Usuario;
-import projectum.data.servicios.CorreoService;
 import java.net.InetAddress;
 
 @Service
@@ -17,6 +16,12 @@ public class CorreoRealService implements CorreoService {
     // Usamos JavaMailSender para poder crear y enviar correos. Nos hace falta para poder crear y enviar el correo
     // de confirmación de cuenta.
     private final JavaMailSender mailSender;
+
+    @Value("${spring.mail.host}")
+    private String HOST;
+
+    @Value("${spring.mail.host}")
+    private String PORT;
 
     @Value("${spring.mail.username}")
     private String correoDefault;
@@ -28,42 +33,53 @@ public class CorreoRealService implements CorreoService {
         this.mailSender = mailSender;
     }
 
+    private String construirCuerpoCorreo(String tipo, Usuario usuario) {
+        String serverUrl = getServerUrl();
+        if ("registro".equals(tipo)) {
+            return "Bienvenido a Projectum!\n\n" +
+                    "Para activar tu cuenta, haz clic en el siguiente enlace:\n" +
+                    serverUrl + "/confirmar-correo\n\n" +
+                    "Código de activación: " + usuario.getCodigoRegistro();
+        } else if ("recuperacion".equals(tipo)) {
+            String token = generarTokenParaUsuario(usuario);
+            return "Hola " + usuario.getNombre() + ",\n\n" +
+                    "Para recuperar tu contraseña, haz clic en el siguiente enlace:\n" +
+                    serverUrl + "/recuperar?token=" + token + "\n\n" +
+                    "Si no solicitaste este correo, ignóralo.\n\nGracias.";
+        }
+        return "";
+    }
     // Generador de la URL del servidor.
     private String getServerUrl() {
-        String url = "http://" + InetAddress.getLoopbackAddress().getHostAddress() + ":" + serverPort + "/confirmar-correo";
-        return url;
+        return "http://" + InetAddress.getLoopbackAddress().getHostAddress() + ":" + serverPort + "/confirmar-correo";
     }
 
     @Override
     public boolean sendRegistrationCorreo(Usuario usuario) {
-        // Creamos un objeto de tipo MimeMessage, que viene a ser un correo en formato MIME.
+        return enviarCorreo(usuario, "registro", "Bienvenido a Projectum");
+    }
+
+    public boolean enviarCorreoRecuperacion(Usuario usuario) {
+        return enviarCorreo(usuario, "recuperacion", "Recuperación de contraseña");
+    }
+
+    private boolean enviarCorreo(Usuario usuario, String tipo, String asunto) {
         MimeMessage mensaje = mailSender.createMimeMessage();
-
-        // Con este objeto, podemos construir fácilmente el correo que queremos mandar.
-        MimeMessageHelper helper = new MimeMessageHelper(mensaje, "utf-8");
-
-        // Asunto del correo.
-        String asunto = "Bienvenido";
-
-        // Cuerpo del correo.
-        String cuerpo = "Para poder disfrutar de los servicios de Projectum, debes activar tu cuenta.\n" +
-                "Para ello, debes ir a este enlace: " + getServerUrl() + " y debes de introducir el siguiente código: "
-                + usuario.getCodigoRegistro();
-
-        // Procedemos a construir el correo.
         try {
+            MimeMessageHelper helper = new MimeMessageHelper(mensaje, "utf-8");
             helper.setFrom(correoDefault);
             helper.setTo(usuario.getCorreo());
             helper.setSubject(asunto);
-            helper.setText(cuerpo);
-
-            // Mandamos el correo.
-            this.mailSender.send(mensaje);
-        }catch (MailException | MessagingException ex) {
-            ex.printStackTrace();
+            helper.setText(construirCuerpoCorreo(tipo, usuario), false);
+            mailSender.send(mensaje);
+            return true;
+        } catch (MailException | MessagingException ex) {
             return false;
         }
+    }
 
-        return true;
+    private String generarTokenParaUsuario(Usuario usuario) {
+        // Podemos cambiar la lógica de generación de tokens de usuario
+        return java.util.UUID.randomUUID().toString();
     }
 }

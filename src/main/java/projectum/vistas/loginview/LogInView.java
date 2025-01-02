@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 @Route("login")
 @PageTitle("Iniciar Sesión")
 @AnonymousAllowed
-
 public class LogInView extends LoginOverlay implements BeforeEnterObserver {
 
     private final AuthenticatedUser authenticatedUser;
@@ -43,6 +42,7 @@ public class LogInView extends LoginOverlay implements BeforeEnterObserver {
         loginCustom.getForm().setUsername("Usuario");
         loginCustom.getForm().setPassword("Contraseña");
         loginCustom.getForm().setSubmit("Iniciar sesión");
+        loginCustom.getForm().setForgotPassword("¿Olvidaste tu contraseña?");
         setI18n(loginCustom);
 
         // Hacemos visible el botón de "¿olvidaste la contraseña?"
@@ -61,7 +61,7 @@ public class LogInView extends LoginOverlay implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<Usuario> opUsuario = authenticatedUser.get();
 
-        if (opUsuario.isPresent()) {
+        if (opUsuario.isPresent() && opUsuario.get().getRol() != null) {
             String targetPage = determineTargetPage(opUsuario.get());
             event.forwardTo(targetPage);
         } else {
