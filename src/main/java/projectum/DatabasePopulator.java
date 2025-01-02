@@ -3,6 +3,7 @@ package projectum;
 import com.github.javafaker.Faker;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import projectum.data.Estado;
 import projectum.data.entidades.*;
 import projectum.data.servicios.UsuarioService;
 import projectum.data.Rol;
@@ -94,6 +95,8 @@ public class DatabasePopulator implements CommandLineRunner {
             pr.setFinanciacion(BigDecimal.valueOf(33.33));
             pr.setPuestaMarcha(new Date());
             pr.setInteresado("admin");
+            pr.setEstado(Estado.en_desarrollo);
+            pr.setPriorizacion(5);
 
             // Rescatamos de nuevo el promotor y el solicitante del proyecto de ejemplo.
             promo = userService.loadUserByUsername(promo.getUsername());

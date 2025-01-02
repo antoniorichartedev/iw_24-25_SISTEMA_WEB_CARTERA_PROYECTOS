@@ -3,6 +3,7 @@ package projectum.data.entidades;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import projectum.data.Estado;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -61,6 +62,13 @@ public class Proyecto {
     @JoinColumn(name = "promotor_id", nullable = false)
     private Usuario promotor;
 
+    @Column(name = "priorizacion")
+    private int priorizacion;
+
+    @Column(name = "estado")
+    @Enumerated(EnumType.STRING)
+    private Estado estado;
+
     public Proyecto() {
     }
 
@@ -115,4 +123,15 @@ public class Proyecto {
 
     public Usuario getPromotor() { return promotor; }
     public void setPromotor(Usuario promotor) { this.promotor = promotor; }
+
+    public int getPriorizacion() { return priorizacion; }
+    public void setPriorizacion(int priorizacion) {
+        // La priorización va del 1 al 5 siendo el uno el más importante y el 5 el que menos.
+        if (priorizacion > 0 && priorizacion < 6) {
+            this.priorizacion = priorizacion;
+        }
+    }
+
+    public Estado getEstado() { return estado; }
+    public void setEstado(Estado estado) { this.estado = estado; }
 }

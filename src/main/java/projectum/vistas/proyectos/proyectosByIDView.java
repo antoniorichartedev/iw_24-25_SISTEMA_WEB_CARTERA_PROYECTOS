@@ -64,6 +64,8 @@ public class proyectosByIDView extends Composite<VerticalLayout> {
         grid.addColumn(Proyecto::getAcronimo).setHeader("Acrónimo");
         grid.addColumn(Proyecto::getJustificacion).setHeader("Justificación");
         grid.addColumn(Proyecto::getAlcance).setHeader("Alcance");
+        grid.addColumn(Proyecto::getPriorizacion).setHeader("Priorización");
+        grid.addColumn(proyecto -> proyecto.getEstado().toString()).setHeader("Estado");
         grid.addColumn(proyecto -> proyecto.getMemorias() != null
                 ? "Tiene memorias" : "Sin datos").setHeader("Memorias");
         grid.addColumn(Proyecto::getImportancia).setHeader("Importancia");

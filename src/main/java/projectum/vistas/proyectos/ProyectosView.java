@@ -1,6 +1,7 @@
 package projectum.vistas.proyectos;
 
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import projectum.data.Estado;
 import projectum.security.RolRestrictions.RoleRestrictedView;
 import projectum.data.entidades.Proyecto;
 import projectum.data.servicios.ProyectoService;
@@ -71,6 +72,25 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
             return span;
         }).setHeader("Alcance");
 
+        stripedGrid.addComponentColumn(proyecto -> {
+            Span span;
+            if(proyecto.getEstado() == Estado.en_desarrollo)
+            {
+                span = new Span("En desarrollo");
+                span.getElement().setAttribute("title", "En desarrollo");
+            }
+            else if(proyecto.getEstado() == Estado.sin_avalar)
+            {
+                span = new Span("Sin avalar");
+                span.getElement().setAttribute("title", "Sin avalar");
+            }
+            else {
+                span = new Span("Completado");
+                span.getElement().setAttribute("title", "Completado");
+            }
+            return span;
+        }).setHeader("Estado");
+
         stripedGrid.addColumn(proyecto -> {
             // Convertir bytes a base64 si están presentes
             byte[] memorias = proyecto.getMemorias();
@@ -80,6 +100,8 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
         stripedGrid.addColumn(Proyecto::getImportancia).setHeader("Importancia");
 
         stripedGrid.addColumn(Proyecto::getFinanciacion).setHeader("Financiación");
+
+        stripedGrid.addColumn(Proyecto::getPriorizacion).setHeader("Priorización");
 
         stripedGrid.addColumn(proyecto -> {
             // Formatear la fecha si está presente
