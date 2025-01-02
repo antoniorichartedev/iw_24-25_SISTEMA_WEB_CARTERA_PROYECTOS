@@ -1,4 +1,4 @@
-package projectum.vistas.ConfirmationEmailView;
+package projectum.vistas.ConfirmationEmail;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
@@ -12,8 +12,6 @@ import projectum.data.servicios.CorreoService;
 import projectum.data.servicios.UsuarioService;
 import projectum.security.login.AuthenticatedUser;
 import com.vaadin.flow.component.button.Button;
-
-import java.awt.*;
 
 @Route("confirmar-correo")
 @PageTitle("Confirmar correo")

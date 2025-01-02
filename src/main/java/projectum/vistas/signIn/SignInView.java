@@ -2,6 +2,7 @@ package projectum.vistas.signIn;
 
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -46,6 +47,31 @@ public class SignInView extends VerticalLayout {
         passwordField.setWidth("70%");
         PasswordField confirmPasswordField = new PasswordField("Confirmar contraseña");
         confirmPasswordField.setWidth("70%");
+
+        // Label para mostrar la fortaleza de la contraseña
+        Span passwordStrengthLabel = new Span("Fortaleza de la contraseña: ");
+        passwordStrengthLabel.getStyle()
+                .set("font-size", "14px")
+                .set("color", "#555");
+
+        // Listener para evaluar la fortaleza de la contraseña
+        passwordField.addValueChangeListener(e -> {
+            String password = e.getValue();
+            String strength = fortalezaContrasenna(password);
+            passwordStrengthLabel.setText("Fortaleza de la contraseña: " + strength);
+            switch (strength) {
+                case "Débil":
+                    passwordStrengthLabel.getStyle().set("color", "red");
+                    break;
+                case "Moderada":
+                    passwordStrengthLabel.getStyle().set("color", "orange");
+                    break;
+                case "Fuerte":
+                    passwordStrengthLabel.getStyle().set("color", "green");
+                    break;
+            }
+        });
+
 
         Button registerButton = new Button("Registrarse");
         registerButton.addClickListener(e -> {
@@ -108,8 +134,32 @@ public class SignInView extends VerticalLayout {
         setSizeFull(); // Asegura que el layout ocupe toda la pantalla
 
         // Añadir los componentes a la vista
-        add(title, subtitle, nameField, usernameField, emailField, passwordField, confirmPasswordField, registerButton);
+        add(title, subtitle, nameField, usernameField, emailField, passwordField, passwordStrengthLabel, confirmPasswordField, registerButton);
 
     }
 
+    // Método que nos permitirá saber como de fuerte es la contraseña que ha introducido el usuario en tiempo real.
+    private String fortalezaContrasenna(String password) {
+        int puntuacion = 0;
+
+        if (password.length() >= 8) puntuacion++;
+        if (password.matches(".*[A-Z].*")) puntuacion++;
+        if (password.matches(".*[a-z].*")) puntuacion++;
+        if (password.matches(".*\\d.*")) puntuacion++;
+        if (password.matches(".*[!@#$%^&*()-+].*")) puntuacion++;
+
+        switch (puntuacion) {
+            case 0:
+            case 1:
+            case 2:
+                return "Débil";
+            case 3:
+            case 4:
+                return "Moderada";
+            case 5:
+                return "Fuerte";
+            default:
+                return "Débil";
+        }
+    }
 }

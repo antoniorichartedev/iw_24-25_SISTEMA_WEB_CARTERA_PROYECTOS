@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @PageTitle("Formulario para un nuevo proyecto")
-@Route("formularioProyecto")
+@Route("newProyecto")
 @Menu(order = 4, icon = LineAwesomeIconUrl.INFO_CIRCLE_SOLID)
 @RolesAllowed({"USER", "SOLICITANTE"})
 public class formProyectoView extends VerticalLayout implements RoleRestrictedView {

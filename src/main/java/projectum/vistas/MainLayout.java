@@ -28,6 +28,7 @@ import com.vaadin.flow.server.menu.MenuConfiguration;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import projectum.vistas.HomePage.*;
 import projectum.vistas.adminUsers.adminUsersView;
+import projectum.vistas.faq.FAQView;
 import projectum.vistas.formCIO.formCIOView;
 import projectum.vistas.formOT.formOTView;
 import projectum.vistas.formularioProyecto.formProyectoView;
@@ -136,6 +137,9 @@ public class MainLayout extends AppLayout {
             nav.addItem(new SideNavItem("Sobre Nosotros", SobreNosotrosView.class, LineAwesomeIcon.INFO_CIRCLE_SOLID.create()));
         }
 
+        if (accessChecker.hasAccess(FAQView.class)) {
+            nav.addItem(new SideNavItem("FAQ", FAQView.class, LineAwesomeIcon.QUESTION_CIRCLE_SOLID.create()));
+        }
 
         return nav;
     }

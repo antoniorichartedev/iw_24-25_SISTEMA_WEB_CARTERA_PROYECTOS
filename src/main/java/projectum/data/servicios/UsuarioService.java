@@ -97,9 +97,17 @@ public class UsuarioService {
         // Comprobamos que el usuario existe para poder modificar sus parámetros.
         Optional<Usuario> usuarioExistente = usuarioRepository.findByCorreo(usuario.getCorreo());
         if(usuarioExistente.isPresent()) {
-            usuarioExistente.get().setNombre(usuario.getNombre());
-            usuarioExistente.get().setUsername(usuario.getUsername());
-            usuarioExistente.get().setHashedPassword(passwordEncoder.encode(usuario.getPassword()));
+            if(!usuario.getNombre().isEmpty()) {
+                usuarioExistente.get().setNombre(usuario.getNombre());
+            }
+
+            if(!usuario.getUsername().isEmpty()) {
+                usuarioExistente.get().setUsername(usuario.getUsername());
+            }
+
+            if(usuario.getPassword() != null) {
+                usuarioExistente.get().setHashedPassword(passwordEncoder.encode(usuario.getPassword()));
+            }
 
             usuarioRepository.save(usuarioExistente.get());
             return true;
