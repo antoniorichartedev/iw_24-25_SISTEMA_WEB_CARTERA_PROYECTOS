@@ -12,7 +12,15 @@ planificación estratégica y la optimización de recursos en el entorno académ
 - Antonio Richarte González
 
 ## Descripción de proyecto
+Projectum es una app realizada en `Java 23`, usando `Spring Framework` como backend y `Vaadin` como frontend. Haremos un deploy en `Amazon Web Service`, por lo que estará lista 
+para uso nada mas hagamos el deploy.
 
+## Estructura del proyecto
+- [Application.java](src/main/java/projectum/Application.java): Iniciaizador de la aplicación web.
+- [Security](src/main/java/projectum/security): Carpeta con toda la configuración de la seguridad.
+- [Vistas](src/main/java/projectum/vistas): Carpeta junto con todas las vistas de la aplicación.
+- [MainLayout](src/main/java/projectum/vistas/MainLayout) en la carpeta `projectum/vistas`: Estructura de cómo será la vista la aplicación por el usuario.
+- [Data](src/main/java/projectum/data): Carpeta que contiene `/entidades`, `/repositorios` y `/servicios` para la gestión de los datos de nuestra aplicación.
 
 
 ## Referencias Útiles
