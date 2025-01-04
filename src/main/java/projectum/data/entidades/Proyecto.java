@@ -85,6 +85,10 @@ public class Proyecto {
     }
 
     // Getters y Setters
+
+
+    public UUID getId() { return id; }
+
     public String getTitulo() { return titulo; }
     public void setTitulo(String title) { this.titulo = title; }
 

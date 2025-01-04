@@ -1,44 +1,41 @@
-package projectum.vistas.proyectos;
+package projectum.vistas.adminProjects;
 
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Span;
 import jakarta.annotation.security.RolesAllowed;
 import projectum.data.Estado;
 import projectum.security.RolRestrictions.RoleRestrictedView;
 import projectum.data.entidades.Proyecto;
 import projectum.data.servicios.ProyectoService;
-import projectum.data.Rol;
 import com.vaadin.flow.component.Composite;
-import com.vaadin.flow.component.dependency.Uses;
+import projectum.data.Rol;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.lineawesome.LineAwesomeIconUrl;
-import com.vaadin.flow.component.html.Span;
+import projectum.vistas.MainLayout;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.notification.Notification;
 
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 
-@PageTitle("Proyectos")
-@Route("proyectos")
-@Menu(order = 1, icon = LineAwesomeIconUrl.PENCIL_RULER_SOLID)
-@Uses(Icon.class)
-@RolesAllowed({"USER", "SOLICITANTE"})
-public class ProyectosView extends Composite<VerticalLayout> implements RoleRestrictedView {
-
+@PageTitle("Gestionar Proyectos")
+@Route(value = "adminProjects", layout = MainLayout.class)
+@RolesAllowed("CIO")
+public class gestionProyectosView extends Composite<VerticalLayout> implements RoleRestrictedView {
     @Override
     public Rol getRequiredRole() {
-        return null;
+        return Rol.ADMIN;
     }
 
-    public ProyectosView(ProyectoService proyectoService) {
+    public gestionProyectosView(ProyectoService proyectoService) {
         this.proyectoService = proyectoService;
 
         HorizontalLayout layoutRow = new HorizontalLayout();
@@ -47,8 +44,7 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
         Grid<Proyecto> stripedGrid = new Grid<>(Proyecto.class);
         stripedGrid.removeAllColumns();
 
-        // Agregar columnas para todos los campos de la clase Proyecto
-        // Mostrar string completo al poner el raton encima
+        // Agregar columnas para todos los campos relevantes de la clase Proyecto
         stripedGrid.addComponentColumn(proyecto -> {
             Span span = new Span(proyecto.getTitulo());
             span.getElement().setAttribute("title", proyecto.getTitulo());
@@ -92,11 +88,11 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
             return span;
         }).setHeader("Estado");
 
-        stripedGrid.addColumn(proyecto -> {
-            // Convertir bytes a base64 si están presentes
-            byte[] memorias = proyecto.getMemorias();
-            return memorias != null ? Base64.getEncoder().encodeToString(memorias) : "Sin datos";
-        }).setHeader("Memorias");
+        stripedGrid.addColumn(Proyecto::getImportancia).setHeader("Importancia");
+
+        stripedGrid.addColumn(Proyecto::getFinanciacion).setHeader("Financiación");
+
+        stripedGrid.addColumn(Proyecto::getPriorizacion).setHeader("Priorización");
 
         stripedGrid.addColumn(proyecto -> {
             // Formatear la fecha si está presente
@@ -124,6 +120,36 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
             span.getElement().setAttribute("title", promotor);
             return span;
         }).setHeader("Promotor");
+
+        // Agregar columna para el botón de eliminar
+        stripedGrid.addComponentColumn(proyecto -> {
+            Button borrarProyecto = new Button("Eliminar");
+            borrarProyecto.getStyle().set("color", "red");
+
+            // Crear el diálogo de confirmación
+            Dialog confirmDialog = new Dialog();
+            confirmDialog.setHeaderTitle("Confirmación");
+            confirmDialog.add(new Text("¿Estás seguro de que deseas eliminar este proyecto? Esta acción no se puede deshacer."));
+
+            // Botón para confirmar la eliminación
+            Button confirmButton = new Button("Confirmar", event -> {
+                proyectoService.deleteProyecto(proyecto.getId());
+                stripedGrid.setItems(proyectoService.getAllProyectos());
+                Notification.show("El proyecto ha sido eliminado con éxito");
+                confirmDialog.close();
+            });
+
+            // Botón para cancelar la acción
+            Button cancelButton = new Button("Cancelar", event -> confirmDialog.close());
+
+            HorizontalLayout dialogButtons = new HorizontalLayout(confirmButton, cancelButton);
+            dialogButtons.setSpacing(true);
+            confirmDialog.add(dialogButtons);
+
+            borrarProyecto.addClickListener(event -> confirmDialog.open());
+
+            return borrarProyecto;
+        }).setHeader("Acciones");
 
         // Configuración del diseño
         getContent().setWidth("100%");
@@ -153,6 +179,6 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
         grid.setItems(proyectoService.getAllProyectos());
     }
 
-    @Autowired()
+    @Autowired
     private ProyectoService proyectoService;
 }

@@ -113,6 +113,10 @@ public class MainLayout extends AppLayout {
             nav.addItem(new SideNavItem("Proyectos", ProyectosView.class, LineAwesomeIcon.BOOK_SOLID.create()));
         }
 
+        if (accessChecker.hasAccess(projectum.vistas.adminProjects.gestionProyectosView.class)) {
+            nav.addItem(new SideNavItem("Gestionar Proyectos", projectum.vistas.adminProjects.gestionProyectosView.class, LineAwesomeIcon.BOOK_SOLID.create()));
+        }
+
         if (accessChecker.hasAccess(adminUsersView.class)) {
             nav.addItem(new SideNavItem("Administrar usuarios", adminUsersView.class, LineAwesomeIcon.USER_ALT_SOLID.create()));
         }
