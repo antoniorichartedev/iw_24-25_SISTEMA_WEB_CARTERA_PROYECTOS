@@ -31,7 +31,7 @@ import java.util.Optional;
 @PageTitle("Formulario para un nuevo proyecto")
 @Route("newProyecto")
 @Menu(order = 4, icon = LineAwesomeIconUrl.INFO_CIRCLE_SOLID)
-@RolesAllowed({"USER", "SOLICITANTE"})
+@RolesAllowed("USER")
 public class formProyectoView extends VerticalLayout implements RoleRestrictedView {
 
     @Override
@@ -42,10 +42,10 @@ public class formProyectoView extends VerticalLayout implements RoleRestrictedVi
     private final UsuarioService usuarioService;
     private final ProyectoService proyectoService;
 
-    public formProyectoView(UsuarioService usuarioService, ProyectoService proyectoService) {
+    public formProyectoView(UsuarioService userService, ProyectoService proyectService) {
 
-        this.proyectoService = proyectoService;
-        this.usuarioService = usuarioService;
+        this.proyectoService = proyectService;
+        this.usuarioService = userService;
 
         //Informacion del proyecto
         Span labelProyecto = new Span("Información del Proyecto");

@@ -9,6 +9,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import projectum.data.entidades.Usuario;
 import java.net.InetAddress;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 @Service
 public class CorreoRealService implements CorreoService {
@@ -35,10 +37,12 @@ public class CorreoRealService implements CorreoService {
 
     private String construirCuerpoCorreo(String tipo, Usuario usuario) {
         String serverUrl = getServerUrl();
+        String correoCodificado = Base64.getUrlEncoder().encodeToString(usuario.getCorreo().getBytes(StandardCharsets.UTF_8));
+        String enlace = serverUrl + "/confirmar?correo=" + correoCodificado;
         if ("registro".equals(tipo)) {
             return "Bienvenido a Projectum!\n\n" +
                     "Para activar tu cuenta, haz clic en el siguiente enlace:\n" +
-                    serverUrl + "/confirmar-correo\n\n" +
+                    enlace + "\n\n" +
                     "Código de activación: " + usuario.getCodigoRegistro();
         } else if ("recuperacion".equals(tipo)) {
             String token = generarTokenParaUsuario(usuario);
