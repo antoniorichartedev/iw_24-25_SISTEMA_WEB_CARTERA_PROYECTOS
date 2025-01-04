@@ -41,8 +41,8 @@ public class CorreoRealService implements CorreoService {
         String enlace = serverUrl + "/confirmar?correo=" + correoCodificado;
         if ("registro".equals(tipo)) {
             return "Bienvenido a Projectum!\n\n" +
-                    "Para activar tu cuenta, haz clic en el siguiente enlace:\n" +
-                    enlace + "\n\n" +
+                    "Para activar tu cuenta, introduzca en la página web el siguiente código:\n" +
+                    "\n" +
                     "Código de activación: " + usuario.getCodigoRegistro();
         } else if ("recuperacion".equals(tipo)) {
             String token = generarTokenParaUsuario(usuario);

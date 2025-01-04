@@ -19,28 +19,22 @@ import com.vaadin.flow.component.button.Button;
 public class ConfirmationEmailView extends VerticalLayout {
 
     // Servicios del Usuario.
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
     private final AuthenticatedUser authenticatedUser;
     private Usuario usuario;
 
     // Servicios para el correo.
-    private CorreoService correoService;
+    private final CorreoService correoService;
 
-    public ConfirmationEmailView(UsuarioService usuarioService, AuthenticatedUser authenticatedUser, CorreoService correoService) {
-        this.usuarioService = usuarioService;
-        this.authenticatedUser = authenticatedUser;
-        this.correoService = correoService;
+    public ConfirmationEmailView(UsuarioService userService, AuthenticatedUser AuthenticatedUsr, CorreoService emailService) {
+        this.usuarioService = userService;
+        this.authenticatedUser = AuthenticatedUsr;
+        this.correoService = emailService;
 
         // Buscamos al usuario que se ha autenticado para confirmar su email.
         authenticatedUser.get().ifPresent(user ->
                 this.usuario = usuarioService.loadUserByCorreo(user.getCorreo()).orElse(null)
         );
-
-        // Si no está autenticado, lo mandamos al login para que lo haga.
-        if (usuario == null) {
-            UI.getCurrent().navigate("login");
-            return;
-        }
 
         // Creamos los componentes de la página.
         TextField codigo = new TextField("Código de confirmación");
@@ -56,9 +50,9 @@ public class ConfirmationEmailView extends VerticalLayout {
             String codConfirmacion = codigo.getValue();
 
             // Activamos el usuario con el código que nos ha proporcionado.
-            if (usuarioService.activarUsuario(usuario.getCorreo(), codConfirmacion)) {
+            if (userService.activarUsuario(usuario.getCorreo(), codConfirmacion)) {
                 Notification.show("Correo confirmado exitosamente, redirigiendo a Home", 3000, Notification.Position.TOP_CENTER);
-                UI.getCurrent().navigate("proyectos");
+                UI.getCurrent().navigate("homeUser");
             } else {
                 Notification.show("El código de confirmación es inválido o ha expirado.", 3000, Notification.Position.TOP_CENTER);
             }
