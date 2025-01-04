@@ -1,19 +1,15 @@
 package projectum.data.servicios;
 
-import jakarta.persistence.Transient;
-import org.hibernate.Hibernate;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import projectum.data.Rol;
-import projectum.data.entidades.Formulario;
 import projectum.data.entidades.Usuario;
 import projectum.data.repositorios.FormularioRepository;
 import projectum.data.repositorios.UsuarioRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,11 +22,11 @@ public class UsuarioService {
     private final FormularioRepository formularioRepository;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository, CorreoService correoService, PasswordEncoder passwordEncoder, FormularioRepository formularioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, CorreoService correoService, PasswordEncoder passwordEncoder, FormularioRepository formRepository) {
         this.usuarioRepository = usuarioRepository;
         this.correoService = correoService;
         this.passwordEncoder = passwordEncoder;
-        this.formularioRepository = formularioRepository;
+        this.formularioRepository = formRepository;
     }
 
     public long count(){ return usuarioRepository.count(); }
@@ -117,5 +113,33 @@ public class UsuarioService {
         return false;
     }
 
+    public void updateContrasena(String correo, String nuevaContrasena) {
+        // Buscar al usuario por correo
+        Optional<Usuario> maybeUser = usuarioRepository.findByCorreo(correo);
+        if (maybeUser.isPresent()) {
+            Usuario user = maybeUser.get();
+            user.setHashedPassword(passwordEncoder.encode(nuevaContrasena));
+
+            // Guardar el usuario con la nueva contraseña
+            usuarioRepository.save(user);
+        } else {
+            throw new NoSuchElementException("Usuario con el correo " + correo + " no encontrado.");
+        }
+    }
+
+
+    public boolean validarCodigoRecuperacion(String correo, String codigo) {
+        Optional<Usuario> maybeUser = usuarioRepository.findByCorreo(correo);
+
+        if (maybeUser.isPresent()) {
+            Usuario user = maybeUser.get();
+            if (codigo == null || codigo.isBlank()) {
+                throw new IllegalArgumentException("La nueva contraseña no puede estar vacía.");
+            }
+
+            return user.getCodigoRegistro().equals(codigo);
+        }
+        return false;
+    }
 
 }

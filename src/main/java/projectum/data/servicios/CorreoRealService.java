@@ -36,20 +36,16 @@ public class CorreoRealService implements CorreoService {
     }
 
     private String construirCuerpoCorreo(String tipo, Usuario usuario) {
-        String serverUrl = getServerUrl();
-        String correoCodificado = Base64.getUrlEncoder().encodeToString(usuario.getCorreo().getBytes(StandardCharsets.UTF_8));
-        String enlace = serverUrl + "/confirmar?correo=" + correoCodificado;
         if ("registro".equals(tipo)) {
             return "Bienvenido a Projectum!\n\n" +
                     "Para activar tu cuenta, introduzca en la página web el siguiente código:\n" +
                     "\n" +
                     "Código de activación: " + usuario.getCodigoRegistro();
         } else if ("recuperacion".equals(tipo)) {
-            String token = generarTokenParaUsuario(usuario);
             return "Hola " + usuario.getNombre() + ",\n\n" +
-                    "Para recuperar tu contraseña, haz clic en el siguiente enlace:\n" +
-                    serverUrl + "/recuperar?token=" + token + "\n\n" +
-                    "Si no solicitaste este correo, ignóralo.\n\nGracias.";
+                    "Para recuperar tu contraseña, Introduzca el siguiente código en su navegador:\n" +
+                    "\n\n" +
+                    "Código de recuperación: " + usuario.getCodigoRegistro();
         }
         return "";
     }
@@ -82,8 +78,4 @@ public class CorreoRealService implements CorreoService {
         }
     }
 
-    private String generarTokenParaUsuario(Usuario usuario) {
-        // Podemos cambiar la lógica de generación de tokens de usuario
-        return java.util.UUID.randomUUID().toString();
-    }
 }
