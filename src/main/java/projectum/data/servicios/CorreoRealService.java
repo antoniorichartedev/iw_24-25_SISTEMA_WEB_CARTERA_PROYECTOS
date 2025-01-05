@@ -15,8 +15,6 @@ import java.util.Base64;
 @Service
 public class CorreoRealService implements CorreoService {
 
-    // Usamos JavaMailSender para poder crear y enviar correos. Nos hace falta para poder crear y enviar el correo
-    // de confirmación de cuenta.
     private final JavaMailSender mailSender;
 
     @Value("${spring.mail.host}")
@@ -38,7 +36,7 @@ public class CorreoRealService implements CorreoService {
     private String construirCuerpoCorreo(String tipo, Usuario usuario) {
         if ("registro".equals(tipo)) {
             return "Bienvenido a Projectum!\n\n" +
-                    "Para activar tu cuenta, introduzca en la página web el siguiente código:\n" +
+                    "Para activar tu cuenta, introduzca en la página web " + getServerUrl() + " el siguiente código:\n" +
                     "\n" +
                     "Código de activación: " + usuario.getCodigoRegistro();
         } else if ("recuperacion".equals(tipo)) {
@@ -46,10 +44,15 @@ public class CorreoRealService implements CorreoService {
                     "Para recuperar tu contraseña, Introduzca el siguiente código en su navegador:\n" +
                     "\n\n" +
                     "Código de recuperación: " + usuario.getCodigoRegistro();
+        } else if ("avalado".equals(tipo)) {
+            return "Hola " + usuario.getNombre() + ",\n\n" +
+                    "¡Enhorabuena! Nos complace informarte que tu proyecto ha sido avalado exitosamente.\n" +
+                    "Puedes acceder a tu proyecto en el sistema para continuar gestionándolo.\n\n" +
+                    "Gracias por confiar en Projectum.";
         }
         return "";
     }
-    // Generador de la URL del servidor.
+
     private String getServerUrl() {
         return "http://" + InetAddress.getLoopbackAddress().getHostAddress() + ":" + serverPort + "/confirmar-correo";
     }
@@ -61,6 +64,10 @@ public class CorreoRealService implements CorreoService {
 
     public boolean enviarCorreoRecuperacion(Usuario usuario) {
         return enviarCorreo(usuario, "recuperacion", "Recuperación de contraseña");
+    }
+
+    public boolean enviarCorreoAvalado(Usuario usuario) {
+        return enviarCorreo(usuario, "avalado", "¡Tu proyecto ha sido avalado!");
     }
 
     private boolean enviarCorreo(Usuario usuario, String tipo, String asunto) {
@@ -77,5 +84,4 @@ public class CorreoRealService implements CorreoService {
             return false;
         }
     }
-
 }

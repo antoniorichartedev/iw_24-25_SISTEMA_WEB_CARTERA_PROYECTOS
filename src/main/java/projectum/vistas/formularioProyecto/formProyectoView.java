@@ -1,5 +1,6 @@
 package projectum.vistas.formularioProyecto;
 import jakarta.annotation.security.RolesAllowed;
+import projectum.data.Estado;
 import projectum.data.entidades.Proyecto;
 import projectum.data.entidades.Usuario;
 import projectum.data.servicios.ProyectoService;
@@ -224,7 +225,7 @@ public class formProyectoView extends VerticalLayout implements RoleRestrictedVi
                             .toInstant())
             );
             proyecto.setInteresado(interesados.getValue());
-
+            proyecto.setEstado(Estado.sin_avalar);
             // Si hay un archivo cargado, debemos ponerlo en el proyecto.
             if (buffer.getInputStream() != null) {
                 try {

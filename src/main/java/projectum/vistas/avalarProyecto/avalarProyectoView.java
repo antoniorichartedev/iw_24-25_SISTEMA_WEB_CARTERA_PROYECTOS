@@ -24,6 +24,7 @@ import projectum.data.Estado;
 import projectum.data.Rol;
 import projectum.data.entidades.Proyecto;
 import projectum.data.entidades.Usuario;
+import projectum.data.servicios.CorreoRealService;
 import projectum.data.servicios.ProyectoService;
 import projectum.data.servicios.UsuarioService;
 import projectum.security.RolRestrictions.RoleRestrictedView;
@@ -48,10 +49,12 @@ public class avalarProyectoView extends Composite<VerticalLayout> implements Rol
 
     public avalarProyectoView(ProyectoService proyectoService,
                               AuthenticationContext authenticationContext,
-                              UsuarioService usuarioService) {
+                              UsuarioService usuarioService,
+                              CorreoRealService correoService) {
         this.proyectoService = proyectoService;
         this.authenticationContext = authenticationContext;
         this.usuarioService = usuarioService;
+        this.correoService = correoService;
 
         UUID solicitanteId = getSolicitanteIdFromSession();
         Usuario promotorActual = usuarioService.loadUserById(solicitanteId)
@@ -150,6 +153,7 @@ public class avalarProyectoView extends Composite<VerticalLayout> implements Rol
                 proyecto.setEstado(Estado.en_valoracion);
                 proyectoService.saveProyecto(proyecto);
                 Notification.show("Estado actualizado", 3000, Notification.Position.MIDDLE);
+                correoService.enviarCorreoAvalado(proyecto.getSolicitante());
                 UI.getCurrent().getPage().reload();
             });
 
@@ -212,4 +216,5 @@ public class avalarProyectoView extends Composite<VerticalLayout> implements Rol
     private ProyectoService proyectoService;
     private AuthenticationContext authenticationContext;
     private UsuarioService usuarioService;
+    private CorreoRealService correoService;
 }
