@@ -1,5 +1,6 @@
 package projectum.vistas.gestionProyectos;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.H1;
@@ -78,6 +79,7 @@ public class editarProyectoView extends VerticalLayout implements BeforeEnterObs
                 proyecto.setTitulo(nuevotitulo);
                 proyectoService.saveProyecto(proyecto);
                 Notification.show("Título actualizado", 3000, Notification.Position.MIDDLE);
+                UI.getCurrent().getPage().reload();
             }
         });
 
@@ -103,6 +105,7 @@ public class editarProyectoView extends VerticalLayout implements BeforeEnterObs
                 proyecto.setAcronimo(nuevoacronimo);
                 proyectoService.saveProyecto(proyecto);
                 Notification.show("Acrónimo actualizado", 3000, Notification.Position.MIDDLE);
+                UI.getCurrent().getPage().reload();
             }
         });
 
@@ -128,6 +131,7 @@ public class editarProyectoView extends VerticalLayout implements BeforeEnterObs
                 proyecto.setJustificacion(nuevajustificacion);
                 proyectoService.saveProyecto(proyecto);
                 Notification.show("Justificación actualizada", 3000, Notification.Position.MIDDLE);
+                UI.getCurrent().getPage().reload();
             }
         });
 
@@ -153,6 +157,7 @@ public class editarProyectoView extends VerticalLayout implements BeforeEnterObs
                 proyecto.setAlcance(nuevoalcance);
                 proyectoService.saveProyecto(proyecto);
                 Notification.show("Alcance actualizado", 3000, Notification.Position.MIDDLE);
+                UI.getCurrent().getPage().reload();
             }
         });
 
@@ -176,6 +181,7 @@ public class editarProyectoView extends VerticalLayout implements BeforeEnterObs
             proyecto.setEstado(nuevoestado);
             proyectoService.saveProyecto(proyecto);
             Notification.show("Estado actualizado", 3000, Notification.Position.MIDDLE);
+            UI.getCurrent().getPage().reload();
 
         });
 
@@ -204,6 +210,7 @@ public class editarProyectoView extends VerticalLayout implements BeforeEnterObs
                 proyecto.setImportancia(nuevaimportancia);
                 proyectoService.saveProyecto(proyecto);
                 Notification.show("Importancia actualizada", 3000, Notification.Position.MIDDLE);
+                UI.getCurrent().getPage().reload();
             }
         });
 
@@ -232,6 +239,7 @@ public class editarProyectoView extends VerticalLayout implements BeforeEnterObs
                 proyecto.setPriorizacion(nuevapriorizacion);
                 proyectoService.saveProyecto(proyecto);
                 Notification.show("Priorización actualizada", 3000, Notification.Position.MIDDLE);
+                UI.getCurrent().getPage().reload();
             }
         });
 
@@ -258,6 +266,7 @@ public class editarProyectoView extends VerticalLayout implements BeforeEnterObs
                 proyecto.setFinanciacion(nuevafinanciacion);
                 proyectoService.saveProyecto(proyecto);
                 Notification.show("Financiación actualizada", 3000, Notification.Position.MIDDLE);
+                UI.getCurrent().getPage().reload();
             }
         });
 
@@ -283,6 +292,7 @@ public class editarProyectoView extends VerticalLayout implements BeforeEnterObs
                 proyecto.setInteresado(nuevointeresado);
                 proyectoService.saveProyecto(proyecto);
                 Notification.show("Interesado actualizado", 3000, Notification.Position.MIDDLE);
+                UI.getCurrent().getPage().reload();
             }
         });
 

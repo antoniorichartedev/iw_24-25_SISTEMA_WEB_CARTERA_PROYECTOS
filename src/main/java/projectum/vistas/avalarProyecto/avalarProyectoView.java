@@ -150,6 +150,7 @@ public class avalarProyectoView extends Composite<VerticalLayout> implements Rol
                 proyecto.setEstado(Estado.en_valoracion);
                 proyectoService.saveProyecto(proyecto);
                 Notification.show("Estado actualizado", 3000, Notification.Position.MIDDLE);
+                UI.getCurrent().getPage().reload();
             });
 
             return avalarProyecto;
