@@ -8,6 +8,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import projectum.data.entidades.Proyecto;
 import projectum.data.entidades.Usuario;
@@ -22,7 +23,7 @@ import java.util.UUID;
 
 @PageTitle("Tus proyectos")
 @Route("proyectosById")
-@PermitAll
+@RolesAllowed({"USER", "SOLICITANTE"})
 public class proyectosByIDView extends Composite<VerticalLayout> {
 
     private final ProyectoService proyectoService;

@@ -19,26 +19,26 @@ import projectum.vistas.formCIO.formCIOView;
 
 
 @PageTitle("Home")
-@Route("homeAdmin")
+@Route("homePromotor")
 @Menu(order = 15, icon = LineAwesomeIconUrl.HOME_SOLID)
-@RolesAllowed("ADMIN")
-public class AdminHomePageView extends VerticalLayout implements RoleRestrictedView {
+@RolesAllowed("PROMOTOR")
+public class PromotorHomePageView extends VerticalLayout implements RoleRestrictedView {
 
     @Override
-    public Rol getRequiredRole() {return Rol.ADMIN;}
+    public Rol getRequiredRole() {return Rol.PROMOTOR;}
 
-    public AdminHomePageView() {
+    public PromotorHomePageView() {
         H1 h1 = new H1();
         Paragraph textLarge = new Paragraph();
 
-        h1.setText("Bienvenido Administrador");
+        h1.setText("Bienvenido Promotor");
         h1.setWidth("max-content");
         textLarge.setText("Seleccione que desea gestionar.");
         textLarge.getStyle().set("font-size", "var(--lumo-font-size-xl)");
 
-        Button button = new Button("Gestionar Usuarios");
+        Button button = new Button("Avalar Proyecto");
         button.addClickListener(e -> {
-            UI.getCurrent().navigate("adminUsers");
+            UI.getCurrent().navigate("avalarProyecto");
         });
 
         button.getElement().addEventListener("mouseover", e -> {

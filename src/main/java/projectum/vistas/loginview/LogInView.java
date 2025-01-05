@@ -22,7 +22,9 @@ public class LogInView extends LoginOverlay implements BeforeEnterObserver {
     public static final String HOME_ADMIN = "homeAdmin";
     public static final String HOME_OT = "homeOT";
     public static final String HOME_CIO = "homeCio";
-    public static final String PROYECTOS = "proyectos";
+    public static final String HOME_USER = "homeUser";
+
+    public static final String HOME_PROMOTOR = "homePromotor";
     public static final String LOGIN = "login";
 
     public LogInView(AuthenticatedUser authenticatedUser) {
@@ -76,12 +78,13 @@ public class LogInView extends LoginOverlay implements BeforeEnterObserver {
             case CIO -> jumpPage = HOME_CIO;
             case ADMIN -> jumpPage = HOME_ADMIN;
             case OT -> jumpPage = HOME_OT;
-            case USER -> jumpPage = PROYECTOS;
+            case USER -> jumpPage = HOME_USER;
+            case PROMOTOR -> jumpPage = HOME_PROMOTOR;
             default -> {
                 // Loggear roles inesperados para diagnóstico
                 Logger.getLogger(getClass().getName())
                         .warning("Rol inesperado: " + usuario.getRol());
-                jumpPage = PROYECTOS;
+                jumpPage = HOME_USER;
             }
         };
         return jumpPage;

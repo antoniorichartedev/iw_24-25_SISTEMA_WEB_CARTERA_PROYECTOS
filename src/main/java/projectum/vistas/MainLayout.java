@@ -104,6 +104,10 @@ public class MainLayout extends AppLayout {
             nav.addItem(new SideNavItem("Home", homeUserView.class, LineAwesomeIcon.HOME_SOLID.create()));
         }
 
+        if (accessChecker.hasAccess(PromotorHomePageView.class)) {
+            nav.addItem(new SideNavItem("Home", PromotorHomePageView.class, LineAwesomeIcon.HOME_SOLID.create()));
+        }
+
         if (accessChecker.hasAccess(userProfileView.class)) {
             nav.addItem(new SideNavItem("Perfil", userProfileView.class, LineAwesomeIcon.USER_ALT_SOLID.create()));
         }
