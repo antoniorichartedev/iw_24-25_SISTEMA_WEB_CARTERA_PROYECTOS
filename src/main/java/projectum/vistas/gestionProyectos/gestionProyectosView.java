@@ -1,4 +1,4 @@
-package projectum.vistas.adminProjects;
+package projectum.vistas.gestionProyectos;
 
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
@@ -27,7 +27,7 @@ import com.vaadin.flow.component.notification.Notification;
 import java.text.SimpleDateFormat;
 
 @PageTitle("Gestionar Proyectos")
-@Route(value = "adminProjects", layout = MainLayout.class)
+@Route(value = "gestionarProyectos", layout = MainLayout.class)
 @RolesAllowed("CIO")
 public class gestionProyectosView extends Composite<VerticalLayout> implements RoleRestrictedView {
     @Override
@@ -121,7 +121,21 @@ public class gestionProyectosView extends Composite<VerticalLayout> implements R
             return span;
         }).setHeader("Promotor");
 
-        // Agregar columna para el botón de eliminar
+        // Columna para el botón de "Editar"
+        stripedGrid.addComponentColumn(proyecto -> {
+            Button editarProyecto = new Button("Editar");
+            editarProyecto.getStyle().set("color", "blue");
+
+            // Manejar el evento de clic para redirigir a otra vista
+            editarProyecto.addClickListener(event -> {
+                // Redirigir a la vista de edición pasando el ID del proyecto
+                UI.getCurrent().navigate("editarProyecto/" + proyecto.getId());
+            });
+
+            return editarProyecto;
+        }).setHeader("Editar").setAutoWidth(true);
+
+        // Columna para el botón de "Eliminar"
         stripedGrid.addComponentColumn(proyecto -> {
             Button borrarProyecto = new Button("Eliminar");
             borrarProyecto.getStyle().set("color", "red");
@@ -149,7 +163,9 @@ public class gestionProyectosView extends Composite<VerticalLayout> implements R
             borrarProyecto.addClickListener(event -> confirmDialog.open());
 
             return borrarProyecto;
-        }).setHeader("Acciones");
+        }).setHeader("Eliminar");
+
+
 
         // Configuración del diseño
         getContent().setWidth("100%");
