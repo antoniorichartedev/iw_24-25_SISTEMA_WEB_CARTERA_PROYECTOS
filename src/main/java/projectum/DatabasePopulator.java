@@ -80,7 +80,7 @@ public class DatabasePopulator implements CommandLineRunner {
             promo.setPassword("promotor");
             promo.setCorreo("promotor@uca.es");
             promo.setCargo("Ninguno");
-            promo.setRol(Rol.USER);
+            promo.setRol(Rol.PROMOTOR);
             userService.RegistrarUsuario(promo);
             userService.activarUsuario(promo.getCorreo(), promo.getCodigoRegistro());
             System.out.println("Promotor created");

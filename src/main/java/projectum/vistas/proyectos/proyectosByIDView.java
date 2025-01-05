@@ -94,8 +94,6 @@ public class proyectosByIDView extends Composite<VerticalLayout> {
                         String username = userDetails.getUsername();
                         Usuario usuario = usuarioService.loadUserByUsername(username);
                         if (usuario != null) {
-                            System.out.println(usuario.getId());
-                            System.out.println(usuario.getNombre());
                             return usuario.getId();
 
                         } else {

@@ -26,6 +26,7 @@ import com.vaadin.flow.server.menu.MenuConfiguration;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import projectum.vistas.HomePage.*;
 import projectum.vistas.adminUsers.adminUsersView;
+import projectum.vistas.avalarProyecto.avalarProyectoView;
 import projectum.vistas.faq.FAQView;
 import projectum.vistas.formCIO.formCIOView;
 import projectum.vistas.formOT.formOTView;
@@ -113,6 +114,10 @@ public class MainLayout extends AppLayout {
 
         if (accessChecker.hasAccess(projectum.vistas.gestionProyectos.gestionProyectosView.class)) {
             nav.addItem(new SideNavItem("Gestionar Proyectos", projectum.vistas.gestionProyectos.gestionProyectosView.class, LineAwesomeIcon.BOOK_SOLID.create()));
+        }
+
+        if (accessChecker.hasAccess(avalarProyectoView.class)) {
+            nav.addItem(new SideNavItem("Avalar Proyectos",avalarProyectoView.class, LineAwesomeIcon.BOOK_SOLID.create()));
         }
 
         if (accessChecker.hasAccess(adminUsersView.class)) {
