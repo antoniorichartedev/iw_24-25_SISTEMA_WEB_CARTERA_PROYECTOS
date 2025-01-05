@@ -25,6 +25,8 @@ import com.vaadin.flow.component.html.Span;
 
 import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @PageTitle("Proyectos")
 @Route("proyectos")
@@ -150,7 +152,12 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
     }
 
     private void setGridSampleData(Grid<Proyecto> grid) {
-        grid.setItems(proyectoService.getAllProyectos());
+
+        List<Proyecto> proyectosEnDesarrollo = proyectoService.getAllProyectos().stream()
+                .filter(proyecto -> proyecto.getEstado() == Estado.en_desarrollo)
+                .collect(Collectors.toList());
+
+        grid.setItems(proyectosEnDesarrollo);
     }
 
     @Autowired()
