@@ -2,8 +2,12 @@ package projectum.data.servicios;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import projectum.ApiResponse;
+import projectum.data.Rol;
 import projectum.data.entidades.Usuario;
 import projectum.data.repositorios.FormularioRepository;
 import projectum.data.repositorios.UsuarioRepository;
@@ -140,6 +144,47 @@ public class UsuarioService {
             return user.getCodigoRegistro().equals(codigo);
         }
         return false;
+    }
+
+    @Cacheable("promotores")
+    public void cargarPromotoresDesdeApi() {
+        if (!existenPromotoresEnBaseDeDatos()) {
+            String url = "https://e608f590-1a0b-43c5-b363-e5a883961765.mock.pstmn.io/sponsors";
+
+            RestTemplate restTemplate = new RestTemplate();
+
+            // Mapear la respuesta al objeto ApiResponse
+            ApiResponse response = restTemplate.getForObject(url, ApiResponse.class);
+
+            if (response != null && response.getData() != null) {
+                for (Usuario promotor : response.getData()) {
+                    guardarPromotorSiNoExiste(promotor);
+                }
+            }
+        }
+    }
+
+    private boolean existenPromotoresEnBaseDeDatos() {
+        return !usuarioRepository.findByRol(Rol.PROMOTOR).isEmpty();
+    }
+
+    private void guardarPromotorSiNoExiste(Usuario promotor) {
+
+        // Comprueba si el correo es nulo o vacío
+        if (promotor.getCorreo() == null || promotor.getCorreo().isBlank()) {
+            // Asigna un correo predeterminado basado en el nombre del promotor
+            String correoGenerado = promotor.getNombre().toLowerCase().replaceAll("\\s+", ".") + "@gmail.com";
+            promotor.setCorreo(correoGenerado);
+        }
+
+        if (usuarioRepository.findByCorreo(promotor.getCorreo()).isEmpty()) {
+            promotor.setRol(Rol.PROMOTOR);
+            promotor.setEstado(true);
+            promotor.setUsername(promotor.getNombre());
+            promotor.setPassword(promotor.getNombre());
+            promotor.setHashedPassword(passwordEncoder.encode(promotor.getPassword()));
+            usuarioRepository.save(promotor);
+        }
     }
 
 }

@@ -33,6 +33,12 @@ public class DatabasePopulator implements CommandLineRunner {
 
         // Creamos admin
         if (userService.count() < 5) {
+
+            // Cargar promotores desde la API solo si no están cargados previamente
+            userService.cargarPromotoresDesdeApi();
+            System.out.println("Promotores cargados (si no estaban previamente).");
+
+
             Usuario user = new Usuario();
             user.setNombre("admin");
             user.setUsername("adminXulo");
@@ -111,12 +117,8 @@ public class DatabasePopulator implements CommandLineRunner {
                 System.out.println("Relaciones con el proyecto realizadas.");
             }
         }
+
+
     }
-/*
-    @EventListener(ApplicationReadyEvent.class)
-    public void populateDatabase() {
-        promotorService.guardarPromotoresWeb();
-        System.out.println("Promotores sincronizados con éxito.");
-    }
-    */
+
 }

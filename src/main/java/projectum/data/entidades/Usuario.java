@@ -1,6 +1,9 @@
 package projectum.data.entidades;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
 import jakarta.validation.constraints.Email;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -23,6 +26,7 @@ public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JdbcTypeCode(SqlTypes.CHAR)
+    @JsonIgnore
     private UUID id = UUID.randomUUID();
 
     @Column(name = "nombre", nullable = false)
@@ -48,6 +52,7 @@ public class Usuario implements UserDetails {
 
     private String codigoRegistro = "";
 
+    @JsonIgnore
     private String hashedPassword;
 
     // Relación que tiene con Formulario pero de la OT.
