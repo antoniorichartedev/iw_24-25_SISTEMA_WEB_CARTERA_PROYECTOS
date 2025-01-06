@@ -36,7 +36,7 @@ public class CioHomePageView extends VerticalLayout implements RoleRestrictedVie
         textLarge.setText("Aqui tiene todos los proyectos que no se han valorado todavia");
         textLarge.getStyle().set("font-size", "var(--lumo-font-size-xl)");
 
-        Button button = new Button("Avalar proyectos");
+        Button button = new Button("Priorizar proyectos");
         button.addClickListener(e -> {
             UI.getCurrent().navigate("formCIO");
         });

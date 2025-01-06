@@ -36,7 +36,7 @@ public class AdminHomePageView extends VerticalLayout implements RoleRestrictedV
         textLarge.setText("Seleccione que desea gestionar.");
         textLarge.getStyle().set("font-size", "var(--lumo-font-size-xl)");
 
-        Button button = new Button("Gestionar Usuarios");
+        Button button = new Button("Administrar Usuarios");
         button.addClickListener(e -> {
             UI.getCurrent().navigate("adminUsers");
         });
