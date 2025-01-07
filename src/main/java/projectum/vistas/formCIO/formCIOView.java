@@ -161,8 +161,8 @@ public class formCIOView extends VerticalLayout implements RoleRestrictedView {
                         proy.get().setEstado(Estado.valorado);
                         proyectoService.saveProyecto(proy.get());
                     }
-                    System.out.println(formsProyecto);
-                    
+
+
                     // Notificar al usuario
                     Notification.show("Formulario guardado correctamente", 3500, Notification.Position.TOP_CENTER);
                 } else {
