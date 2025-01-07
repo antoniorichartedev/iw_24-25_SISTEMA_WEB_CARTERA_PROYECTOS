@@ -150,22 +150,32 @@ public class formCIOView extends VerticalLayout implements RoleRestrictedView {
                     form.setCio(opUsuario.get());
                     form.setProyecto(proy.get());
 
-                    // Guardar el formulario en la base de datos
-                    formularioService.saveFormulario(form);
-
                     // Obtenemos los formularios del proyecto.
                     List<Formulario> formsProyecto = formularioService.getFormulariosByProyectoId(proy.get().getId());
 
-                    // Si tenemos dos formularios, cambiamos su estado a Valorado.
-                    if (formsProyecto.size() == 2) {
-                        proy.get().setEstado(Estado.valorado);
-                        proyectoService.saveProyecto(proy.get());
-                        correoService.enviarCorreoProyectoValorado(proy.get().getSolicitante(), proy.get());
+                    // Guardar el formulario en la base de datos
+                    if (formsProyecto.size() < 2) {
+                        formularioService.saveFormulario(form);
+                        formsProyecto = formularioService.getFormulariosByProyectoId(proy.get().getId());
+
+                        // Si tenemos dos formularios y el estado del proyecto es valoradoOT cambiamos su estado a Valorado.
+                        if (formsProyecto.size() == 2) {
+                            proy.get().setEstado(Estado.valorado);
+                            proyectoService.saveProyecto(proy.get());
+                            correoService.enviarCorreoProyectoValorado(proy.get().getSolicitante(), proy.get());
+                            // Notificar al usuario
+                            Notification.show("Formulario guardado correctamente", 3500, Notification.Position.TOP_CENTER);
+                        } else {
+                            proy.get().setEstado(Estado.valoradoCIO);
+                            proyectoService.saveProyecto(proy.get());
+                            correoService.enviarCorreoProyectoValoradoCIO(proy.get().getSolicitante(), proy.get());
+                            // Notificar al usuario
+                            Notification.show("Formulario guardado correctamente", 3500, Notification.Position.TOP_CENTER);
+                        }
+                    } else {
+                        Notification.show("Ya has hecho el formulario para este proyecto.", 3500, Notification.Position.TOP_CENTER);
                     }
 
-
-                    // Notificar al usuario
-                    Notification.show("Formulario guardado correctamente", 3500, Notification.Position.TOP_CENTER);
                 } else {
                     Notification.show("No tienes permiso para realizar esta acción.", 3500, Notification.Position.TOP_CENTER);
                 }

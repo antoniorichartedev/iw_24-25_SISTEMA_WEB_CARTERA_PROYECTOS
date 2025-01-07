@@ -20,10 +20,13 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
 import projectum.data.Estado;
 import projectum.data.Rol;
 import projectum.data.entidades.Proyecto;
+import projectum.data.servicios.CorreoRealService;
+import projectum.data.servicios.CorreoService;
 import projectum.data.servicios.ProyectoService;
 import projectum.security.RolRestrictions.RoleRestrictedView;
 
@@ -38,6 +41,9 @@ import java.util.stream.Collectors;
 @Uses(Icon.class)
 @RolesAllowed("CIO")
 public class aceptarProyectosView extends Composite<VerticalLayout> implements RoleRestrictedView {
+
+    @Autowired
+    private CorreoRealService correoService;
 
     @Override
     public Rol getRequiredRole() {
@@ -174,6 +180,9 @@ public class aceptarProyectosView extends Composite<VerticalLayout> implements R
 
                 proyecto.setPriorizacion(nuevaPrioridad);
                 proyecto.setEstado(Estado.en_desarrollo);
+
+                // Avisamos al solicitante de que su proyecto ha sido aceptado.
+                correoService.enviarCorreoProyectoAceptado(proyecto.getSolicitante(), proyecto);
                 proyectoService.saveProyecto(proyecto);
                 setGridSampleData(stripedGrid);
                 Notification.show("El proyecto ha sido aceptado con éxito");
@@ -205,6 +214,7 @@ public class aceptarProyectosView extends Composite<VerticalLayout> implements R
             Button confirmButton = new Button("Confirmar", event -> {
                 proyecto.setEstado(Estado.rechazado);
                 proyectoService.saveProyecto(proyecto);
+                correoService.enviarCorreoProyectoRechazado(proyecto.getSolicitante(), proyecto);
                 setGridSampleData(stripedGrid);
                 Notification.show("El proyecto ha sido rechazado con éxito");
                 confirmDialog.close();

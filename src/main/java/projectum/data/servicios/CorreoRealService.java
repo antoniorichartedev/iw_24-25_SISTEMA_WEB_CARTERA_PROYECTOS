@@ -65,6 +65,16 @@ public class CorreoRealService implements CorreoService {
                     "Tu proyecto " + pr.getTitulo() + " ha sido rechazado.\n" +
                     "Por favor, vaya a la app para ver las razones por las que ha sido rechazado.\n" +
                     "Gracias por confiar en Projectum.";
+        } else if ("valoradoCIO".equals(tipo)) {
+            return "Hola " + usuario.getNombre() + ",\n\n" +
+                    "Tu proyecto " + pr.getTitulo() + " ha sido valorado por el CIO.\n" +
+                    "Quedamos a la espera de que la OTP valore su proyecto.\n" +
+                    "Gracias por confiar en Projectum.";
+        } else if ("valoradoOT".equals(tipo)) {
+            return "Hola " + usuario.getNombre() + ",\n\n" +
+                    "Tu proyecto " + pr.getTitulo() + " ha sido valorado por la OTP.\n" +
+                    "Quedamos a la espera de que el CIO valore su proyecto.\n" +
+                    "Gracias por confiar en Projectum.";
         }
         return "";
     }
@@ -88,6 +98,14 @@ public class CorreoRealService implements CorreoService {
 
     public boolean enviarCorreoProyectoValorado(Usuario usuario, Proyecto pr) {
         return enviarCorreo(usuario, "valorado", "¡Tu proyecto ha sido valorado!", pr);
+    }
+
+    public boolean enviarCorreoProyectoValoradoOT(Usuario usuario, Proyecto pr) {
+        return enviarCorreo(usuario, "valoradoOT", "¡Tu proyecto ha sido valorado por la OTP!", pr);
+    }
+
+    public boolean enviarCorreoProyectoValoradoCIO(Usuario usuario, Proyecto pr) {
+        return enviarCorreo(usuario, "valoradoCIO", "¡Tu proyecto ha sido valorado por el CIO!", pr);
     }
 
     public boolean enviarCorreoProyectoAceptado(Usuario usuario, Proyecto pr) {
