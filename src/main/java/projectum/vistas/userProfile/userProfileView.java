@@ -63,7 +63,6 @@ public class userProfileView extends VerticalLayout {
                 usuario.setUsername(nuevousername);
                 usuarioService.updateUsuario(usuario);
                 Notification.show("Nombre de usuario actualizado, para ver los cambios vuelva a iniciar sesión", 3000, Notification.Position.MIDDLE);
-                UI.getCurrent().getPage().reload();
             }
         });
 
@@ -90,7 +89,6 @@ public class userProfileView extends VerticalLayout {
                 usuario.setNombre(nuevoNombre);
                 usuarioService.updateUsuario(usuario);
                 Notification.show("Nombre actualizado, para ver los cambios vuelva a iniciar sesión", 3000, Notification.Position.MIDDLE);
-                UI.getCurrent().getPage().reload();
             }
         });
 
