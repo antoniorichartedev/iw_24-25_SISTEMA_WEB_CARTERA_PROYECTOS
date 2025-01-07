@@ -1,6 +1,7 @@
 package projectum.vistas.formOT;
 
 import jakarta.annotation.security.RolesAllowed;
+import projectum.data.Estado;
 import projectum.security.RolRestrictions.RoleRestrictedView;
 import projectum.data.Rol;
 import com.vaadin.flow.component.button.Button;
@@ -17,6 +18,8 @@ import projectum.data.servicios.FormularioService;
 import projectum.data.servicios.ProyectoService;
 import projectum.data.servicios.UsuarioService;
 import projectum.security.login.AuthenticatedUser;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import projectum.data.entidades.Formulario;
@@ -105,6 +108,15 @@ public class formOTView extends VerticalLayout implements RoleRestrictedView {
 
                     // Guardar el formulario en la base de datos
                     formularioService.saveFormulario(form);
+
+                    // Obtenemos los formularios del proyecto.
+                    List<Formulario> formsProyecto = formularioService.getFormulariosByProyectoId(proy.get().getId());
+
+                    // Si tenemos dos formularios, cambiamos su estado a Valorado.
+                    if (formsProyecto.size() == 2) {
+                        proy.get().setEstado(Estado.valorado);
+                        proyectoService.saveProyecto(proy.get());
+                    }
 
                     // Notificar al usuario
                     Notification.show("Formulario guardado correctamente", 3500, Notification.Position.TOP_CENTER);

@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectum.data.entidades.Formulario;
 import projectum.data.repositorios.FormularioRepository;
-import projectum.data.entidades.Usuario;
 import projectum.data.repositorios.UsuarioRepository;
 
 import java.util.List;
@@ -25,6 +24,7 @@ public class FormularioService {
 
     public Optional<Formulario> getFormularioById(UUID id){return formularioRepository.findById(id);}
 
+    public List<Formulario> getFormulariosByProyectoId(UUID id){return formularioRepository.findByProyectoId(id);}
 
     @Transactional
     public void saveFormulario(Formulario formulario) {

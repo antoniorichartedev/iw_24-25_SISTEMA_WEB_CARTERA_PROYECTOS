@@ -1,6 +1,7 @@
 package projectum.vistas.formCIO;
 
 
+import projectum.data.Estado;
 import projectum.data.entidades.Formulario;
 import projectum.data.entidades.Proyecto;
 import projectum.data.entidades.Usuario;
@@ -22,6 +23,7 @@ import jakarta.annotation.security.RolesAllowed;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
 import projectum.security.login.AuthenticatedUser;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -151,6 +153,16 @@ public class formCIOView extends VerticalLayout implements RoleRestrictedView {
                     // Guardar el formulario en la base de datos
                     formularioService.saveFormulario(form);
 
+                    // Obtenemos los formularios del proyecto.
+                    List<Formulario> formsProyecto = formularioService.getFormulariosByProyectoId(proy.get().getId());
+
+                    // Si tenemos dos formularios, cambiamos su estado a Valorado.
+                    if (formsProyecto.size() == 2) {
+                        proy.get().setEstado(Estado.valorado);
+                        proyectoService.saveProyecto(proy.get());
+                    }
+                    System.out.println(formsProyecto);
+                    
                     // Notificar al usuario
                     Notification.show("Formulario guardado correctamente", 3500, Notification.Position.TOP_CENTER);
                 } else {
