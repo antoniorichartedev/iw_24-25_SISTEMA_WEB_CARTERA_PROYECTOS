@@ -1,13 +1,12 @@
 package projectum.vistas.formCIO;
 
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import projectum.data.Estado;
 import projectum.data.entidades.Formulario;
 import projectum.data.entidades.Proyecto;
 import projectum.data.entidades.Usuario;
-import projectum.data.servicios.FormularioService;
-import projectum.data.servicios.ProyectoService;
-import projectum.data.servicios.UsuarioService;
+import projectum.data.servicios.*;
 import projectum.security.RolRestrictions.RoleRestrictedView;
 import projectum.data.Rol;
 import com.vaadin.flow.component.button.Button;
@@ -34,6 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class formCIOView extends VerticalLayout implements RoleRestrictedView {
 
     private final UsuarioService usuarioService;
+    private final CorreoRealService correoService;
 
     @Override
     public Rol getRequiredRole() {
@@ -68,7 +68,7 @@ public class formCIOView extends VerticalLayout implements RoleRestrictedView {
         return pregunta;
     }
 
-    public formCIOView(AuthenticatedUser authenticatedUser, FormularioService formularioService, UsuarioService usuarioService, ProyectoService proyectoService){
+    public formCIOView(AuthenticatedUser authenticatedUser, FormularioService formularioService, UsuarioService usuarioService, ProyectoService proyectoService, CorreoRealService correoService){
         this.authenticatedUser = authenticatedUser;
         this.formularioService = formularioService;
         this.proyectoService = proyectoService;
@@ -160,6 +160,7 @@ public class formCIOView extends VerticalLayout implements RoleRestrictedView {
                     if (formsProyecto.size() == 2) {
                         proy.get().setEstado(Estado.valorado);
                         proyectoService.saveProyecto(proy.get());
+                        correoService.enviarCorreoProyectoValorado(proy.get().getSolicitante(), proy.get());
                     }
 
 
@@ -189,5 +190,6 @@ public class formCIOView extends VerticalLayout implements RoleRestrictedView {
 
         add(formularioContainer);
         this.usuarioService = usuarioService;
+        this.correoService = correoService;
     }
 }
