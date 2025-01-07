@@ -165,7 +165,7 @@ public class UsuarioService {
     }
 
     private boolean existenPromotoresEnBaseDeDatos() {
-        return !usuarioRepository.findByRol(Rol.PROMOTOR).isEmpty();
+        return usuarioRepository.findByRol(Rol.PROMOTOR).isPresent();
     }
 
     private void guardarPromotorSiNoExiste(Usuario promotor) {

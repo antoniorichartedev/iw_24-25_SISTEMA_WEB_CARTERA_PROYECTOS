@@ -23,7 +23,6 @@ public class LogInView extends LoginOverlay implements BeforeEnterObserver {
     public static final String HOME_OT = "homeOT";
     public static final String HOME_CIO = "homeCio";
     public static final String HOME_USER = "homeUser";
-
     public static final String HOME_PROMOTOR = "homePromotor";
     public static final String LOGIN = "login";
 

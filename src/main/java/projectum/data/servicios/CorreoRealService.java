@@ -33,7 +33,7 @@ public class CorreoRealService implements CorreoService {
         this.mailSender = mailSender;
     }
 
-    private String construirCuerpoCorreo(String tipo, Usuario usuario) {
+    public String construirCuerpoCorreo(String tipo, Usuario usuario) {
         if ("registro".equals(tipo)) {
             return "Bienvenido a Projectum!\n\n" +
                     "Para activar tu cuenta, introduzca en la página web " + getServerUrl() + " el siguiente código:\n" +

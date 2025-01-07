@@ -86,7 +86,7 @@ public class Proyecto {
 
     // Getters y Setters
 
-
+    public void setId(UUID id) { this.id = id; }
     public UUID getId() { return id; }
 
     public String getTitulo() { return titulo; }
