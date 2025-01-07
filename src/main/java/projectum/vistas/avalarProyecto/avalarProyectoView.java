@@ -66,7 +66,6 @@ public class avalarProyectoView extends Composite<VerticalLayout> implements Rol
         Grid<Proyecto> stripedGrid = new Grid<>(Proyecto.class);
         stripedGrid.removeAllColumns();
 
-        // Agregar columnas para todos los campos de la clase Proyecto
         // Mostrar string completo al poner el raton encima
         stripedGrid.addComponentColumn(proyecto -> {
             Span span = new Span(proyecto.getTitulo());
