@@ -13,4 +13,4 @@ planificación estratégica y la optimización de recursos en el entorno académ
 
 ## Rúbrica de auto-evaluación
 
-[Enlace a la rúbrica](https://docs.google.com/spreadsheets/d/1kuS44Ql4FjASLQ07ggYqXY2sgSLBG_I2qTsRfMMI03U/edit?usp=sharing)
+[Enlace a la rúbrica](https://docs.google.com/spreadsheets/d/1RoJgRCMI0-33PAdz0D75-Y1aYvxEukB90_0O4HhtGS0/edit?usp=sharing)
