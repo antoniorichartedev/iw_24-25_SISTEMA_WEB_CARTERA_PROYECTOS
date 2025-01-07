@@ -22,12 +22,12 @@ import com.vaadin.flow.component.dialog.Dialog;
 @PageTitle("Perfil")
 @Route(value = "perfil", layout = MainLayout.class)
 @PermitAll // Solo para usuarios autenticados.
-public class userProfileView extends VerticalLayout {
+public class UserProfileView extends VerticalLayout {
     private final UsuarioService usuarioService;
     private final AuthenticatedUser authenticatedUser;
     private Usuario usuario;
 
-    public userProfileView(UsuarioService usuarioService, AuthenticatedUser authenticatedUser) {
+    public UserProfileView(UsuarioService usuarioService, AuthenticatedUser authenticatedUser) {
         this.usuarioService = usuarioService;
         this.authenticatedUser = authenticatedUser;
 

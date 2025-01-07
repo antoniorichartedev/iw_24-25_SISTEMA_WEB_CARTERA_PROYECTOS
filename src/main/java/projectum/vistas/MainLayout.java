@@ -34,7 +34,7 @@ import projectum.vistas.formularioProyecto.formProyectoView;
 import projectum.vistas.proyectos.ProyectosView;
 import projectum.vistas.proyectos.proyectosByIDView;
 import projectum.vistas.sobrenosotros.SobreNosotrosView;
-import projectum.vistas.userProfile.userProfileView;
+import projectum.vistas.userProfile.UserProfileView;
 
 import java.util.Optional;
 
@@ -108,8 +108,8 @@ public class MainLayout extends AppLayout {
             nav.addItem(new SideNavItem("Home", PromotorHomePageView.class, LineAwesomeIcon.HOME_SOLID.create()));
         }
 
-        if (accessChecker.hasAccess(userProfileView.class)) {
-            nav.addItem(new SideNavItem("Perfil", userProfileView.class, LineAwesomeIcon.USER_ALT_SOLID.create()));
+        if (accessChecker.hasAccess(UserProfileView.class)) {
+            nav.addItem(new SideNavItem("Perfil", UserProfileView.class, LineAwesomeIcon.USER_ALT_SOLID.create()));
         }
 
         if (accessChecker.hasAccess(ProyectosView.class)) {
