@@ -87,6 +87,16 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
                 span = new Span("Sin avalar");
                 span.getElement().setAttribute("title", "Sin avalar");
             }
+            else if(proyecto.getEstado() == Estado.en_valoracion)
+            {
+                span = new Span("En valoración");
+                span.getElement().setAttribute("title", "En valoración");
+            }
+            else if(proyecto.getEstado() == Estado.rechazado)
+            {
+                span = new Span("Rechazado");
+                span.getElement().setAttribute("title", "Rechazado");
+            }
             else {
                 span = new Span("Completado");
                 span.getElement().setAttribute("title", "Completado");
