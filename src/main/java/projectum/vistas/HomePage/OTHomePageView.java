@@ -37,9 +37,9 @@ public class OTHomePageView extends VerticalLayout implements RoleRestrictedView
         textLarge.getStyle().set("font-size", "var(--lumo-font-size-xl)");
 
 
-        Button button = new Button("Avalar proyectos");
+        Button button = new Button("Valorar proyectos");
         button.addClickListener(e -> {
-            UI.getCurrent().navigate("formOT");
+            UI.getCurrent().navigate("valorarProyectoOT");
         });
 
         button.getElement().addEventListener("mouseover", e -> {

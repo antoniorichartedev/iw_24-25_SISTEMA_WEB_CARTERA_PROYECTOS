@@ -36,6 +36,8 @@ import projectum.vistas.proyectos.ProyectosView;
 import projectum.vistas.proyectos.proyectosByIDView;
 import projectum.vistas.sobrenosotros.SobreNosotrosView;
 import projectum.vistas.userProfile.userProfileView;
+import projectum.vistas.valoracionCIO.valoracionCIOView;
+import projectum.vistas.valoracionOT.valoracionOTView;
 
 import java.util.Optional;
 
@@ -133,12 +135,12 @@ public class MainLayout extends AppLayout {
             nav.addItem(new SideNavItem("Administrar usuarios", adminUsersView.class, LineAwesomeIcon.USER_ALT_SOLID.create()));
         }
 
-        if (accessChecker.hasAccess(formOTView.class)) {
-            nav.addItem(new SideNavItem("Formulario OT", formOTView.class, LineAwesomeIcon.LIST_SOLID.create()));
+        if (accessChecker.hasAccess(valoracionOTView.class)) {
+            nav.addItem(new SideNavItem("Valorar Proyectos", valoracionOTView.class, LineAwesomeIcon.LIST_SOLID.create()));
         }
 
-        if (accessChecker.hasAccess(formCIOView.class)) {
-            nav.addItem(new SideNavItem("Formulario CIO", formCIOView.class, LineAwesomeIcon.LIST_SOLID.create()));
+        if (accessChecker.hasAccess(valoracionCIOView.class)) {
+            nav.addItem(new SideNavItem("Valorar Proyectos", valoracionCIOView.class, LineAwesomeIcon.LIST_SOLID.create()));
         }
 
         if (accessChecker.hasAccess(formProyectoView.class)) {
