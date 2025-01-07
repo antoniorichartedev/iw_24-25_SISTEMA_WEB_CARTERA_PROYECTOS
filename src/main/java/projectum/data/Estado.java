@@ -10,5 +10,5 @@ package projectum.data;
 
  */
 public enum Estado {
-    en_desarrollo, en_valoracion, sin_avalar, completado
+    en_desarrollo, en_valoracion, valorado, sin_avalar, completado, rechazado
 }
