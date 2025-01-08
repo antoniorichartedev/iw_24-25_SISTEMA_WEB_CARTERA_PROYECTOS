@@ -77,7 +77,7 @@ public class HomeUserView extends VerticalLayout {
 
         Button crearButton = new Button("Crear proyecto");
         crearButton.addClickListener(e -> {
-            UI.getCurrent().navigate("formularioProyecto");
+            UI.getCurrent().navigate("newProyecto");
         });
 
         crearButton.getElement().addEventListener("mouseover", e -> {
