@@ -38,4 +38,15 @@ public class ConvocatoriaService {
     public Optional<Convocatoria> getConvocatoriaById(UUID convocatoriaID) {
         return convocatoriaRepository.findById(convocatoriaID);
     }
+
+    public Optional<Convocatoria> getConvocatoriaActual(){
+        List<Convocatoria> conv = getAllConvocatorias();
+
+        for (Convocatoria convocatoria : conv) {
+            if (convocatoria.getActividad()) {
+                return getConvocatoriaById(convocatoria.getId());
+            }
+        }
+        return Optional.empty();
+    }
 }

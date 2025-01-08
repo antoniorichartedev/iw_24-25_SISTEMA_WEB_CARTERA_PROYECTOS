@@ -1,8 +1,10 @@
 package projectum.vistas.formularioProyecto;
 import jakarta.annotation.security.RolesAllowed;
 import projectum.data.Estado;
+import projectum.data.entidades.Convocatoria;
 import projectum.data.entidades.Proyecto;
 import projectum.data.entidades.Usuario;
+import projectum.data.servicios.ConvocatoriaService;
 import projectum.data.servicios.ProyectoService;
 import projectum.data.servicios.UsuarioService;
 import projectum.security.RolRestrictions.RoleRestrictedView;
@@ -42,11 +44,13 @@ public class FormProyectoView extends VerticalLayout implements RoleRestrictedVi
 
     private final UsuarioService usuarioService;
     private final ProyectoService proyectoService;
+    private final ConvocatoriaService convocatoriaService;
 
-    public FormProyectoView(UsuarioService userService, ProyectoService proyectService) {
+    public FormProyectoView(UsuarioService userService, ProyectoService proyectService, ConvocatoriaService convocService) {
 
         this.proyectoService = proyectService;
         this.usuarioService = userService;
+        this.convocatoriaService = convocService;
 
         //Informacion del proyecto
         Span labelProyecto = new Span("Información del Proyecto");
@@ -190,6 +194,10 @@ public class FormProyectoView extends VerticalLayout implements RoleRestrictedVi
         upload3.setDropLabel(new Span("Arrastra un archivo aquí o haz clic para cargar"));
         uploadContainer3.add(labelPresupuesto, upload3);
 
+        TextField convocatoria = new TextField("Convocatoria realizada");
+        convocatoria.setWidth("70%");
+        convocatoria.setRequiredIndicatorVisible(true);
+
         // Notificacion carga exitosa de carga de archivo
         upload.addSucceededListener(event -> {
             String fileName = event.getFileName();
@@ -241,6 +249,9 @@ public class FormProyectoView extends VerticalLayout implements RoleRestrictedVi
             // Información del Promotor.
             Optional<Usuario> prom = usuarioService.loadUserByCorreo(correopromotor.getValue());
 
+            // Información de la Convocatoria. Solo puede haber una activa a la vez.
+            Optional<Convocatoria> conv = convocatoriaService.getConvocatoriaActual();
+
             // Si tanto como el solicitante como el promotor existen en la base de datos, entonces los asociamos al proyecto.
             if (sol.isPresent() && prom.isPresent()) {
                 proyecto.setSolicitante(sol.get());
@@ -249,6 +260,14 @@ public class FormProyectoView extends VerticalLayout implements RoleRestrictedVi
             else // sino, mostramos el mensaje y no guardamos nada.
             {
                 Notification.show("El solicitante o el promotor no existen en la base de datos. Verifica la información ingresada.", 5000, Notification.Position.MIDDLE);
+                return;
+            }
+
+            if (conv.isPresent()){
+                proyecto.setConvocatoria(conv.get());
+            }
+            else {
+                Notification.show("La convocatoria no esta activa.");
                 return;
             }
 

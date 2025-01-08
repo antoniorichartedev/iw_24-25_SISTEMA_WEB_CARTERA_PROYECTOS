@@ -137,6 +137,13 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
             return span;
         }).setHeader("Promotor");
 
+        stripedGrid.addComponentColumn(proyecto -> {
+            String convocatoria = proyecto.getConvocatoria() != null ? proyecto.getConvocatoria().getNombre() : "Sin convocatoria";
+            Span span = new Span(convocatoria);
+            span.getElement().setAttribute("title", convocatoria);
+            return span;
+        }).setHeader("Convocatoria");
+
         // Configuración del diseño
         getContent().setWidth("100%");
         getContent().getStyle().set("flex-grow", "1");
