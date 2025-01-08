@@ -1,10 +1,8 @@
 package projectum.vistas.HomePage;
 
 
-import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
 
@@ -16,7 +14,6 @@ import jakarta.annotation.security.RolesAllowed;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
 import projectum.data.Rol;
 import projectum.security.RolRestrictions.RoleRestrictedView;
-import projectum.vistas.formCIO.formCIOView;
 
 
 @PageTitle("Home")

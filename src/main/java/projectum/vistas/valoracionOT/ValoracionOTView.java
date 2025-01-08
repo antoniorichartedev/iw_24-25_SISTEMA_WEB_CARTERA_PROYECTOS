@@ -1,4 +1,4 @@
-package projectum.vistas.avalarProyecto;
+package projectum.vistas.valoracionOT;
 
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
@@ -9,13 +9,11 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.spring.security.AuthenticationContext;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,42 +21,28 @@ import org.vaadin.lineawesome.LineAwesomeIconUrl;
 import projectum.data.Estado;
 import projectum.data.Rol;
 import projectum.data.entidades.Proyecto;
-import projectum.data.entidades.Usuario;
-import projectum.data.servicios.CorreoRealService;
 import projectum.data.servicios.ProyectoService;
-import projectum.data.servicios.UsuarioService;
 import projectum.security.RolRestrictions.RoleRestrictedView;
 
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
-@PageTitle("Tus proyectos asignados")
-@Route("avalarProyecto")
+@PageTitle("Valorar proyectos")
+@Route("valorarProyectoOT")
 @Menu(order = 1, icon = LineAwesomeIconUrl.PENCIL_RULER_SOLID)
 @Uses(Icon.class)
-@RolesAllowed("PROMOTOR")
-public class avalarProyectoView extends Composite<VerticalLayout> implements RoleRestrictedView {
+@RolesAllowed("OT")
+public class ValoracionOTView extends Composite<VerticalLayout> implements RoleRestrictedView {
+
     @Override
     public Rol getRequiredRole() {
         return null;
     }
 
-    public avalarProyectoView(ProyectoService proyectoService,
-                              AuthenticationContext authenticationContext,
-                              UsuarioService usuarioService,
-                              CorreoRealService correoService) {
+    public ValoracionOTView(ProyectoService proyectoService){
         this.proyectoService = proyectoService;
-        this.authenticationContext = authenticationContext;
-        this.usuarioService = usuarioService;
-        this.correoService = correoService;
-
-        UUID solicitanteId = getSolicitanteIdFromSession();
-        Usuario promotorActual = usuarioService.loadUserById(solicitanteId)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         HorizontalLayout layoutRow = new HorizontalLayout();
         H2 h2 = new H2();
@@ -66,6 +50,7 @@ public class avalarProyectoView extends Composite<VerticalLayout> implements Rol
         Grid<Proyecto> stripedGrid = new Grid<>(Proyecto.class);
         stripedGrid.removeAllColumns();
 
+        // Agregar columnas para todos los campos de la clase Proyecto
         // Mostrar string completo al poner el raton encima
         stripedGrid.addComponentColumn(proyecto -> {
             Span span = new Span(proyecto.getTitulo());
@@ -113,12 +98,31 @@ public class avalarProyectoView extends Composite<VerticalLayout> implements Rol
                 span = new Span("Rechazado");
                 span.getElement().setAttribute("title", "Rechazado");
             }
+            else if(proyecto.getEstado() == Estado.valorado)
+            {
+                span = new Span("Valorado");
+                span.getElement().setAttribute("title", "Valorado");
+            }
+            else if(proyecto.getEstado() == Estado.valoradoCIO)
+            {
+                span = new Span("Valorado por el CIO");
+                span.getElement().setAttribute("title", "Valorado por el CIO");
+            }
+            else if(proyecto.getEstado() == Estado.valoradoOT)
+            {
+                span = new Span("Valorado por la OT");
+                span.getElement().setAttribute("title", "Valorado por la OT");
+            }
             else {
                 span = new Span("Completado");
                 span.getElement().setAttribute("title", "Completado");
             }
             return span;
         }).setHeader("Estado");
+
+        stripedGrid.addColumn(Proyecto::getImportancia).setHeader("Importancia");
+
+        stripedGrid.addColumn(Proyecto::getFinanciacion).setHeader("Financiación");
 
         stripedGrid.addColumn(proyecto -> {
             // Convertir bytes a base64 si están presentes
@@ -154,20 +158,14 @@ public class avalarProyectoView extends Composite<VerticalLayout> implements Rol
         }).setHeader("Promotor");
 
         stripedGrid.addComponentColumn(proyecto -> {
-            Button avalarProyecto = new Button("Avalar");
-            avalarProyecto.getStyle().set("color", "blue");
+            Button valorarProyecto = new Button("Valorar");
+            valorarProyecto.getStyle().set("color", "blue");
 
-            // Manejar el evento de clic para redirigir a otra vista
-            avalarProyecto.addClickListener(event -> {
-                proyecto.setEstado(Estado.en_valoracion);
-                proyectoService.saveProyecto(proyecto);
-                Notification.show("Estado actualizado", 3000, Notification.Position.MIDDLE);
-                correoService.enviarCorreoAvalado(proyecto.getSolicitante(), proyecto);
-                UI.getCurrent().getPage().reload();
+            valorarProyecto.addClickListener(event -> {
+                UI.getCurrent().navigate("formOT");
             });
-
-            return avalarProyecto;
-        }).setHeader("Avalar").setAutoWidth(true);
+            return valorarProyecto;
+        }).setHeader("Valorar").setAutoWidth(true);
 
         // Configuración del diseño
         getContent().setWidth("100%");
@@ -184,7 +182,7 @@ public class avalarProyectoView extends Composite<VerticalLayout> implements Rol
         stripedGrid.getStyle().set("flex-grow", "0");
 
         // Establecer los datos en el grid
-        setGridSampleData(stripedGrid, promotorActual);
+        setGridSampleData(stripedGrid);
 
         // Añadir componentes al layout
         getContent().add(layoutRow);
@@ -193,37 +191,15 @@ public class avalarProyectoView extends Composite<VerticalLayout> implements Rol
         layoutColumn2.add(stripedGrid);
     }
 
-    private void setGridSampleData(Grid<Proyecto> grid, Usuario promotorActual) {
+    private void setGridSampleData(Grid<Proyecto> grid) {
 
-        List<Proyecto> proyectosEnDesarrollo = proyectoService.getAllProyectos().stream()
-                .filter(proyecto -> proyecto.getEstado() == Estado.sin_avalar)
-                .filter(proyecto -> proyecto.getPromotor().getNombre().equals(promotorActual.getNombre()))
+        List<Proyecto> proyectosFiltrados = proyectoService.getAllProyectos().stream()
+                .filter(proyecto -> proyecto.getEstado() == Estado.en_valoracion || proyecto.getEstado() == Estado.valoradoCIO)
                 .collect(Collectors.toList());
 
-        grid.setItems(proyectosEnDesarrollo);
-    }
-
-    private UUID getSolicitanteIdFromSession() {
-        return authenticationContext.getAuthenticatedUser(Object.class)
-                .map(principal -> {
-                    if (principal instanceof org.springframework.security.core.userdetails.UserDetails userDetails) {
-                        String username = userDetails.getUsername();
-                        Usuario usuario = usuarioService.loadUserByUsername(username);
-                        if (usuario != null) {
-                            return usuario.getId();
-
-                        } else {
-                            throw new IllegalStateException("Usuario no encontrado en la base de datos.");
-                        }
-                    }
-                    throw new IllegalStateException("El usuario autenticado no tiene un ID válido.");
-                })
-                .orElseThrow(() -> new IllegalStateException("No hay un usuario autenticado."));
+        grid.setItems(proyectosFiltrados);
     }
 
     @Autowired()
     private ProyectoService proyectoService;
-    private AuthenticationContext authenticationContext;
-    private UsuarioService usuarioService;
-    private CorreoRealService correoService;
 }

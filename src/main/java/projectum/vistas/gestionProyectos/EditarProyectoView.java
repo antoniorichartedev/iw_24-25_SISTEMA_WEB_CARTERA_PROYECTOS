@@ -15,7 +15,6 @@ import com.vaadin.flow.router.*;
 import jakarta.annotation.security.RolesAllowed;
 import projectum.data.Estado;
 import projectum.data.entidades.Proyecto;
-import projectum.data.entidades.Usuario;
 import projectum.data.servicios.ProyectoService;
 import projectum.vistas.MainLayout;
 
@@ -26,12 +25,12 @@ import java.util.UUID;
 @PageTitle("Editar Proyecto")
 @Route(value = "editarProyecto/:id", layout = MainLayout.class)
 @RolesAllowed("CIO")
-public class editarProyectoView extends VerticalLayout implements BeforeEnterObserver {
+public class EditarProyectoView extends VerticalLayout implements BeforeEnterObserver {
 
     private final ProyectoService proyectoService;
     private UUID proyectoId;
 
-    public editarProyectoView(ProyectoService proyectoService) {
+    public EditarProyectoView(ProyectoService proyectoService) {
         this.proyectoService = proyectoService;
     }
 

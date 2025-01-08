@@ -20,13 +20,11 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
 import projectum.data.Estado;
 import projectum.data.Rol;
 import projectum.data.entidades.Proyecto;
 import projectum.data.servicios.CorreoRealService;
-import projectum.data.servicios.CorreoService;
 import projectum.data.servicios.ProyectoService;
 import projectum.security.RolRestrictions.RoleRestrictedView;
 
@@ -40,7 +38,7 @@ import java.util.stream.Collectors;
 @Menu(order = 1, icon = LineAwesomeIconUrl.PENCIL_RULER_SOLID)
 @Uses(Icon.class)
 @RolesAllowed("CIO")
-public class aceptarProyectosView extends Composite<VerticalLayout> implements RoleRestrictedView {
+public class AceptarProyectosView extends Composite<VerticalLayout> implements RoleRestrictedView {
 
     @Autowired
     private CorreoRealService correoService;
@@ -50,7 +48,7 @@ public class aceptarProyectosView extends Composite<VerticalLayout> implements R
         return null;
     }
 
-    public aceptarProyectosView(ProyectoService proyectoService) {
+    public AceptarProyectosView(ProyectoService proyectoService) {
         this.proyectoService = proyectoService;
 
         HorizontalLayout layoutRow = new HorizontalLayout();

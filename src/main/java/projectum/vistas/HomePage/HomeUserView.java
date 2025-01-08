@@ -4,30 +4,25 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import projectum.data.entidades.Usuario;
 import projectum.data.servicios.UsuarioService;
 import projectum.security.login.AuthenticatedUser;
 import projectum.vistas.MainLayout;
-import projectum.data.entidades.Usuario;
-import projectum.security.login.AuthenticatedUser;
-import projectum.data.servicios.UsuarioService;
 
 @PageTitle("home user")
 @Route(value = "homeUser", layout = MainLayout.class)
 @RolesAllowed({"USER", "SOLICITANTE"})
-public class homeUserView extends VerticalLayout {
+public class HomeUserView extends VerticalLayout {
     private final UsuarioService usuarioService;
     private final AuthenticatedUser authenticatedUser;
     private Usuario usuario;
 
-    public homeUserView(UsuarioService usuarioService, AuthenticatedUser authenticatedUser) {
+    public HomeUserView(UsuarioService usuarioService, AuthenticatedUser authenticatedUser) {
         this.usuarioService = usuarioService;
         this.authenticatedUser = authenticatedUser;
 

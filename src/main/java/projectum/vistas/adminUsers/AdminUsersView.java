@@ -1,7 +1,6 @@
 package projectum.vistas.adminUsers;
 
 import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dialog.Dialog;
 import jakarta.annotation.security.RolesAllowed;
 import projectum.security.RolRestrictions.RoleRestrictedView;
@@ -25,13 +24,13 @@ import com.vaadin.flow.component.notification.Notification;
 @PageTitle("Administrar Usuarios")
 @Route(value = "adminUsers", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
-public class adminUsersView extends Composite<VerticalLayout> implements RoleRestrictedView {
+public class AdminUsersView extends Composite<VerticalLayout> implements RoleRestrictedView {
     @Override
     public Rol getRequiredRole() {
         return Rol.ADMIN;
     }
 
-    public adminUsersView(UsuarioService usuarioService) {
+    public AdminUsersView(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
 
         HorizontalLayout layoutRow = new HorizontalLayout();

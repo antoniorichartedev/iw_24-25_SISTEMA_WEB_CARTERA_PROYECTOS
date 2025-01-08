@@ -1,7 +1,6 @@
 package projectum.vistas.formCIO;
 
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import projectum.data.Estado;
 import projectum.data.entidades.Formulario;
 import projectum.data.entidades.Proyecto;
@@ -30,7 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Route("formCIO")
 @Menu(order = 6, icon = LineAwesomeIconUrl.INFO_CIRCLE_SOLID)
 @RolesAllowed("CIO")
-public class formCIOView extends VerticalLayout implements RoleRestrictedView {
+public class FormCIOView extends VerticalLayout implements RoleRestrictedView {
 
     private final UsuarioService usuarioService;
     private final CorreoRealService correoService;
@@ -68,7 +67,7 @@ public class formCIOView extends VerticalLayout implements RoleRestrictedView {
         return pregunta;
     }
 
-    public formCIOView(AuthenticatedUser authenticatedUser, FormularioService formularioService, UsuarioService usuarioService, ProyectoService proyectoService, CorreoRealService correoService){
+    public FormCIOView(AuthenticatedUser authenticatedUser, FormularioService formularioService, UsuarioService usuarioService, ProyectoService proyectoService, CorreoRealService correoService){
         this.authenticatedUser = authenticatedUser;
         this.formularioService = formularioService;
         this.proyectoService = proyectoService;

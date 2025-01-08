@@ -31,7 +31,7 @@ import projectum.data.entidades.Usuario;
 @Route("formOT")
 @Menu(order = 5, icon = LineAwesomeIconUrl.INFO_CIRCLE_SOLID)
 @RolesAllowed("OT")
-public class formOTView extends VerticalLayout implements RoleRestrictedView {
+public class FormOTView extends VerticalLayout implements RoleRestrictedView {
 
     private final UsuarioService usuarioService;
 
@@ -69,7 +69,7 @@ public class formOTView extends VerticalLayout implements RoleRestrictedView {
         return pregunta;
     }
 
-    public formOTView(AuthenticatedUser authenticatedUser, FormularioService formularioService, UsuarioService usuarioService, ProyectoService proyectoService, CorreoRealService correoService) {
+    public FormOTView(AuthenticatedUser authenticatedUser, FormularioService formularioService, UsuarioService usuarioService, ProyectoService proyectoService, CorreoRealService correoService) {
         this.authenticatedUser = authenticatedUser;
         this.formularioService = formularioService;
         this.proyectoService = proyectoService;

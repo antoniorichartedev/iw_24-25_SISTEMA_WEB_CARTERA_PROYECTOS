@@ -1,24 +1,19 @@
 package projectum.vistas.valoracionCIO;
 
 import com.vaadin.flow.component.Composite;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.Uses;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.spring.security.AuthenticationContext;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +21,7 @@ import org.vaadin.lineawesome.LineAwesomeIconUrl;
 import projectum.data.Estado;
 import projectum.data.Rol;
 import projectum.data.entidades.Proyecto;
-import projectum.data.servicios.CorreoRealService;
 import projectum.data.servicios.ProyectoService;
-import projectum.data.servicios.UsuarioService;
 import projectum.security.RolRestrictions.RoleRestrictedView;
 
 import java.text.SimpleDateFormat;
@@ -41,14 +34,14 @@ import java.util.stream.Collectors;
 @Menu(order = 1, icon = LineAwesomeIconUrl.PENCIL_RULER_SOLID)
 @Uses(Icon.class)
 @RolesAllowed("CIO")
-public class valoracionCIOView extends Composite<VerticalLayout> implements RoleRestrictedView {
+public class ValoracionCIOView extends Composite<VerticalLayout> implements RoleRestrictedView {
 
     @Override
     public Rol getRequiredRole() {
         return null;
     }
 
-    public valoracionCIOView(ProyectoService proyectoService){
+    public ValoracionCIOView(ProyectoService proyectoService){
         this.proyectoService = proyectoService;
 
         HorizontalLayout layoutRow = new HorizontalLayout();

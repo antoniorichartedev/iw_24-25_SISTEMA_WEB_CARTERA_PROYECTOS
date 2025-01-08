@@ -25,19 +25,19 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.server.menu.MenuConfiguration;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import projectum.vistas.HomePage.*;
-import projectum.vistas.aceptarProyectos.aceptarProyectosView;
-import projectum.vistas.adminUsers.adminUsersView;
-import projectum.vistas.avalarProyecto.avalarProyectoView;
+import projectum.vistas.aceptarProyectos.AceptarProyectosView;
+import projectum.vistas.adminConvocatoria.AdminConvocatoriasView;
+import projectum.vistas.adminUsers.AdminUsersView;
+import projectum.vistas.avalarProyecto.AvalarProyectoView;
 import projectum.vistas.faq.FAQView;
-import projectum.vistas.formCIO.formCIOView;
-import projectum.vistas.formOT.formOTView;
-import projectum.vistas.formularioProyecto.formProyectoView;
+import projectum.vistas.formularioProyecto.FormProyectoView;
+import projectum.vistas.gestionProyectos.GestionProyectosView;
+import projectum.vistas.proyectos.ProyectosByIDView;
 import projectum.vistas.proyectos.ProyectosView;
-import projectum.vistas.proyectos.proyectosByIDView;
 import projectum.vistas.sobrenosotros.SobreNosotrosView;
 import projectum.vistas.userProfile.UserProfileView;
-import projectum.vistas.valoracionCIO.valoracionCIOView;
-import projectum.vistas.valoracionOT.valoracionOTView;
+import projectum.vistas.valoracionCIO.ValoracionCIOView;
+import projectum.vistas.valoracionOT.ValoracionOTView;
 
 import java.util.Optional;
 
@@ -103,8 +103,8 @@ public class MainLayout extends AppLayout {
             nav.addItem(new SideNavItem("Home", AdminHomePageView.class, LineAwesomeIcon.HOME_SOLID.create()));
         }
 
-        if (accessChecker.hasAccess(homeUserView.class)) {
-            nav.addItem(new SideNavItem("Home", homeUserView.class, LineAwesomeIcon.HOME_SOLID.create()));
+        if (accessChecker.hasAccess(HomeUserView.class)) {
+            nav.addItem(new SideNavItem("Home", HomeUserView.class, LineAwesomeIcon.HOME_SOLID.create()));
         }
 
         if (accessChecker.hasAccess(PromotorHomePageView.class)) {
@@ -119,36 +119,40 @@ public class MainLayout extends AppLayout {
             nav.addItem(new SideNavItem("Proyectos", ProyectosView.class, LineAwesomeIcon.BOOK_SOLID.create()));
         }
 
-        if (accessChecker.hasAccess(projectum.vistas.gestionProyectos.gestionProyectosView.class)) {
-            nav.addItem(new SideNavItem("Gestionar Proyectos", projectum.vistas.gestionProyectos.gestionProyectosView.class, LineAwesomeIcon.BOOK_SOLID.create()));
+        if (accessChecker.hasAccess(GestionProyectosView.class)) {
+            nav.addItem(new SideNavItem("Gestionar Proyectos", GestionProyectosView.class, LineAwesomeIcon.BOOK_SOLID.create()));
         }
 
-        if (accessChecker.hasAccess(aceptarProyectosView.class)) {
-            nav.addItem(new SideNavItem("Aceptar Proyectos", aceptarProyectosView.class, LineAwesomeIcon.BOOK_SOLID.create()));
+        if (accessChecker.hasAccess(AceptarProyectosView.class)) {
+            nav.addItem(new SideNavItem("Aceptar Proyectos", AceptarProyectosView.class, LineAwesomeIcon.BOOK_SOLID.create()));
         }
 
-        if (accessChecker.hasAccess(avalarProyectoView.class)) {
-            nav.addItem(new SideNavItem("Avalar Proyectos",avalarProyectoView.class, LineAwesomeIcon.BOOK_SOLID.create()));
+        if (accessChecker.hasAccess(AvalarProyectoView.class)) {
+            nav.addItem(new SideNavItem("Avalar Proyectos",AvalarProyectoView.class, LineAwesomeIcon.BOOK_SOLID.create()));
         }
 
-        if (accessChecker.hasAccess(adminUsersView.class)) {
-            nav.addItem(new SideNavItem("Administrar usuarios", adminUsersView.class, LineAwesomeIcon.USER_ALT_SOLID.create()));
+        if (accessChecker.hasAccess(AdminUsersView.class)) {
+            nav.addItem(new SideNavItem("Administrar usuarios", AdminUsersView.class, LineAwesomeIcon.USER_ALT_SOLID.create()));
         }
 
-        if (accessChecker.hasAccess(valoracionOTView.class)) {
-            nav.addItem(new SideNavItem("Valorar Proyectos", valoracionOTView.class, LineAwesomeIcon.LIST_SOLID.create()));
+        if (accessChecker.hasAccess(AdminConvocatoriasView.class)) {
+            nav.addItem(new SideNavItem("Administrar Convocatorias", AdminConvocatoriasView.class, LineAwesomeIcon.USER_ALT_SOLID.create()));
         }
 
-        if (accessChecker.hasAccess(valoracionCIOView.class)) {
-            nav.addItem(new SideNavItem("Valorar Proyectos", valoracionCIOView.class, LineAwesomeIcon.LIST_SOLID.create()));
+        if (accessChecker.hasAccess(ValoracionOTView.class)) {
+            nav.addItem(new SideNavItem("Valorar Proyectos", ValoracionOTView.class, LineAwesomeIcon.LIST_SOLID.create()));
         }
 
-        if (accessChecker.hasAccess(formProyectoView.class)) {
-            nav.addItem(new SideNavItem("Crear proyecto", formProyectoView.class, LineAwesomeIcon.PLUS_SOLID.create()));
+        if (accessChecker.hasAccess(ValoracionCIOView.class)) {
+            nav.addItem(new SideNavItem("Valorar Proyectos", ValoracionCIOView.class, LineAwesomeIcon.LIST_SOLID.create()));
         }
 
-        if (accessChecker.hasAccess(proyectosByIDView.class) && maybeUser.isPresent() && maybeUser.get().getRol() != Rol.ADMIN) {
-            nav.addItem(new SideNavItem("Proyectos de tu usuario", proyectosByIDView.class, LineAwesomeIcon.BOOK_SOLID.create()));
+        if (accessChecker.hasAccess(FormProyectoView.class)) {
+            nav.addItem(new SideNavItem("Crear proyecto", FormProyectoView.class, LineAwesomeIcon.PLUS_SOLID.create()));
+        }
+
+        if (accessChecker.hasAccess(ProyectosByIDView.class) && maybeUser.isPresent() && maybeUser.get().getRol() != Rol.ADMIN) {
+            nav.addItem(new SideNavItem("Proyectos de tu usuario", ProyectosByIDView.class, LineAwesomeIcon.BOOK_SOLID.create()));
         }
 
         if (accessChecker.hasAccess(SobreNosotrosView.class)) {

@@ -33,7 +33,7 @@ import java.util.Optional;
 @Route("newProyecto")
 @Menu(order = 4, icon = LineAwesomeIconUrl.INFO_CIRCLE_SOLID)
 @RolesAllowed("USER")
-public class formProyectoView extends VerticalLayout implements RoleRestrictedView {
+public class FormProyectoView extends VerticalLayout implements RoleRestrictedView {
 
     @Override
     public Rol getRequiredRole() {
@@ -43,7 +43,7 @@ public class formProyectoView extends VerticalLayout implements RoleRestrictedVi
     private final UsuarioService usuarioService;
     private final ProyectoService proyectoService;
 
-    public formProyectoView(UsuarioService userService, ProyectoService proyectService) {
+    public FormProyectoView(UsuarioService userService, ProyectoService proyectService) {
 
         this.proyectoService = proyectService;
         this.usuarioService = userService;

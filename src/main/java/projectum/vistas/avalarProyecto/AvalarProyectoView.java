@@ -1,42 +1,63 @@
-package projectum.vistas.gestionProyectos;
+package projectum.vistas.avalarProyecto;
 
-import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.Span;
-import jakarta.annotation.security.RolesAllowed;
-import projectum.data.Estado;
-import projectum.security.RolRestrictions.RoleRestrictedView;
-import projectum.data.entidades.Proyecto;
-import projectum.data.servicios.ProyectoService;
 import com.vaadin.flow.component.Composite;
-import projectum.data.Rol;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
+import com.vaadin.flow.spring.security.AuthenticationContext;
+import com.vaadin.flow.theme.lumo.LumoUtility;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
-import projectum.vistas.MainLayout;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.notification.Notification;
+import org.vaadin.lineawesome.LineAwesomeIconUrl;
+import projectum.data.Estado;
+import projectum.data.Rol;
+import projectum.data.entidades.Proyecto;
+import projectum.data.entidades.Usuario;
+import projectum.data.servicios.CorreoRealService;
+import projectum.data.servicios.ProyectoService;
+import projectum.data.servicios.UsuarioService;
+import projectum.security.RolRestrictions.RoleRestrictedView;
 
 import java.text.SimpleDateFormat;
+import java.util.Base64;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
-@PageTitle("Gestionar Proyectos")
-@Route(value = "gestionarProyectos", layout = MainLayout.class)
-@RolesAllowed("CIO")
-public class gestionProyectosView extends Composite<VerticalLayout> implements RoleRestrictedView {
+@PageTitle("Tus proyectos asignados")
+@Route("avalarProyecto")
+@Menu(order = 1, icon = LineAwesomeIconUrl.PENCIL_RULER_SOLID)
+@Uses(Icon.class)
+@RolesAllowed("PROMOTOR")
+public class AvalarProyectoView extends Composite<VerticalLayout> implements RoleRestrictedView {
     @Override
     public Rol getRequiredRole() {
-        return Rol.ADMIN;
+        return null;
     }
 
-    public gestionProyectosView(ProyectoService proyectoService) {
+    public AvalarProyectoView(ProyectoService proyectoService,
+                              AuthenticationContext authenticationContext,
+                              UsuarioService usuarioService,
+                              CorreoRealService correoService) {
         this.proyectoService = proyectoService;
+        this.authenticationContext = authenticationContext;
+        this.usuarioService = usuarioService;
+        this.correoService = correoService;
+
+        UUID solicitanteId = getSolicitanteIdFromSession();
+        Usuario promotorActual = usuarioService.loadUserById(solicitanteId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         HorizontalLayout layoutRow = new HorizontalLayout();
         H2 h2 = new H2();
@@ -44,7 +65,7 @@ public class gestionProyectosView extends Composite<VerticalLayout> implements R
         Grid<Proyecto> stripedGrid = new Grid<>(Proyecto.class);
         stripedGrid.removeAllColumns();
 
-        // Agregar columnas para todos los campos relevantes de la clase Proyecto
+        // Mostrar string completo al poner el raton encima
         stripedGrid.addComponentColumn(proyecto -> {
             Span span = new Span(proyecto.getTitulo());
             span.getElement().setAttribute("title", proyecto.getTitulo());
@@ -91,21 +112,6 @@ public class gestionProyectosView extends Composite<VerticalLayout> implements R
                 span = new Span("Rechazado");
                 span.getElement().setAttribute("title", "Rechazado");
             }
-            else if(proyecto.getEstado() == Estado.valorado)
-            {
-                span = new Span("Valorado");
-                span.getElement().setAttribute("title", "Valorado");
-            }
-            else if(proyecto.getEstado() == Estado.valoradoCIO)
-            {
-                span = new Span("Valorado por el CIO");
-                span.getElement().setAttribute("title", "Valorado por el CIO");
-            }
-            else if(proyecto.getEstado() == Estado.valoradoOT)
-            {
-                span = new Span("Valorado por la OT");
-                span.getElement().setAttribute("title", "Valorado por la OT");
-            }
             else {
                 span = new Span("Completado");
                 span.getElement().setAttribute("title", "Completado");
@@ -113,11 +119,11 @@ public class gestionProyectosView extends Composite<VerticalLayout> implements R
             return span;
         }).setHeader("Estado");
 
-        stripedGrid.addColumn(Proyecto::getImportancia).setHeader("Importancia");
-
-        stripedGrid.addColumn(Proyecto::getFinanciacion).setHeader("Financiación");
-
-        stripedGrid.addColumn(Proyecto::getPriorizacion).setHeader("Priorización");
+        stripedGrid.addColumn(proyecto -> {
+            // Convertir bytes a base64 si están presentes
+            byte[] memorias = proyecto.getMemorias();
+            return memorias != null ? Base64.getEncoder().encodeToString(memorias) : "Sin datos";
+        }).setHeader("Memorias");
 
         stripedGrid.addColumn(proyecto -> {
             // Formatear la fecha si está presente
@@ -146,56 +152,26 @@ public class gestionProyectosView extends Composite<VerticalLayout> implements R
             return span;
         }).setHeader("Promotor");
 
-        // Columna para el botón de "Editar"
         stripedGrid.addComponentColumn(proyecto -> {
-            Button editarProyecto = new Button("Editar");
-            editarProyecto.getStyle().set("color", "blue");
+            Button avalarProyecto = new Button("Avalar");
+            avalarProyecto.getStyle().set("color", "blue");
 
             // Manejar el evento de clic para redirigir a otra vista
-            editarProyecto.addClickListener(event -> {
-                // Redirigir a la vista de edición pasando el ID del proyecto
-                UI.getCurrent().navigate("editarProyecto/" + proyecto.getId());
+            avalarProyecto.addClickListener(event -> {
+                proyecto.setEstado(Estado.en_valoracion);
+                proyectoService.saveProyecto(proyecto);
+                Notification.show("Estado actualizado", 3000, Notification.Position.MIDDLE);
+                correoService.enviarCorreoAvalado(proyecto.getSolicitante(), proyecto);
+                UI.getCurrent().getPage().reload();
             });
 
-            return editarProyecto;
-        }).setHeader("Editar").setAutoWidth(true);
-
-        // Columna para el botón de "Eliminar"
-        stripedGrid.addComponentColumn(proyecto -> {
-            Button borrarProyecto = new Button("Eliminar");
-            borrarProyecto.getStyle().set("color", "red");
-
-            // Crear el diálogo de confirmación
-            Dialog confirmDialog = new Dialog();
-            confirmDialog.setHeaderTitle("Confirmación");
-            confirmDialog.add(new Text("¿Estás seguro de que deseas eliminar este proyecto? Esta acción no se puede deshacer."));
-
-            // Botón para confirmar la eliminación
-            Button confirmButton = new Button("Confirmar", event -> {
-                proyectoService.deleteProyecto(proyecto.getId());
-                stripedGrid.setItems(proyectoService.getAllProyectos());
-                Notification.show("El proyecto ha sido eliminado con éxito");
-                confirmDialog.close();
-            });
-
-            // Botón para cancelar la acción
-            Button cancelButton = new Button("Cancelar", event -> confirmDialog.close());
-
-            HorizontalLayout dialogButtons = new HorizontalLayout(confirmButton, cancelButton);
-            dialogButtons.setSpacing(true);
-            confirmDialog.add(dialogButtons);
-
-            borrarProyecto.addClickListener(event -> confirmDialog.open());
-
-            return borrarProyecto;
-        }).setHeader("Eliminar");
-
-
+            return avalarProyecto;
+        }).setHeader("Avalar").setAutoWidth(true);
 
         // Configuración del diseño
         getContent().setWidth("100%");
         getContent().getStyle().set("flex-grow", "1");
-        layoutRow.addClassName(Gap.MEDIUM);
+        layoutRow.addClassName(LumoUtility.Gap.MEDIUM);
         layoutRow.setWidth("100%");
         layoutRow.setHeight("min-content");
         h2.setText("Proyectos");
@@ -207,7 +183,7 @@ public class gestionProyectosView extends Composite<VerticalLayout> implements R
         stripedGrid.getStyle().set("flex-grow", "0");
 
         // Establecer los datos en el grid
-        setGridSampleData(stripedGrid);
+        setGridSampleData(stripedGrid, promotorActual);
 
         // Añadir componentes al layout
         getContent().add(layoutRow);
@@ -216,10 +192,37 @@ public class gestionProyectosView extends Composite<VerticalLayout> implements R
         layoutColumn2.add(stripedGrid);
     }
 
-    private void setGridSampleData(Grid<Proyecto> grid) {
-        grid.setItems(proyectoService.getAllProyectos());
+    private void setGridSampleData(Grid<Proyecto> grid, Usuario promotorActual) {
+
+        List<Proyecto> proyectosEnDesarrollo = proyectoService.getAllProyectos().stream()
+                .filter(proyecto -> proyecto.getEstado() == Estado.sin_avalar)
+                .filter(proyecto -> proyecto.getPromotor().getNombre().equals(promotorActual.getNombre()))
+                .collect(Collectors.toList());
+
+        grid.setItems(proyectosEnDesarrollo);
     }
 
-    @Autowired
+    private UUID getSolicitanteIdFromSession() {
+        return authenticationContext.getAuthenticatedUser(Object.class)
+                .map(principal -> {
+                    if (principal instanceof org.springframework.security.core.userdetails.UserDetails userDetails) {
+                        String username = userDetails.getUsername();
+                        Usuario usuario = usuarioService.loadUserByUsername(username);
+                        if (usuario != null) {
+                            return usuario.getId();
+
+                        } else {
+                            throw new IllegalStateException("Usuario no encontrado en la base de datos.");
+                        }
+                    }
+                    throw new IllegalStateException("El usuario autenticado no tiene un ID válido.");
+                })
+                .orElseThrow(() -> new IllegalStateException("No hay un usuario autenticado."));
+    }
+
+    @Autowired()
     private ProyectoService proyectoService;
+    private AuthenticationContext authenticationContext;
+    private UsuarioService usuarioService;
+    private CorreoRealService correoService;
 }
