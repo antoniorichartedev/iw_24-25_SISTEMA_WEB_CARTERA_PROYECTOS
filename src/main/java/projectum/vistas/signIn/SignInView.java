@@ -26,10 +26,10 @@ public class SignInView extends VerticalLayout {
     private final UsuarioService usuarioService;
     private final PasswordEncoder passwordEncoder;
 
-    public SignInView(UsuarioService usuarioService, PasswordEncoder passwordEncoder) {
+    public SignInView(UsuarioService userService, PasswordEncoder passwrdEncoder) {
 
-        this.usuarioService = usuarioService;
-        this.passwordEncoder = passwordEncoder;
+        this.usuarioService = userService;
+        this.passwordEncoder = passwrdEncoder;
 
         H1 title = new H1("Registrarse");
         title.getStyle().set("color", "blue");
@@ -139,7 +139,7 @@ public class SignInView extends VerticalLayout {
     }
 
     // Método que nos permitirá saber como de fuerte es la contraseña que ha introducido el usuario en tiempo real.
-    private String fortalezaContrasenna(String password) {
+    public String fortalezaContrasenna(String password) {
         int puntuacion = 0;
 
         if (password.length() >= 8) puntuacion++;
@@ -148,18 +148,10 @@ public class SignInView extends VerticalLayout {
         if (password.matches(".*\\d.*")) puntuacion++;
         if (password.matches(".*[!@#$%^&*()-+].*")) puntuacion++;
 
-        switch (puntuacion) {
-            case 0:
-            case 1:
-            case 2:
-                return "Débil";
-            case 3:
-            case 4:
-                return "Moderada";
-            case 5:
-                return "Fuerte";
-            default:
-                return "Débil";
-        }
+        return switch (puntuacion) {
+            case 3, 4 -> "Moderada";
+            case 5 -> "Fuerte";
+            default -> "Débil";
+        };
     }
 }
