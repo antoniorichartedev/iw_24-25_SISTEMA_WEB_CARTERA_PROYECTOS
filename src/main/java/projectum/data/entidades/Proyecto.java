@@ -69,7 +69,7 @@ public class Proyecto {
     @Enumerated(EnumType.STRING)
     private Estado estado;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "convocatoria")
     private Convocatoria convocatoria;
 
