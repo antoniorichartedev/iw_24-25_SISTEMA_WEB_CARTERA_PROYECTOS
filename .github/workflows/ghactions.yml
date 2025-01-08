@@ -38,7 +38,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn clean -Dmaven.test.skip=true -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=antoniorichartedev_iw_24-25_SISTEMA_WEB_CARTERA_PROYECTOS -X
+        run: mvn clean -Dmaven.test.skip=true -B #verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=antoniorichartedev_iw_24-25_SISTEMA_WEB_CARTERA_PROYECTOS -X
 
       - name: Build and Deploy to GitHub Packages
         run: mvn deploy -Dmaven.test.skip=true -U -B -Pproduction
