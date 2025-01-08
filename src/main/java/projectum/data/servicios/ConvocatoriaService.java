@@ -5,6 +5,7 @@ import projectum.data.entidades.Convocatoria;
 import projectum.data.repositorios.ConvocatoriaRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -28,5 +29,9 @@ public class ConvocatoriaService {
 
     public void delete(UUID id){
         convocatoriaRepository.deleteById(id);
+    }
+
+    public Optional<Convocatoria> getConvocatoriaById(UUID convocatoriaID) {
+        return convocatoriaRepository.findById(convocatoriaID);
     }
 }

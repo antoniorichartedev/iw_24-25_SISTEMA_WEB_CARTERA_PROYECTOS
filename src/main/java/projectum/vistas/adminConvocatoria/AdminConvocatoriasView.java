@@ -53,6 +53,20 @@ public class AdminConvocatoriasView extends Composite<VerticalLayout> implements
         stripedGrid.addColumn(Convocatoria::getFechaFin).setHeader("Fecha Fin").setSortable(true);
         stripedGrid.addColumn(convocatoria -> convocatoria.getActividad() ? "En Curso" : "Inactiva").setHeader("Estado");
 
+        stripedGrid.addComponentColumn(convocatoria -> {
+            Button editarConvocatoria = new Button("Editar");
+            editarConvocatoria.getStyle().set("color", "blue");
+
+            // Manejar el evento de clic para redirigir a otra vista
+            editarConvocatoria.addClickListener(event -> {
+                // Redirigir a la vista de edición pasando el ID del proyecto
+                UI.getCurrent().navigate("editarConvocatoria/" + convocatoria.getId());
+            });
+
+            return editarConvocatoria;
+        }).setHeader("Editar").setAutoWidth(true);
+
+
         // Agregar columna para el botón de eliminar
         stripedGrid.addComponentColumn(convocatoria -> {
             Button borrarConvocatoria = new Button("Eliminar");
@@ -81,7 +95,7 @@ public class AdminConvocatoriasView extends Composite<VerticalLayout> implements
             borrarConvocatoria.addClickListener(event -> confirmDialog.open());
 
             return borrarConvocatoria;
-        }).setHeader("Acciones");
+        }).setHeader("Eliminar");
 
         // Configuración del diseño
         getContent().setWidth("100%");
