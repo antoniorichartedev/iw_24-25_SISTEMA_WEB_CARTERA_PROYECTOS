@@ -49,7 +49,7 @@ public class AdminConvocatoriasView extends Composite<VerticalLayout> implements
 
         // Agregar columnas para todos los campos relevantes de la clase Convocatoria
         stripedGrid.addColumn(Convocatoria::getNombre).setHeader("Nombre").setSortable(true);
-        stripedGrid.addColumn(Convocatoria::getFechaInico).setHeader("Fecha Inicio").setSortable(true);
+        stripedGrid.addColumn(Convocatoria::getFechaInicio).setHeader("Fecha Inicio").setSortable(true);
         stripedGrid.addColumn(Convocatoria::getFechaFin).setHeader("Fecha Fin").setSortable(true);
         stripedGrid.addColumn(convocatoria -> convocatoria.getActividad() ? "En Curso" : "Inactiva").setHeader("Estado");
 

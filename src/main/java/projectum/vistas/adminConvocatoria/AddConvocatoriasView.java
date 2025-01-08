@@ -63,7 +63,7 @@ public class AddConvocatoriasView extends Composite<VerticalLayout> {
                 Convocatoria nuevaConvocatoria = new Convocatoria();
                 nuevaConvocatoria.setId(UUID.randomUUID());
                 nuevaConvocatoria.setNombre(nombreField.getValue());
-                nuevaConvocatoria.setFechaInico(
+                nuevaConvocatoria.setFechaInicio(
                         Date.from(fechaInicioPicker.getValue()
                             .atStartOfDay(ZoneId.of("Europe/Madrid"))
                             .toInstant())

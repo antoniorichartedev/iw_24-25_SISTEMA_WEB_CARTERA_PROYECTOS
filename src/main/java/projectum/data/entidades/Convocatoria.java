@@ -1,6 +1,8 @@
 package projectum.data.entidades;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -11,6 +13,7 @@ import java.util.UUID;
 public class Convocatoria {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JdbcTypeCode(SqlTypes.CHAR)
     private UUID id = UUID.randomUUID();
 
     @Column(name = "nombre",nullable = false)
@@ -41,8 +44,8 @@ public class Convocatoria {
     public void setNombre(String nombre) { this.nombre = nombre; }
     public String getNombre() { return this.nombre; }
 
-    public void setFechaInico(Date fini) { this.fechaInico = fini; }
-    public Date getFechaInico() { return this.fechaInico; }
+    public void setFechaInicio(Date fini) { this.fechaInico = fini; }
+    public Date getFechaInicio() { return this.fechaInico; }
 
     public void setFechaFin(Date ffin) { this.fechaFin = ffin; }
     public Date getFechaFin() { return this.fechaFin; }

@@ -69,6 +69,11 @@ public class Proyecto {
     @Enumerated(EnumType.STRING)
     private Estado estado;
 
+    @OneToOne
+    @JoinColumn(name = "convocatoria")
+    private Convocatoria convocatoria;
+
+
     public Proyecto() {
     }
 
@@ -139,4 +144,7 @@ public class Proyecto {
 
     public Estado getEstado() { return estado; }
     public void setEstado(Estado estado) { this.estado = estado; }
+
+    public Convocatoria getConvocatoria() { return convocatoria; }
+    public void setConvocatoria(Convocatoria convocatoria) { this.convocatoria = convocatoria; }
 }

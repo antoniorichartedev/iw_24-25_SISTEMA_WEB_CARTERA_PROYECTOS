@@ -84,7 +84,7 @@ public class EditarConvocatoriaView extends VerticalLayout implements BeforeEnte
         nombreLayout.getStyle().set("margin-bottom", "20px");
 
         // Fechas inicio
-        H2 fechaInicio = new H2("Fecha Inicio: " + convocatoria.getFechaInico());
+        H2 fechaInicio = new H2("Fecha Inicio: " + convocatoria.getFechaInicio());
         fechaInicio.getStyle().set("font-size", "20px").set("font-weight", "bold");
 
         DatePicker fechaInicioField = new DatePicker();
@@ -101,7 +101,7 @@ public class EditarConvocatoriaView extends VerticalLayout implements BeforeEnte
         fechaFinField.setI18n(i18n);
 
         fechaInicioField.setRequiredIndicatorVisible(true);
-        fechaInicioField.setValue(convocatoria.getFechaInico().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate());
+        fechaInicioField.setValue(convocatoria.getFechaInicio().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate());
 
         Button fechaInicioButton = new Button("Guardar");
         fechaInicioButton.addClickListener(e -> {
@@ -109,7 +109,7 @@ public class EditarConvocatoriaView extends VerticalLayout implements BeforeEnte
             if (nuevaFechaInicio == null) {
                 Notification.show("Por favor, introduce una fecha de inicio", 3000, Notification.Position.MIDDLE);
             } else {
-                convocatoria.setFechaInico(Date.from(nuevaFechaInicio.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant()));
+                convocatoria.setFechaInicio(Date.from(nuevaFechaInicio.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant()));
                 convocatoriaService.saveConvocatoria(convocatoria);
                 Notification.show("Fecha de inicio actualizada", 3000, Notification.Position.MIDDLE);
                 UI.getCurrent().getPage().reload();

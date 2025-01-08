@@ -5,6 +5,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import projectum.data.Estado;
 import projectum.data.entidades.*;
+import projectum.data.servicios.ConvocatoriaService;
 import projectum.data.servicios.UsuarioService;
 import projectum.data.Rol;
 import projectum.data.servicios.ProyectoService;
@@ -13,17 +14,20 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class DatabasePopulator implements CommandLineRunner {
 
     private final UsuarioService userService;
     private final ProyectoService proyectService;
+    private final ConvocatoriaService convocatoriaService;
 
 
-    public DatabasePopulator(UsuarioService userService, ProyectoService proyectService) {
+    public DatabasePopulator(UsuarioService userService, ProyectoService proyectService, ConvocatoriaService convocatoriaService) {
         this.proyectService = proyectService;
         this.userService = userService;
+        this.convocatoriaService = convocatoriaService;
     }
 
     @Override
@@ -31,13 +35,12 @@ public class DatabasePopulator implements CommandLineRunner {
 
         Faker faker = new Faker();
 
-        // Creamos admin
+        // Creamos instancias
         if (userService.count() < 5) {
 
             // Cargar promotores desde la API solo si no están cargados previamente
             userService.cargarPromotoresDesdeApi();
             System.out.println("Promotores cargados (si no estaban previamente).");
-
 
             Usuario user = new Usuario();
             user.setNombre("admin");
@@ -104,6 +107,20 @@ public class DatabasePopulator implements CommandLineRunner {
             pr.setEstado(Estado.en_desarrollo);
             pr.setPriorizacion(5);
 
+            Convocatoria conv = new Convocatoria();
+            conv.setNombre("Convocatoria de enero");
+            conv.setFechaInicio(new Date());
+            conv.setFechaFin(new Date("31/01/2025"));
+            conv.setActividad(true);
+            convocatoriaService.saveConvocatoria(conv);
+            System.out.println("Convocatoria created");
+
+            // Asociamos la convocatoria al proyecto
+            Optional<Convocatoria> convNueva = convocatoriaService.getConvocatoriaByNombre(conv.getNombre());
+            if (convNueva.isPresent()) {
+                pr.setConvocatoria(convNueva.get());
+            }
+            
             // Rescatamos de nuevo el promotor y el solicitante del proyecto de ejemplo.
             promo = userService.loadUserByUsername(promo.getUsername());
             sol = userService.loadUserByUsername(sol.getUsername());
@@ -117,8 +134,5 @@ public class DatabasePopulator implements CommandLineRunner {
                 System.out.println("Relaciones con el proyecto realizadas.");
             }
         }
-
-
     }
-
 }

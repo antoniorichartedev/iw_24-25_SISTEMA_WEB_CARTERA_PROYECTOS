@@ -31,6 +31,10 @@ public class ConvocatoriaService {
         convocatoriaRepository.deleteById(id);
     }
 
+    public Optional<Convocatoria> getConvocatoriaByNombre(String nombre) {
+        return convocatoriaRepository.findByNombre(nombre);
+    }
+
     public Optional<Convocatoria> getConvocatoriaById(UUID convocatoriaID) {
         return convocatoriaRepository.findById(convocatoriaID);
     }

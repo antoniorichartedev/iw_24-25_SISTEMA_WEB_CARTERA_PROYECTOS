@@ -1,6 +1,8 @@
 package projectum.data.entidades;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
@@ -9,6 +11,7 @@ import java.util.UUID;
 public class Formulario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JdbcTypeCode(SqlTypes.CHAR)
     private UUID id = UUID.randomUUID();
 
     @Column(name = "puntuacion", nullable = false)
