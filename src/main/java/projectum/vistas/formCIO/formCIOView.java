@@ -1,13 +1,12 @@
 package projectum.vistas.formCIO;
 
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import projectum.data.Estado;
 import projectum.data.entidades.Formulario;
 import projectum.data.entidades.Proyecto;
 import projectum.data.entidades.Usuario;
-import projectum.data.servicios.FormularioService;
-import projectum.data.servicios.ProyectoService;
-import projectum.data.servicios.UsuarioService;
+import projectum.data.servicios.*;
 import projectum.security.RolRestrictions.RoleRestrictedView;
 import projectum.data.Rol;
 import com.vaadin.flow.component.button.Button;
@@ -34,6 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class formCIOView extends VerticalLayout implements RoleRestrictedView {
 
     private final UsuarioService usuarioService;
+    private final CorreoRealService correoService;
 
     @Override
     public Rol getRequiredRole() {
@@ -68,7 +68,7 @@ public class formCIOView extends VerticalLayout implements RoleRestrictedView {
         return pregunta;
     }
 
-    public formCIOView(AuthenticatedUser authenticatedUser, FormularioService formularioService, UsuarioService usuarioService, ProyectoService proyectoService){
+    public formCIOView(AuthenticatedUser authenticatedUser, FormularioService formularioService, UsuarioService usuarioService, ProyectoService proyectoService, CorreoRealService correoService){
         this.authenticatedUser = authenticatedUser;
         this.formularioService = formularioService;
         this.proyectoService = proyectoService;
@@ -150,21 +150,32 @@ public class formCIOView extends VerticalLayout implements RoleRestrictedView {
                     form.setCio(opUsuario.get());
                     form.setProyecto(proy.get());
 
-                    // Guardar el formulario en la base de datos
-                    formularioService.saveFormulario(form);
-
                     // Obtenemos los formularios del proyecto.
                     List<Formulario> formsProyecto = formularioService.getFormulariosByProyectoId(proy.get().getId());
 
-                    // Si tenemos dos formularios, cambiamos su estado a Valorado.
-                    if (formsProyecto.size() == 2) {
-                        proy.get().setEstado(Estado.valorado);
-                        proyectoService.saveProyecto(proy.get());
+                    // Guardar el formulario en la base de datos
+                    if (formsProyecto.size() < 2) {
+                        formularioService.saveFormulario(form);
+                        formsProyecto = formularioService.getFormulariosByProyectoId(proy.get().getId());
+
+                        // Si tenemos dos formularios y el estado del proyecto es valoradoOT cambiamos su estado a Valorado.
+                        if (formsProyecto.size() == 2) {
+                            proy.get().setEstado(Estado.valorado);
+                            proyectoService.saveProyecto(proy.get());
+                            correoService.enviarCorreoProyectoValorado(proy.get().getSolicitante(), proy.get());
+                            // Notificar al usuario
+                            Notification.show("Formulario guardado correctamente", 3500, Notification.Position.TOP_CENTER);
+                        } else {
+                            proy.get().setEstado(Estado.valoradoCIO);
+                            proyectoService.saveProyecto(proy.get());
+                            correoService.enviarCorreoProyectoValoradoCIO(proy.get().getSolicitante(), proy.get());
+                            // Notificar al usuario
+                            Notification.show("Formulario guardado correctamente", 3500, Notification.Position.TOP_CENTER);
+                        }
+                    } else {
+                        Notification.show("Ya has hecho el formulario para este proyecto.", 3500, Notification.Position.TOP_CENTER);
                     }
 
-
-                    // Notificar al usuario
-                    Notification.show("Formulario guardado correctamente", 3500, Notification.Position.TOP_CENTER);
                 } else {
                     Notification.show("No tienes permiso para realizar esta acción.", 3500, Notification.Position.TOP_CENTER);
                 }
@@ -189,5 +200,6 @@ public class formCIOView extends VerticalLayout implements RoleRestrictedView {
 
         add(formularioContainer);
         this.usuarioService = usuarioService;
+        this.correoService = correoService;
     }
 }

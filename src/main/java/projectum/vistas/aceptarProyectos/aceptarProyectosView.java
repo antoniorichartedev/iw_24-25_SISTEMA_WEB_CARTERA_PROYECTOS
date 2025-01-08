@@ -1,27 +1,34 @@
-package projectum.vistas.proyectos;
+package projectum.vistas.aceptarProyectos;
 
-import com.vaadin.flow.server.auth.AnonymousAllowed;
-import jakarta.annotation.security.RolesAllowed;
-import projectum.data.Estado;
-import projectum.security.RolRestrictions.RoleRestrictedView;
-import projectum.data.entidades.Proyecto;
-import projectum.data.servicios.ProyectoService;
-import projectum.data.Rol;
 import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.Uses;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
+import com.vaadin.flow.theme.lumo.LumoUtility;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
-import com.vaadin.flow.component.html.Span;
+import projectum.data.Estado;
+import projectum.data.Rol;
+import projectum.data.entidades.Proyecto;
+import projectum.data.servicios.CorreoRealService;
+import projectum.data.servicios.CorreoService;
+import projectum.data.servicios.ProyectoService;
+import projectum.security.RolRestrictions.RoleRestrictedView;
 
 import java.text.SimpleDateFormat;
 import java.util.Base64;
@@ -29,18 +36,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @PageTitle("Proyectos")
-@Route("proyectos")
+@Route("aceptarProyectos")
 @Menu(order = 1, icon = LineAwesomeIconUrl.PENCIL_RULER_SOLID)
 @Uses(Icon.class)
-@RolesAllowed({"USER", "SOLICITANTE"})
-public class ProyectosView extends Composite<VerticalLayout> implements RoleRestrictedView {
+@RolesAllowed("CIO")
+public class aceptarProyectosView extends Composite<VerticalLayout> implements RoleRestrictedView {
+
+    @Autowired
+    private CorreoRealService correoService;
 
     @Override
     public Rol getRequiredRole() {
         return null;
     }
 
-    public ProyectosView(ProyectoService proyectoService) {
+    public aceptarProyectosView(ProyectoService proyectoService) {
         this.proyectoService = proyectoService;
 
         HorizontalLayout layoutRow = new HorizontalLayout();
@@ -97,12 +107,21 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
                 span = new Span("Rechazado");
                 span.getElement().setAttribute("title", "Rechazado");
             }
+            else if(proyecto.getEstado() == Estado.valorado)
+            {
+                span = new Span("Valorado");
+                span.getElement().setAttribute("title", "Valorado");
+            }
             else {
                 span = new Span("Completado");
                 span.getElement().setAttribute("title", "Completado");
             }
             return span;
         }).setHeader("Estado");
+
+        stripedGrid.addColumn(Proyecto::getImportancia).setHeader("Importancia");
+
+        stripedGrid.addColumn(Proyecto::getFinanciacion).setHeader("Financiación");
 
         stripedGrid.addColumn(proyecto -> {
             // Convertir bytes a base64 si están presentes
@@ -137,10 +156,86 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
             return span;
         }).setHeader("Promotor");
 
+        // Columna para el botón de "Eliminar"
+        stripedGrid.addComponentColumn(proyecto -> {
+            Button aceptarProyecto = new Button("Aceptar");
+            aceptarProyecto.getStyle().set("color", "blue");
+
+            // Crear el diálogo de confirmación
+            Dialog confirmDialog = new Dialog();
+            confirmDialog.setHeaderTitle("Priorizar Proyecto");
+            confirmDialog.add(new Text("Antes de aceptar, indique la priorización que le da al proyecto"));
+
+            IntegerField prioridadField = new IntegerField("Prioridad");
+            prioridadField.setPlaceholder("Ingrese un número");
+            prioridadField.setMin(1);
+            prioridadField.setMax(5);
+            prioridadField.setStep(1);
+
+            confirmDialog.add(prioridadField);
+
+            Button confirmButton = new Button("Aceptar", event -> {
+                Integer nuevaPrioridad = prioridadField.getValue();
+                if (nuevaPrioridad == null) { Notification.show("Por favor, introduzca un valor válido."); }
+
+                proyecto.setPriorizacion(nuevaPrioridad);
+                proyecto.setEstado(Estado.en_desarrollo);
+
+                // Avisamos al solicitante de que su proyecto ha sido aceptado.
+                correoService.enviarCorreoProyectoAceptado(proyecto.getSolicitante(), proyecto);
+                proyectoService.saveProyecto(proyecto);
+                setGridSampleData(stripedGrid);
+                Notification.show("El proyecto ha sido aceptado con éxito");
+                confirmDialog.close();
+            });
+
+            // Botón para cancelar la acción
+            Button cancelButton = new Button("Atrás", event -> confirmDialog.close());
+
+            HorizontalLayout dialogButtons = new HorizontalLayout(confirmButton, cancelButton);
+            dialogButtons.setSpacing(true);
+            confirmDialog.add(dialogButtons);
+
+            aceptarProyecto.addClickListener(event -> confirmDialog.open());
+
+            return aceptarProyecto;
+        }).setHeader("Aceptar").setAutoWidth(true);
+
+        stripedGrid.addComponentColumn(proyecto -> {
+            Button rechazarProyecto = new Button("Rechazar");
+            rechazarProyecto.getStyle().set("color", "red");
+
+            // Crear el diálogo de confirmación
+            Dialog confirmDialog = new Dialog();
+            confirmDialog.setHeaderTitle("Confirmación");
+            confirmDialog.add(new Text("¿Estás seguro de que deseas rechazar este proyecto? Esta acción no se puede deshacer."));
+
+            // Botón para confirmar la eliminación
+            Button confirmButton = new Button("Confirmar", event -> {
+                proyecto.setEstado(Estado.rechazado);
+                proyectoService.saveProyecto(proyecto);
+                correoService.enviarCorreoProyectoRechazado(proyecto.getSolicitante(), proyecto);
+                setGridSampleData(stripedGrid);
+                Notification.show("El proyecto ha sido rechazado con éxito");
+                confirmDialog.close();
+            });
+
+            // Botón para cancelar la acción
+            Button cancelButton = new Button("Cancelar", event -> confirmDialog.close());
+
+            HorizontalLayout dialogButtons = new HorizontalLayout(confirmButton, cancelButton);
+            dialogButtons.setSpacing(true);
+            confirmDialog.add(dialogButtons);
+
+            rechazarProyecto.addClickListener(event -> confirmDialog.open());
+
+            return rechazarProyecto;
+        }).setHeader("Rechazar");
+
         // Configuración del diseño
         getContent().setWidth("100%");
         getContent().getStyle().set("flex-grow", "1");
-        layoutRow.addClassName(Gap.MEDIUM);
+        layoutRow.addClassName(LumoUtility.Gap.MEDIUM);
         layoutRow.setWidth("100%");
         layoutRow.setHeight("min-content");
         h2.setText("Proyectos");
@@ -163,13 +258,14 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
 
     private void setGridSampleData(Grid<Proyecto> grid) {
 
-        List<Proyecto> proyectosEnDesarrollo = proyectoService.getAllProyectos().stream()
-                .filter(proyecto -> proyecto.getEstado() == Estado.en_desarrollo)
+        List<Proyecto> proyectosFiltrados = proyectoService.getAllProyectos().stream()
+                .filter(proyecto -> proyecto.getEstado() == Estado.valorado)
                 .collect(Collectors.toList());
 
-        grid.setItems(proyectosEnDesarrollo);
+        grid.setItems(proyectosFiltrados);
     }
 
     @Autowired()
     private ProyectoService proyectoService;
+
 }

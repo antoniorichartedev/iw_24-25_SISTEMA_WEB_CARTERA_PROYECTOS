@@ -1,46 +1,54 @@
-package projectum.vistas.proyectos;
+package projectum.vistas.valoracionCIO;
 
-import com.vaadin.flow.server.auth.AnonymousAllowed;
-import jakarta.annotation.security.RolesAllowed;
-import projectum.data.Estado;
-import projectum.security.RolRestrictions.RoleRestrictedView;
-import projectum.data.entidades.Proyecto;
-import projectum.data.servicios.ProyectoService;
-import projectum.data.Rol;
 import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.Uses;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
+import com.vaadin.flow.spring.security.AuthenticationContext;
+import com.vaadin.flow.theme.lumo.LumoUtility;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
-import com.vaadin.flow.component.html.Span;
+import projectum.data.Estado;
+import projectum.data.Rol;
+import projectum.data.entidades.Proyecto;
+import projectum.data.servicios.CorreoRealService;
+import projectum.data.servicios.ProyectoService;
+import projectum.data.servicios.UsuarioService;
+import projectum.security.RolRestrictions.RoleRestrictedView;
 
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@PageTitle("Proyectos")
-@Route("proyectos")
+@PageTitle("Valorar proyectos")
+@Route("valorarProyectoCIO")
 @Menu(order = 1, icon = LineAwesomeIconUrl.PENCIL_RULER_SOLID)
 @Uses(Icon.class)
-@RolesAllowed({"USER", "SOLICITANTE"})
-public class ProyectosView extends Composite<VerticalLayout> implements RoleRestrictedView {
+@RolesAllowed("CIO")
+public class valoracionCIOView extends Composite<VerticalLayout> implements RoleRestrictedView {
 
     @Override
     public Rol getRequiredRole() {
         return null;
     }
 
-    public ProyectosView(ProyectoService proyectoService) {
+    public valoracionCIOView(ProyectoService proyectoService){
         this.proyectoService = proyectoService;
 
         HorizontalLayout layoutRow = new HorizontalLayout();
@@ -97,12 +105,31 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
                 span = new Span("Rechazado");
                 span.getElement().setAttribute("title", "Rechazado");
             }
+            else if(proyecto.getEstado() == Estado.valorado)
+            {
+                span = new Span("Valorado");
+                span.getElement().setAttribute("title", "Valorado");
+            }
+            else if(proyecto.getEstado() == Estado.valoradoCIO)
+            {
+                span = new Span("Valorado por el CIO");
+                span.getElement().setAttribute("title", "Valorado por el CIO");
+            }
+            else if(proyecto.getEstado() == Estado.valoradoOT)
+            {
+                span = new Span("Valorado por la OT");
+                span.getElement().setAttribute("title", "Valorado por la OT");
+            }
             else {
                 span = new Span("Completado");
                 span.getElement().setAttribute("title", "Completado");
             }
             return span;
         }).setHeader("Estado");
+
+        stripedGrid.addColumn(Proyecto::getImportancia).setHeader("Importancia");
+
+        stripedGrid.addColumn(Proyecto::getFinanciacion).setHeader("Financiación");
 
         stripedGrid.addColumn(proyecto -> {
             // Convertir bytes a base64 si están presentes
@@ -137,10 +164,20 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
             return span;
         }).setHeader("Promotor");
 
+        stripedGrid.addComponentColumn(proyecto -> {
+            Button valorarProyecto = new Button("Valorar");
+            valorarProyecto.getStyle().set("color", "blue");
+
+            valorarProyecto.addClickListener(event -> {
+                UI.getCurrent().navigate("formCIO");
+            });
+            return valorarProyecto;
+        }).setHeader("Valorar").setAutoWidth(true);
+
         // Configuración del diseño
         getContent().setWidth("100%");
         getContent().getStyle().set("flex-grow", "1");
-        layoutRow.addClassName(Gap.MEDIUM);
+        layoutRow.addClassName(LumoUtility.Gap.MEDIUM);
         layoutRow.setWidth("100%");
         layoutRow.setHeight("min-content");
         h2.setText("Proyectos");
@@ -163,11 +200,11 @@ public class ProyectosView extends Composite<VerticalLayout> implements RoleRest
 
     private void setGridSampleData(Grid<Proyecto> grid) {
 
-        List<Proyecto> proyectosEnDesarrollo = proyectoService.getAllProyectos().stream()
-                .filter(proyecto -> proyecto.getEstado() == Estado.en_desarrollo)
+        List<Proyecto> proyectosFiltrados = proyectoService.getAllProyectos().stream()
+                .filter(proyecto -> proyecto.getEstado() == Estado.en_valoracion || proyecto.getEstado() == Estado.valoradoOT)
                 .collect(Collectors.toList());
 
-        grid.setItems(proyectosEnDesarrollo);
+        grid.setItems(proyectosFiltrados);
     }
 
     @Autowired()

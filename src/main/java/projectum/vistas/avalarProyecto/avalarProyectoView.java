@@ -66,7 +66,6 @@ public class avalarProyectoView extends Composite<VerticalLayout> implements Rol
         Grid<Proyecto> stripedGrid = new Grid<>(Proyecto.class);
         stripedGrid.removeAllColumns();
 
-        // Agregar columnas para todos los campos de la clase Proyecto
         // Mostrar string completo al poner el raton encima
         stripedGrid.addComponentColumn(proyecto -> {
             Span span = new Span(proyecto.getTitulo());
@@ -103,6 +102,16 @@ public class avalarProyectoView extends Composite<VerticalLayout> implements Rol
             {
                 span = new Span("Sin avalar");
                 span.getElement().setAttribute("title", "Sin avalar");
+            }
+            else if(proyecto.getEstado() == Estado.en_valoracion)
+            {
+                span = new Span("En valoración");
+                span.getElement().setAttribute("title", "En valoración");
+            }
+            else if(proyecto.getEstado() == Estado.rechazado)
+            {
+                span = new Span("Rechazado");
+                span.getElement().setAttribute("title", "Rechazado");
             }
             else {
                 span = new Span("Completado");
@@ -153,7 +162,7 @@ public class avalarProyectoView extends Composite<VerticalLayout> implements Rol
                 proyecto.setEstado(Estado.en_valoracion);
                 proyectoService.saveProyecto(proyecto);
                 Notification.show("Estado actualizado", 3000, Notification.Position.MIDDLE);
-                correoService.enviarCorreoAvalado(proyecto.getSolicitante());
+                correoService.enviarCorreoAvalado(proyecto.getSolicitante(), proyecto);
                 UI.getCurrent().getPage().reload();
             });
 

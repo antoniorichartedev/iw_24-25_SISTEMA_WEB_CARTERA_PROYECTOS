@@ -81,6 +81,31 @@ public class gestionProyectosView extends Composite<VerticalLayout> implements R
                 span = new Span("Sin avalar");
                 span.getElement().setAttribute("title", "Sin avalar");
             }
+            else if(proyecto.getEstado() == Estado.en_valoracion)
+            {
+                span = new Span("En valoración");
+                span.getElement().setAttribute("title", "En valoración");
+            }
+            else if(proyecto.getEstado() == Estado.rechazado)
+            {
+                span = new Span("Rechazado");
+                span.getElement().setAttribute("title", "Rechazado");
+            }
+            else if(proyecto.getEstado() == Estado.valorado)
+            {
+                span = new Span("Valorado");
+                span.getElement().setAttribute("title", "Valorado");
+            }
+            else if(proyecto.getEstado() == Estado.valoradoCIO)
+            {
+                span = new Span("Valorado por el CIO");
+                span.getElement().setAttribute("title", "Valorado por el CIO");
+            }
+            else if(proyecto.getEstado() == Estado.valoradoOT)
+            {
+                span = new Span("Valorado por la OT");
+                span.getElement().setAttribute("title", "Valorado por la OT");
+            }
             else {
                 span = new Span("Completado");
                 span.getElement().setAttribute("title", "Completado");

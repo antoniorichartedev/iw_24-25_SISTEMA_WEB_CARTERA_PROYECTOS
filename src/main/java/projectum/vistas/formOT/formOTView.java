@@ -2,6 +2,7 @@ package projectum.vistas.formOT;
 
 import jakarta.annotation.security.RolesAllowed;
 import projectum.data.Estado;
+import projectum.data.servicios.CorreoRealService;
 import projectum.security.RolRestrictions.RoleRestrictedView;
 import projectum.data.Rol;
 import com.vaadin.flow.component.button.Button;
@@ -42,6 +43,7 @@ public class formOTView extends VerticalLayout implements RoleRestrictedView {
     private AuthenticatedUser authenticatedUser;
     private FormularioService formularioService;
     private ProyectoService proyectoService;
+    private CorreoRealService correoService;
 
     // Puntuación que vamos a ir acumulando por cada pregunta respondida.
     AtomicInteger finalPuntuacionMax = new AtomicInteger(0);
@@ -67,11 +69,12 @@ public class formOTView extends VerticalLayout implements RoleRestrictedView {
         return pregunta;
     }
 
-    public formOTView(AuthenticatedUser authenticatedUser, FormularioService formularioService, UsuarioService usuarioService, ProyectoService proyectoService) {
+    public formOTView(AuthenticatedUser authenticatedUser, FormularioService formularioService, UsuarioService usuarioService, ProyectoService proyectoService, CorreoRealService correoService) {
         this.authenticatedUser = authenticatedUser;
         this.formularioService = formularioService;
         this.proyectoService = proyectoService;
         this.usuarioService = usuarioService;
+        this.correoService = correoService;
 
         Span label = new Span("10 PREGUNTAS A 10 PUNTOS CADA UNA PARA UN TOTAL DE 100");
         label.getStyle().set("font-size", "18px").set("font-weight", "bold");
@@ -106,20 +109,31 @@ public class formOTView extends VerticalLayout implements RoleRestrictedView {
                     form.setOt(opUsuario.get());
                     form.setProyecto(proy.get());
 
-                    // Guardar el formulario en la base de datos
-                    formularioService.saveFormulario(form);
-
                     // Obtenemos los formularios del proyecto.
                     List<Formulario> formsProyecto = formularioService.getFormulariosByProyectoId(proy.get().getId());
 
-                    // Si tenemos dos formularios, cambiamos su estado a Valorado.
-                    if (formsProyecto.size() == 2) {
-                        proy.get().setEstado(Estado.valorado);
-                        proyectoService.saveProyecto(proy.get());
-                    }
+                    // Guardar el formulario en la base de datos
+                    if (formsProyecto.size() < 2) {
+                        formularioService.saveFormulario(form);
+                        formsProyecto = formularioService.getFormulariosByProyectoId(proy.get().getId());
 
-                    // Notificar al usuario
-                    Notification.show("Formulario guardado correctamente", 3500, Notification.Position.TOP_CENTER);
+                        // Si tenemos dos formularios y el estado del proyecto es valoradoCIO cambiamos su estado a Valorado.
+                        if (formsProyecto.size() == 2) {
+                            proy.get().setEstado(Estado.valorado);
+                            proyectoService.saveProyecto(proy.get());
+                            correoService.enviarCorreoProyectoValorado(proy.get().getSolicitante(), proy.get());
+                            // Notificar al usuario
+                            Notification.show("Formulario guardado correctamente", 3500, Notification.Position.TOP_CENTER);
+                        } else {
+                            proy.get().setEstado(Estado.valoradoOT);
+                            proyectoService.saveProyecto(proy.get());
+                            correoService.enviarCorreoProyectoValoradoOT(proy.get().getSolicitante(), proy.get());
+                            // Notificar al usuario
+                            Notification.show("Formulario guardado correctamente", 3500, Notification.Position.TOP_CENTER);
+                        }
+                    } else {
+                        Notification.show("Ya has hecho el formulario para este proyecto.", 3500, Notification.Position.TOP_CENTER);
+                    }
                 } else {
                     Notification.show("No tienes permiso para realizar esta acción.", 3500, Notification.Position.TOP_CENTER);
                 }
