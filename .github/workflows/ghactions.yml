@@ -1,0 +1,63 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code, setup Maven, cache dependencies and more...
+        uses: s4u/setup-maven-action@v1.10.0
+        with:
+          java-distribution: 'temurin'
+          java-version: '21'
+
+      - name: Get Artifact version from pom.xml
+        uses: entimaniac/read-pom-version-action@1.0.0
+        id: getVersion
+
+      - name: Build with Maven and analyze with Sonar Cloud
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn clean -Dmaven.test.skip=true -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=antoniorichartedev_iw_24-25_SISTEMA_WEB_CARTERA_PROYECTOS
+
+      - name: Build and Deploy to GitHub Packages
+        run: mvn deploy -Dmaven.test.skip=true -U -B -Pproduction
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Rename jar file
+        run: mv target/*.jar target/projectum.jar
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          application_name: projectum   # Configurar nombre de la app
+          environment_name: Projectum-env  # Configurar nombre del entorno
+          region: us-east-1 # Configurar región
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
+          version_label: ${{ steps.getVersion.outputs.version }}
+          version_description: ${{github.SHA}}
+          deployment_package: target/projectum.jar
+          use_existing_version_if_available: true
