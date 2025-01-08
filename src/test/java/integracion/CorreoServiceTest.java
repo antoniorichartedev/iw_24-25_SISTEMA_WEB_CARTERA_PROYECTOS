@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import projectum.data.entidades.Proyecto;
 import projectum.data.entidades.Usuario;
 import projectum.data.servicios.CorreoRealService;
 
@@ -85,7 +86,7 @@ public class CorreoServiceTest {
         doNothing().when(mailSender).send(any(MimeMessage.class));
 
         // Llamada al método
-        boolean result = correoRealService.enviarCorreoAvalado(usuario);
+        boolean result = correoRealService.enviarCorreoAvalado(usuario, new Proyecto("ejemplo"));
 
         // Verifica que el correo se haya enviado correctamente
         assertTrue(result);
@@ -117,7 +118,7 @@ public class CorreoServiceTest {
         Usuario usuario = new Usuario();
         usuario.setCodigoRegistro("123456");
 
-        String cuerpo = correoRealService.construirCuerpoCorreo("registro", usuario);
+        String cuerpo = correoRealService.construirCuerpoCorreo("registro", usuario, new Proyecto("ejemplo"));
 
         // Verifica que el cuerpo del correo sea el esperado
         assertTrue(cuerpo.contains("Código de activación: 123456"));
@@ -130,7 +131,7 @@ public class CorreoServiceTest {
         usuario.setNombre("Usuario de prueba");
         usuario.setCodigoRegistro("abcdef");
 
-        String cuerpo = correoRealService.construirCuerpoCorreo("recuperacion", usuario);
+        String cuerpo = correoRealService.construirCuerpoCorreo("recuperacion", usuario, new Proyecto("ejemplo"));
 
         // Verifica que el cuerpo del correo sea el esperado
         assertTrue(cuerpo.contains("Código de recuperación: abcdef"));
@@ -142,7 +143,7 @@ public class CorreoServiceTest {
         Usuario usuario = new Usuario();
         usuario.setNombre("Usuario de prueba");
 
-        String cuerpo = correoRealService.construirCuerpoCorreo("avalado", usuario);
+        String cuerpo = correoRealService.construirCuerpoCorreo("avalado", usuario, new Proyecto("ejemplo"));
 
         // Verifica que el cuerpo del correo sea el esperado
         assertTrue(cuerpo.contains("¡Enhorabuena! Nos complace informarte que tu proyecto ha sido avalado exitosamente."));

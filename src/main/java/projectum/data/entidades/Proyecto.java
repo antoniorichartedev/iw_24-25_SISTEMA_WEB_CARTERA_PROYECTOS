@@ -84,6 +84,7 @@ public class Proyecto {
         this.interesado = interesado;
     }
 
+    public Proyecto (String titulo) { this.titulo = titulo; }
     // Getters y Setters
 
     public void setId(UUID id) { this.id = id; }
