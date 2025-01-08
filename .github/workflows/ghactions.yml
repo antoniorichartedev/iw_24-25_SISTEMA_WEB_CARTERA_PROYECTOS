@@ -45,9 +45,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Rename jar file
-        run: mv target/*.jar target/projectum.jar
-
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v21
         with:
