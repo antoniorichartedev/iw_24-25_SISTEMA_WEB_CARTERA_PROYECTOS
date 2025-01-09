@@ -4,9 +4,9 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <!-- Project from https://start.vaadin.com/project/f0aa510e-0c9d-4aa3-a358-b5f41fdf52c0 -->
-    <groupId>com.example.application</groupId>
-    <artifactId>my-app</artifactId>
-    <name>my-app</name>
+    <groupId>es.uca.iw</groupId>
+    <artifactId>projectum</artifactId>
+    <name>projectum</name>
     <version>1.1.1</version>
     <packaging>jar</packaging>
 
