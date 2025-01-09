@@ -80,7 +80,7 @@ public class CorreoRealService implements CorreoService {
     }
 
     private String getServerUrl() {
-        return "http://" + InetAddress.getLoopbackAddress().getHostAddress() + ":" + serverPort + "/confirmar-correo";
+        return "http://" + "projectumucaes.us-east-1.elasticbeanstalk.com" + ":" + serverPort + "/confirmar-correo";
     }
 
     @Override
